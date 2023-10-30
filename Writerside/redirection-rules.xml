@@ -14,4 +14,8 @@
         <description>Created after removal of "Starter" from Catena Tools</description>
         <accepts>Starter.html</accepts>
     </rule>
+    <rule id="2fabc50">
+        <description>Created after removal of "Observability" from Catena Tools</description>
+        <accepts>Observability.html</accepts>
+    </rule>
 </rules>

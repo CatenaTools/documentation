@@ -1,3 +1,0 @@
-# Observability
-
-Start typing here...
