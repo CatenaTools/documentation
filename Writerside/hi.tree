@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="hi"
+                 name="Catena Tools"
+                 start-page="Section-Starting-Page.topic">
+
+    <toc-element topic="Section-Starting-Page.topic"/>
+    <toc-element topic="overview.md"/>
+    <toc-element topic="Services.md">
+        <toc-element topic="Entitlements.md"/>
+        <toc-element topic="Parties.md">
+        </toc-element>
+        <toc-element topic="Authentication.md"/>
+        <toc-element topic="Accounts.md"/>
+    </toc-element>
+    <toc-element topic="Concepts.md">
+        <toc-element topic="Unity-Client-SDK.md"/>
+        <toc-element topic="Observability.md"/>
+        <toc-element topic="Auth-Flow-Session-Management.md"/>
+        <toc-element topic="Metadata.md"/>
+        <toc-element topic="Entities.md"/>
+        <toc-element topic="Service-Registration.md"/>
+    </toc-element>
+    <toc-element topic="Unstable-Features.md"/>
+</instance-profile>
