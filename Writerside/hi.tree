@@ -6,6 +6,7 @@
                  name="Catena Tools"
                  start-page="Section-Starting-Page.topic">
 
+    <toc-element topic="Section-Starting-Page.topic"/>
     <toc-element topic="overview.md"/>
     <toc-element topic="Services.md">
         <toc-element topic="Matchmaking.md"/>
@@ -24,5 +25,4 @@
         </toc-element>
     </toc-element>
     <toc-element topic="Unstable-Features.md"/>
-    <toc-element topic="Section-Starting-Page.topic"/>
 </instance-profile>
