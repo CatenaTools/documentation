@@ -26,7 +26,7 @@ Create.Table("accounts_metadata")
 
 Notably, on account creation, a single key-value metadata pair `"auth-role": "user"` is associated with an account by default. This auth role will be checked by the `AuthServerInterceptor` on subsequent requests made by this account.
 
-*(see [Feature: Metadata](https://www.notion.so/Feature-Metadata-10c467de69064a6ba6c872b45bf24d71?pvs=21) for more information on supported metadata types and operations)*
+*(see [Feature: Metadata](Metadata.md) for more information on supported metadata types and operations)*
 
 Finally, an account also has one or more **auth provider associations**. These define the auth providers that a user may use for login that result in their account / role being used as the sender of subsequent requests.
 

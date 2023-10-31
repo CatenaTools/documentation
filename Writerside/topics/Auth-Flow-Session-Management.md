@@ -2,7 +2,7 @@
 
 # Overview
 
-Metadata is a derivation from the [Entity System](https://www.notion.so/Feature-Entities-30c7eb876730482f9349cfb61051d801?pvs=21) and understanding the rationality of the Entity System is important to understanding the reasoning of Metadata. Metadata serves as a way to attach data to certain data types, including Accounts, Parties, and Entities.
+Metadata is a derivation from the [Entity System](Entities.md) and understanding the rationality of the Entity System is important to understanding the reasoning of Metadata. Metadata serves as a way to attach data to certain data types, including Accounts, Parties, and Entities.
 
 **An important note**: Metadata is **not transient when using default Catena services.** This means metadata that is attached to a type (like Catena’s `Account` type), will persist in a backing database and any unneeded metadata entries should be cleaned up. ****The Metadata structure is found in `groups.proto` and looks like:
 
