@@ -1,0 +1,2558 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "catena-tools-core",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/accounts": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "CreateOrGetAccountFromToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrGetAccountFromTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrGetAccountFromTokenResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "UpdateAccount Updates a passed in account's display_name and metadata",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateAccountResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "GetAccountById",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountByIdResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/link": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "LinkAccountToProvider",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkAccountToProviderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkAccountToProviderResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/metadata": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "CreateMetadataEntry Creates a metadata entry for an account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "UpdateMetadataEntry Updates a passed in account's metadata for a specific entry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/metadata/{id}/{entryKey}": {
+      "delete": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "DeleteMetadataEntry Deletes a metadata entry for an account",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entryKey",
+            "in": "path",
+            "description": "The key in the metadata whose entry needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jsonHandlingType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/DeleteJsonMetadataType"
+            }
+          },
+          {
+            "name": "propertiesToRemovePaths",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "GetMetadataEntry Gets a metadata entry for a passed in key",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entryKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/metadata/{id}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "GetMetadataEntries Gets all metadata entries for a passed in account id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMetadataEntriesResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/healthz": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "GetServiceHealth Gets the health of the Accounts service, logging any errors",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "LoginWithProvider Logs in a user with the given provider.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginWithProviderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginWithProviderResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/healthz": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "GetServiceHealth Gets the health of the Authentication service, logging any errors",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/capacity/allocate": {
+      "post": {
+        "tags": [
+          "CatenaServerCapacity"
+        ],
+        "summary": "AllocateServerRequest asks the capacity service for the connection details to the next free server",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllocateServerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllocateServerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/capacity/deallocate": {
+      "post": {
+        "tags": [
+          "CatenaServerCapacity"
+        ],
+        "summary": "DeAllocateServerRequest asks the capacity service to free up the server for other use",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeAllocateServerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeAllocateServerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entitlements": {
+      "post": {
+        "tags": [
+          "Entitlements"
+        ],
+        "summary": "AdminCreateEntitlement",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCreateEntitlementRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminCreateEntitlementResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Entitlements"
+        ],
+        "summary": "TODO: impl. once we have entitlement --> account associations established\r\nrpc AdminDeleteAndRevokeEntitlement (AdminDeleteAndRevokeEntitlementRequest) returns (AdminDeleteAndRevokeEntitlementResponse);\r\nAdminUpdtateEntitlement",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUpdateEntitlementRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUpdateEntitlementResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Entitlements"
+        ],
+        "summary": "AdminGetAllEntitlements",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetEntitlementsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entitlements/{entitlementId}": {
+      "delete": {
+        "tags": [
+          "Entitlements"
+        ],
+        "summary": "AdminDeleteEntitlement",
+        "parameters": [
+          {
+            "name": "entitlementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDeleteEntitlementResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entitlements/{approxEntitlementName}": {
+      "get": {
+        "tags": [
+          "Entitlements"
+        ],
+        "summary": "AdminGetEntitlementsByApproxName should only be called when an admin clicks a search button so we are not making a request with each character typed into a search bar",
+        "parameters": [
+          {
+            "name": "approxEntitlementName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminGetEntitlementsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events/subscribe": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "SubscribeToEvents",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscribeToEventsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events/emit": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "EmitUpdateEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmitUpdateEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmitUpdateEventResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matchmaking/start": {
+      "post": {
+        "tags": [
+          "Matchmaking"
+        ],
+        "summary": "StartMatchmaking",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartMatchmakingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartMatchmakingResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matchmaking/cancel": {
+      "post": {
+        "tags": [
+          "Matchmaking"
+        ],
+        "summary": "CancelMatchmaking",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelMatchmakingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelMatchmakingResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matchmaking/{ticketId}": {
+      "get": {
+        "tags": [
+          "Matchmaking"
+        ],
+        "summary": "GetMatchmakingStatus",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "description": "The ID of the ticket for which we are polling matchmaking status.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMatchmakingStatusResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matchmaking/healthz": {
+      "get": {
+        "tags": [
+          "Matchmaking"
+        ],
+        "summary": "GetServiceHealth",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/create": {
+      "post": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "CreateParty Creates a new party setting the player who requested its creation as its leader.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePartyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePartyResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/update-player": {
+      "put": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "Note: Append operations are not currently supported when updating metadata with this method",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePartyPlayerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdatePartyPlayerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/join": {
+      "post": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "JoinPartyWithInviteCode Allows a player to join a party by specifying its invite code.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JoinPartyWithInviteCodeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JoinPartyWithInviteCodeResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties": {
+      "get": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "GetPartyInfo Fetches party information for the party that the requesting player is currently a member of.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPartyInfoResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/{partyId}": {
+      "get": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "GetPartyInfoByPartyId Fetches information for a party given a party ID.",
+        "parameters": [
+          {
+            "name": "partyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPartyInfoResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/{playerId}": {
+      "get": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "GetPlayerInfoById Fetches information for a player in a party given an ID.",
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayerInfoByIdResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/set-leader": {
+      "put": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "SetPartyLeader Allows the current leader of a party to set a new leader.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetPartyLeaderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetPartyLeaderResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/kick": {
+      "put": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "KickFromParty Allows the leader of a party to kick another player from their party.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KickFromPartyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KickFromPartyResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/leave": {
+      "put": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "LeaveParty Allows a player to leave their party and assigns a new leader if the leader leaves.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeavePartyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeavePartyResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/metadata": {
+      "post": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "CreateMetadataEntry Creates a metadata entry for a party",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePartyMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "UpdateMetadataEntry Updates a passed in party's metadata for a specific entry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePartyMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/metadata/{innerRequest.id}/{innerRequest.entryKey}": {
+      "delete": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "DeleteMetadataEntry Deletes a metadata entry for a party",
+        "parameters": [
+          {
+            "name": "innerRequest.id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerRequest.entryKey",
+            "in": "path",
+            "description": "The key in the metadata whose entry needs to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerRequest.jsonHandlingType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/DeleteJsonMetadataType"
+            }
+          },
+          {
+            "name": "innerRequest.propertiesToRemovePaths",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "playerId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "GetMetadataEntry Gets a metadata entry for a passed in key",
+        "parameters": [
+          {
+            "name": "innerRequest.id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "innerRequest.entryKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "playerId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/metadata/{innerRequest.id}": {
+      "get": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "GetMetadataEntries Gets all metadata entries for a passed in party id",
+        "parameters": [
+          {
+            "name": "innerRequest.id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "playerId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMetadataEntriesResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parties/healthz": {
+      "get": {
+        "tags": [
+          "Parties"
+        ],
+        "summary": "GetServiceHealth",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "GUID for this account"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "display name for this account"
+          },
+          "authRole": {
+            "type": "string",
+            "description": "The auth level of the account"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            },
+            "description": "Metadata associated with the account"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Bundled data that describes an account and its metadata."
+      },
+      "AdminCreateEntitlementRequest": {
+        "type": "object",
+        "properties": {
+          "entitlementName": {
+            "type": "string"
+          },
+          "entitlementDescription": {
+            "type": "string"
+          },
+          "entitlementGrantingPurchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntitlementGrantingPurchase"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "req, res messages"
+      },
+      "AdminCreateEntitlementResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminDeleteEntitlementResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminGetEntitlementsResponse": {
+        "type": "object",
+        "properties": {
+          "entitlements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entitlement"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "shared between both GET RPCs"
+      },
+      "AdminUpdateEntitlementRequest": {
+        "type": "object",
+        "properties": {
+          "entitlement": {
+            "$ref": "#/components/schemas/Entitlement"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdminUpdateEntitlementResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AllocateServerRequest": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "description": "a generic string to associate allocation requests with eachother"
+          },
+          "profileId": {
+            "type": "string",
+            "description": "the id of the profile to launch"
+          },
+          "matchId": {
+            "type": "string",
+            "description": "The ID of the match to be assigned to this server"
+          },
+          "matchData": {
+            "$ref": "#/components/schemas/Entity"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AllocateServerResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/AllocateServerStatus"
+          },
+          "message": {
+            "type": "string"
+          },
+          "connectionInfo": {
+            "$ref": "#/components/schemas/ServerConnectionInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AllocateServerStatus": {
+        "enum": [
+          "ALLOCATE_SERVER_STATUS_UNSPECIFIED",
+          "ALLOCATE_SERVER_STATUS_SUCCESS",
+          "ALLOCATE_SERVER_STATUS_FAILURE",
+          "ALLOCATE_SERVER_STATUS_PENDING"
+        ],
+        "type": "string"
+      },
+      "Any": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": { }
+      },
+      "CancelMatchmakingRequest": {
+        "type": "object",
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "The ID of the ticket for which we are cancelling matchmaking."
+          }
+        },
+        "additionalProperties": false
+      },
+      "CancelMatchmakingResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string",
+            "description": "The key in the metadata to be added"
+          },
+          "entryValue": {
+            "$ref": "#/components/schemas/EntityMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateMetadataEntryResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateOrGetAccountFromTokenRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateOrGetAccountFromTokenResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePartyMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "innerRequest": {
+            "$ref": "#/components/schemas/CreateMetadataEntryRequest"
+          },
+          "playerId": {
+            "type": "string",
+            "description": "Optional: If included, query for a specific party member"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePartyRequest": {
+        "type": "object",
+        "properties": {
+          "creatingPlayerMetadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePartyResponse": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeAllocateServerRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "DeAllocateServerResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "DeleteJsonMetadataType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "description": "If you are deleting a json, can choose whether to delete the entire entry or a partial part of an entry\r\nCurrently, only whole property removal is supported.\r\nRemoval of elements in a json array (e.g. trying to remove \"value\" from json {\"array\":[\"value\",\"value2\"]})\r\nis not currently supported by DeleteMetadataEntryRequest.",
+        "format": "int32"
+      },
+      "DeleteMetadataEntryResponse": {
+        "type": "object",
+        "properties": {
+          "entryDeleted": {
+            "type": "boolean",
+            "description": "If the entry was found in the database and deleted"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmitUpdateEventRequest": {
+        "type": "object",
+        "properties": {
+          "nestedEvent": {
+            "$ref": "#/components/schemas/Event"
+          },
+          "recipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmitUpdateEventResponse": {
+        "type": "object",
+        "properties": {
+          "broadcastSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmptyEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "EmptyEvent is used to send pings through the event service, eg to get around bugs where a stream is not opened until the first request comes through, or to do a heartbeat"
+      },
+      "Entitlement": {
+        "type": "object",
+        "properties": {
+          "entitlementId": {
+            "type": "string",
+            "description": "GUID"
+          },
+          "entitlementName": {
+            "type": "string"
+          },
+          "entitlementDescription": {
+            "type": "string"
+          },
+          "entitlementGrantingPurchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntitlementGrantingPurchase"
+            },
+            "description": "references to IAP store purchases that grant this entitlement"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntitlementGrantingPurchase": {
+        "type": "object",
+        "properties": {
+          "entitlementGrantingPurchaseId": {
+            "type": "string",
+            "description": "GUID, this is a Plan ID for Stripe but it's also called a Product ID in other IAP stores e.g. Apple"
+          },
+          "iapStore": {
+            "$ref": "#/components/schemas/IAPStore"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Entity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "entityType": {
+            "$ref": "#/components/schemas/EntityType"
+          },
+          "entities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entity"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "We rely on the entity type for storing data about a user in the session token, this is crutial to enable"
+      },
+      "EntityMetadata": {
+        "type": "object",
+        "properties": {
+          "stringPayload": {
+            "type": "string"
+          },
+          "intPayload": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jsonPayload": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntityType": {
+        "enum": [
+          "ENTITY_TYPE_UNSPECIFIED",
+          "ENTITY_TYPE_GENERIC",
+          "ENTITY_TYPE_ACCOUNT",
+          "ENTITY_TYPE_GROUP",
+          "ENTITY_TYPE_MATCH"
+        ],
+        "type": "string",
+        "description": "Entities"
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "recipientId": {
+            "type": "string"
+          },
+          "anyEvent": {
+            "$ref": "#/components/schemas/Any"
+          },
+          "partyUpdateEvent": {
+            "$ref": "#/components/schemas/PartyUpdateEvent"
+          },
+          "matchmakingStatusUpdateEvent": {
+            "$ref": "#/components/schemas/MatchmakingStatusUpdateEvent"
+          },
+          "emptyEvent": {
+            "$ref": "#/components/schemas/EmptyEvent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAccountByIdResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMatchmakingStatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/MatchmakingStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMetadataEntriesResponse": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMetadataEntryResponse": {
+        "type": "object",
+        "properties": {
+          "entryValue": {
+            "$ref": "#/components/schemas/EntityMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPartyInfoResponse": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlayerInfoByIdResponse": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "$ref": "#/components/schemas/Player"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetServiceHealthResponse": {
+        "type": "object",
+        "properties": {
+          "healthy": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IAPStore": {
+        "enum": [
+          "IAP_STORE_UNSPECIFIED",
+          "IAP_STORE_STRIPE"
+        ],
+        "type": "string",
+        "description": "supported In-App Purchase (IAP) stores"
+      },
+      "JoinPartyWithInviteCodeRequest": {
+        "type": "object",
+        "properties": {
+          "inviteCode": {
+            "type": "string",
+            "description": "code used to join the party"
+          },
+          "joiningPlayerMetadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "JoinPartyWithInviteCodeResponse": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KickFromPartyRequest": {
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string",
+            "description": "ID of player to kick from party"
+          },
+          "partyId": {
+            "type": "string",
+            "description": "ID of party to kick player from"
+          }
+        },
+        "additionalProperties": false
+      },
+      "KickFromPartyResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "LeavePartyRequest": {
+        "type": "object",
+        "properties": {
+          "partyId": {
+            "type": "string",
+            "description": "ID of party to leave"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LeavePartyResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "LinkAccountToProviderRequest": {
+        "type": "object",
+        "properties": {
+          "loginPayload": {
+            "$ref": "#/components/schemas/ProviderLoginPayload"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkAccountToProviderResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "accountLinked": {
+            "type": "boolean",
+            "description": "indicator of success of linking existing account to new auth provider"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginWithProviderRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/Provider"
+          },
+          "payload": {
+            "type": "string",
+            "description": "provider-specific auth token (username for unsafe provider)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginWithProviderResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "MatchmakingStatus": {
+        "enum": [
+          "MATCHMAKING_STATUS_UNSPECIFIED",
+          "MATCHMAKING_STATUS_IN_PROGRESS",
+          "MATCHMAKING_STATUS_COMPLETED",
+          "MATCHMAKING_STATUS_CANCELLED",
+          "MATCHMAKING_STATUS_FAILED",
+          "MATCHMAKING_STATUS_FINDING_SERVER"
+        ],
+        "type": "string"
+      },
+      "MatchmakingStatusUpdateEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MatchmakingStatusUpdateType"
+          },
+          "message": {
+            "type": "string"
+          },
+          "ticketId": {
+            "type": "string"
+          },
+          "serverConnectionInfo": {
+            "$ref": "#/components/schemas/ServerConnectionInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MatchmakingStatusUpdateType": {
+        "enum": [
+          "MATCHMAKING_STATUS_UPDATE_TYPE_UNSPECIFIED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_IN_PROGRESS",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_FAILED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_CANCELLED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER"
+        ],
+        "type": "string"
+      },
+      "MetadataMap": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "Simple message containing a metadata map so that metadata entries can be sent in update events (maps are by default not supported in oneof)"
+      },
+      "Party": {
+        "type": "object",
+        "properties": {
+          "partyId": {
+            "type": "string"
+          },
+          "leaderId": {
+            "type": "string"
+          },
+          "inviteCode": {
+            "type": "string"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Player"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartyEventValue": {
+        "type": "object",
+        "properties": {
+          "boolValue": {
+            "type": "boolean"
+          },
+          "metadataValue": {
+            "$ref": "#/components/schemas/EntityMetadata"
+          },
+          "stringValue": {
+            "type": "string"
+          },
+          "playerValue": {
+            "$ref": "#/components/schemas/Player"
+          },
+          "intValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "metadataMapValue": {
+            "$ref": "#/components/schemas/MetadataMap"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartyUpdateEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/PartyUpdateType"
+          },
+          "message": {
+            "type": "string"
+          },
+          "partyId": {
+            "type": "string",
+            "description": "The party id this event is associated with"
+          },
+          "eventPayload": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PartyEventValue"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartyUpdateType": {
+        "enum": [
+          "PARTY_UPDATE_TYPE_UNSPECIFIED",
+          "PARTY_UPDATE_TYPE_PLAYER_JOINED",
+          "PARTY_UPDATE_TYPE_PLAYER_LEFT",
+          "PARTY_UPDATE_TYPE_PLAYER_KICKED",
+          "PARTY_UPDATE_TYPE_PLAYER_READY_CHANGED",
+          "PARTY_UPDATE_TYPE_PLAYER_LEADER_CHANGED",
+          "PARTY_UPDATE_TYPE_METADATA_CREATED",
+          "PARTY_UPDATE_TYPE_METADATA_UPDATED",
+          "PARTY_UPDATE_TYPE_METADATA_DELETED"
+        ],
+        "type": "string"
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "isReady": {
+            "type": "boolean"
+          },
+          "isLeader": {
+            "type": "boolean"
+          },
+          "teamNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Provider": {
+        "enum": [
+          "PROVIDER_UNSPECIFIED",
+          "PROVIDER_UNSAFE",
+          "PROVIDER_DISCORD"
+        ],
+        "type": "string",
+        "description": "Accepted auth providers."
+      },
+      "ProviderLoginPayload": {
+        "type": "object",
+        "properties": {
+          "providerAccountId": {
+            "type": "string",
+            "description": "provider-specific user ID"
+          },
+          "providerType": {
+            "$ref": "#/components/schemas/Provider"
+          },
+          "providerDisplayName": {
+            "type": "string",
+            "description": "provider-specific display name of user"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Bundled data required to log in or create an account using a given provider."
+      },
+      "ServerConnectionInfo": {
+        "type": "object",
+        "properties": {
+          "ip": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SetPartyLeaderRequest": {
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string",
+            "description": "ID of player to set as party leader"
+          },
+          "partyId": {
+            "type": "string",
+            "description": "ID of party to set leader of"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SetPartyLeaderResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "StartMatchmakingRequest": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "$ref": "#/components/schemas/Entity"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StartMatchmakingResponse": {
+        "type": "object",
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "The ID of the newly created matchmaking ticket."
+          }
+        },
+        "additionalProperties": false
+      },
+      "Status": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Any"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubscribeToEventsResponse": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "$ref": "#/components/schemas/Event"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAccountRequest": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "accountMask": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateAccountResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UpdateMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string",
+            "description": "The key in the metadata whose entry needs to be changed"
+          },
+          "entryValue": {
+            "$ref": "#/components/schemas/EntityMetadata"
+          },
+          "updateOperationType": {
+            "$ref": "#/components/schemas/UpdateMetadataOperationType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateMetadataEntryResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UpdateMetadataOperationType": {
+        "enum": [
+          "OVERWRITE",
+          "APPEND"
+        ],
+        "type": "string",
+        "description": "When updating a metadata entry, the entry can either be overwritten (supported by all types) or appeneded (supported by string and json)"
+      },
+      "UpdatePartyMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "innerRequest": {
+            "$ref": "#/components/schemas/UpdateMetadataEntryRequest"
+          },
+          "playerId": {
+            "type": "string",
+            "description": "Optional: If included, query for a specific party member"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePartyPlayerRequest": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "$ref": "#/components/schemas/Player"
+          },
+          "payloadMask": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePartyPlayerResponse": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Authentication"
+    },
+    {
+      "name": "Accounts",
+      "description": "Accounts"
+    },
+    {
+      "name": "Parties",
+      "description": "Parties"
+    },
+    {
+      "name": "Matchmaking",
+      "description": "Matchmaking"
+    },
+    {
+      "name": "CatenaServerCapacity",
+      "description": "*\r\nThe CatenaServerCapacity is responsible for allocating a server using the defined allocation plugin. It also provides a place to add some\r\nalgorithmic capacity management down the line."
+    },
+    {
+      "name": "Events",
+      "description": "Events"
+    }
+  ]
+}
