@@ -10,11 +10,18 @@
     <toc-element topic="overview.md"/>
     <toc-element topic="Services.md">
         <toc-element topic="Matchmaking.md"/>
-        <toc-element topic="Entitlements.md"/>
-        <toc-element topic="Parties.md">
+        <toc-element topic="Entitlements.md">
+            <toc-element topic="Entitlements-API.md"/>
         </toc-element>
-        <toc-element topic="Authentication.md"/>
-        <toc-element topic="Accounts.md"/>
+        <toc-element topic="Parties.md">
+            <toc-element topic="Parties-API.md"/>
+        </toc-element>
+        <toc-element topic="Authentication.md">
+            <toc-element topic="API.md"/>
+        </toc-element>
+        <toc-element topic="Accounts.md">
+            <toc-element topic="Accounts-API.md"/>
+        </toc-element>
     </toc-element>
     <toc-element topic="Concepts.md">
         <toc-element topic="Auth-Flow-Session-Management.md"/>
