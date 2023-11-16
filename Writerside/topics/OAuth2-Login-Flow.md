@@ -14,7 +14,7 @@ In this tutorial we will cover implementing a client flow for an OAuth2 Provider
 
 ### Step 1: Ensure the Backend Auth Validator is Written and Registered for the given service. Auth Validators should implement the `IAuthValidator` Interface.
 
-```ASP.NET (C#)
+```C#
 public interface IAuthValidator
 {
     public Provider ProviderType { get; }
