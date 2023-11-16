@@ -10,7 +10,7 @@ In this tutorial we will cover implementing a client flow for an OAuth2 Provider
    4. Set the redirect URL to https://localhost:5001/api/v1/authentication/PROVIDER_DISCORD/callback - This will be handled by [The Authentication Service's Callback Handler](https://github.com/CatenaTools/catena-tools-core/blob/55376240181152d9f81537051041cf8cf73956b2/Protos/api/v1/authentication.proto#L31)
 5. Add Your Discord Information to appsettings.Development.json
 
-## Concepts
+## Steps
 
 ### Step 1: Ensure the Backend Auth Validator is Written and Registered for the given service. Auth Validators should implement the `IAuthValidator` Interface.
 
