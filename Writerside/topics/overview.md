@@ -43,3 +43,5 @@ The Catena Launcher is a Flask App, eventually this will be packaged into a usab
 2. Install python3
 3. Configure the launcher in `Launcher/data/config.yaml`
 4. Run `make launcher`
+
+## Other useful info
