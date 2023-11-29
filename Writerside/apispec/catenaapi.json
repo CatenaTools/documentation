@@ -457,6 +457,36 @@
         }
       }
     },
+    "/api/v1/authentication/await": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "AwaitSession will send a message if the user successfully logs in or fails to log in after a timeout.\r\nIn this flow you will log in & go through the oauth flow, then wait for the callback to be called.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwaitSessionResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/authentication/healthz": {
       "get": {
         "tags": [
@@ -570,7 +600,7 @@
         "tags": [
           "Entitlements"
         ],
-        "summary": "AdminCreateEntitlement",
+        "summary": "AdminCreateEntitlement Creates a new entitlement in our system with the specified information.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -607,7 +637,7 @@
         "tags": [
           "Entitlements"
         ],
-        "summary": "TODO: impl. once we have entitlement --> account associations established\r\nrpc AdminDeleteAndRevokeEntitlement (AdminDeleteAndRevokeEntitlementRequest) returns (AdminDeleteAndRevokeEntitlementResponse);\r\nAdminUpdtateEntitlement",
+        "summary": "AdminUpdtateEntitlement Updates the name, description, and/or the entitlement granting purchases of an existing entitlement.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -644,7 +674,7 @@
         "tags": [
           "Entitlements"
         ],
-        "summary": "AdminGetAllEntitlements",
+        "summary": "AdminGetAllEntitlements Fetches all existing entitlements in our system.",
         "responses": {
           "200": {
             "description": "Success",
@@ -674,7 +704,7 @@
         "tags": [
           "Entitlements"
         ],
-        "summary": "AdminDeleteEntitlement",
+        "summary": "AdminDeleteEntitlement Deletes the specified entitlement from our system and revokes it from all users to whom it has previously been granted.",
         "parameters": [
           {
             "name": "entitlementId",
@@ -691,7 +721,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminDeleteEntitlementResponse"
+                  "$ref": "#/components/schemas/AdminDeleteAndRevokeEntitlementResponse"
                 }
               }
             }
@@ -714,7 +744,7 @@
         "tags": [
           "Entitlements"
         ],
-        "summary": "AdminGetEntitlementsByApproxName should only be called when an admin clicks a search button so we are not making a request with each character typed into a search bar",
+        "summary": "AdminGetEntitlementsByApproxName Fetches all entitlements whose name contains the specified keyword or a single entitlement if an exact name is provided. \r\nThis should only be called when an admin clicks a search button so we are not \r\nmaking a request with each character typed into a search bar.",
         "parameters": [
           {
             "name": "approxEntitlementName",
@@ -732,6 +762,45 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AdminGetEntitlementsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entitlements/purchase": {
+      "post": {
+        "tags": [
+          "Entitlements"
+        ],
+        "summary": "Allows an account to purchase a product from a supported IAP store.\r\nThis purchase can either be a one-time purchase that the account is billed for once\r\nor a subscription purchase that the account is billed for on a recurring basis.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIAPStorePurchaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateIAPStorePurchaseResponse"
                 }
               }
             }
@@ -1007,7 +1076,7 @@
       }
     },
     "/api/v1/parties/update-player": {
-      "put": {
+      "patch": {
         "tags": [
           "Parties"
         ],
@@ -1614,6 +1683,13 @@
               "$ref": "#/components/schemas/EntityMetadata"
             },
             "description": "Metadata associated with the account"
+          },
+          "providers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Provider"
+            },
+            "description": "List of providers that this account is linked to"
           }
         },
         "additionalProperties": false,
@@ -1636,24 +1712,14 @@
           }
         },
         "additionalProperties": false,
-        "description": "req, res messages"
+        "description": "admin functionality"
       },
       "AdminCreateEntitlementResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        },
         "additionalProperties": false
       },
-      "AdminDeleteEntitlementResponse": {
+      "AdminDeleteAndRevokeEntitlementResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        },
         "additionalProperties": false
       },
       "AdminGetEntitlementsResponse": {
@@ -1680,11 +1746,6 @@
       },
       "AdminUpdateEntitlementResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        },
         "additionalProperties": false
       },
       "AllocateServerRequest": {
@@ -1747,6 +1808,18 @@
         },
         "additionalProperties": { }
       },
+      "AwaitSessionResponse": {
+        "type": "object",
+        "properties": {
+          "successfulAuth": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "CancelMatchmakingRequest": {
         "type": "object",
         "properties": {
@@ -1759,6 +1832,30 @@
       },
       "CancelMatchmakingResponse": {
         "type": "object",
+        "additionalProperties": false
+      },
+      "CreateIAPStorePurchaseRequest": {
+        "type": "object",
+        "properties": {
+          "iapStore": {
+            "$ref": "#/components/schemas/IAPStore"
+          },
+          "stripePurchaseRequestData": {
+            "$ref": "#/components/schemas/StripePurchaseRequestData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateIAPStorePurchaseResponse": {
+        "type": "object",
+        "properties": {
+          "iapStore": {
+            "$ref": "#/components/schemas/IAPStore"
+          },
+          "stripePurchaseResponseData": {
+            "$ref": "#/components/schemas/StripePurchaseResponseData"
+          }
+        },
         "additionalProperties": false
       },
       "CreateMetadataEntryRequest": {
@@ -1866,6 +1963,12 @@
             "items": {
               "type": "string"
             }
+          },
+          "eventTags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "additionalProperties": false
@@ -1911,8 +2014,10 @@
         "type": "object",
         "properties": {
           "entitlementGrantingPurchaseId": {
-            "type": "string",
-            "description": "GUID, this is a Plan ID for Stripe but it's also called a Product ID in other IAP stores e.g. Apple"
+            "type": "string"
+          },
+          "externalProductId": {
+            "type": "string"
           },
           "iapStore": {
             "$ref": "#/components/schemas/IAPStore"
@@ -2133,8 +2238,9 @@
       "LinkAccountToProviderRequest": {
         "type": "object",
         "properties": {
-          "loginPayload": {
-            "$ref": "#/components/schemas/ProviderLoginPayload"
+          "sessionId": {
+            "type": "string",
+            "description": "The session id to link into the currently logged in session id"
           }
         },
         "additionalProperties": false
@@ -2167,6 +2273,12 @@
       },
       "LoginWithProviderResponse": {
         "type": "object",
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "description": "redirect URI to send the user to if we are dealing with an oauth provider"
+          }
+        },
         "additionalProperties": false
       },
       "MatchmakingStatus": {
@@ -2208,6 +2320,19 @@
           "MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER"
         ],
         "type": "string"
+      },
+      "MetadataEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/EntityMetadata"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Simple message containing a metadata key-value pair so that a metadata entry can be sent in update events"
       },
       "MetadataMap": {
         "type": "object",
@@ -2256,7 +2381,7 @@
             "type": "boolean"
           },
           "metadataValue": {
-            "$ref": "#/components/schemas/EntityMetadata"
+            "$ref": "#/components/schemas/MetadataEntry"
           },
           "stringValue": {
             "type": "string"
@@ -2342,28 +2467,11 @@
         "enum": [
           "PROVIDER_UNSPECIFIED",
           "PROVIDER_UNSAFE",
-          "PROVIDER_DISCORD"
+          "PROVIDER_DISCORD",
+          "PROVIDER_GOOGLE"
         ],
         "type": "string",
         "description": "Accepted auth providers."
-      },
-      "ProviderLoginPayload": {
-        "type": "object",
-        "properties": {
-          "providerAccountId": {
-            "type": "string",
-            "description": "provider-specific user ID"
-          },
-          "providerType": {
-            "$ref": "#/components/schemas/Provider"
-          },
-          "providerDisplayName": {
-            "type": "string",
-            "description": "provider-specific display name of user"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Bundled data required to log in or create an account using a given provider."
       },
       "ServerConnectionInfo": {
         "type": "object",
@@ -2433,6 +2541,27 @@
             "items": {
               "$ref": "#/components/schemas/Any"
             }
+          }
+        },
+        "additionalProperties": false
+      },
+      "StripePurchaseRequestData": {
+        "type": "object",
+        "properties": {
+          "priceId": {
+            "type": "string",
+            "description": "Stripe-generated unique ID of the pricing plan for the product being purchased"
+          }
+        },
+        "additionalProperties": false,
+        "description": "user functionality"
+      },
+      "StripePurchaseResponseData": {
+        "type": "object",
+        "properties": {
+          "clientSecret": {
+            "type": "string",
+            "description": "used for browser checkout session"
           }
         },
         "additionalProperties": false
