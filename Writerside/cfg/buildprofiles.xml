@@ -7,6 +7,7 @@
         <variables>
             <noindex-content>true</noindex-content>
             <header-logo>SimpleCatenaLogoTwitter.png</header-logo>
+            <versions-switcher>https://raw.githubusercontent.com/CatenaTools/documentation/main/help-versions.json</versions-switcher>
         </variables>
     </build-profile>
 
