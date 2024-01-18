@@ -1,8 +1,8 @@
-# Unity Client SDK
+# Unity SDK
 
 ### Purpose
 
-The Unity Client SDK provides a mechanism for clients to interact with the Catena platform from their games.
+The Unity SDK provides a mechanism for clients (and servers) to interact with the Catena platform from their games.
 
 ### NuGet Package Requirements
 
@@ -19,7 +19,7 @@ The Unity Client SDK provides a mechanism for clients to interact with the Caten
 
 ### Generated Types
 
-The `catena-tools-core` project contains a Buf module that allows for the generation of Protobuf message and enum types for various languages. In the case of the Unity Client SDK, the language is C#.
+The `catena-tools-core` project contains a Buf module that allows for the generation of Protobuf message and enum types for various languages. In the case of the Unity SDK, the language is C#.
 
 To generate these types, run `buf generate` at the root of the project’s directory.
 
@@ -33,7 +33,7 @@ These generated types are used to construct service clients which the `CatenaHtt
 
 ### Service Clients
 
-Each Catena service with at least one publicly facing endpoint will have a corresponding service client in the Unity Client SDK.
+Each Catena service with at least one publicly facing endpoint will have a corresponding service client in the Unity SDK.
 
 The two main purposes of these service clients are to:
 
@@ -48,7 +48,7 @@ We plan to generate them automatically in the future using a Go module and a tem
 
 ### `CatenaHttpClient`
 
-The `CatenaHttpClient` initializes and maintains an instance of each service client in the Unity Client SDK.
+The `CatenaHttpClient` initializes and maintains an instance of each service client in the Unity SDK.
 
 It defines a delegate function `SendHttpRequest` that is passed to each service client upon their initialization to ensure consistency in how we send requests across the board for each of our Catena services. This delegate verifies that requests that should not have a body do indeed not (i.e. GET and DELETE requests) and handles exceptions.
 

@@ -39,7 +39,7 @@
         <!--    Add several topics that are less important or are relevant only for advanced/experienced users.    -->
         <secondary>
             <title>Explore advanced features</title>
-            <a href="Unity-Client-SDK.md"/>
+            <a href="Unity-SDK.md"/>
             <a href="Metadata.md"/>
             <a href="Auth-Flow-Session-Management.md"/>
             <a href=""/>

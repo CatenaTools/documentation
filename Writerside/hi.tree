@@ -28,7 +28,7 @@
     </toc-element>
     <toc-element topic="Concepts.md">
         <toc-element topic="Auth-Flow-Session-Management.md"/>
-        <toc-element topic="Unity-Client-SDK.md"/>
+        <toc-element topic="Unity-SDK.md"/>
         <toc-element topic="Metadata.md"/>
         <toc-element topic="Entities.md"/>
         <toc-element topic="Service-Registration.md">
