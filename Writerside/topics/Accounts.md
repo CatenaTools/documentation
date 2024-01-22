@@ -43,7 +43,7 @@ Create.Table("accounts_providers")
 
 When the `AccountsService` receives a `CreateOrGetAccountFromTokenRequest`, it will use the **provider account ID**, **provider display name**, and **provider type** stored in the `ProviderLoginPayload` in the session store created at login to query the accounts database for the existence of an account that has previously been created with the same provider information.
 
-If such an account exists, the handler for `CreateOrGetAccountFromToken` will return the account in a `CreateOrGetAccountFromTokenResponse` after adding its base-64 encoded representation the the session store for future access by method handlers of subsequent RPCs.
+If such an account exists, the handler for `CreateOrGetAccountFromToken` will return the account in a `CreateOrGetAccountFromTokenResponse` after adding its base-64 encoded representation to the session store for future access by method handlers of subsequent RPCs.
 
 Otherwise, an account with this provider information will be created, being assigned the role of `user` by default, its base-64 representation will similarly be added to the session store, and it will be returned in a `CreateOrGetAccountFromTokenResponse` by the method handler.
 

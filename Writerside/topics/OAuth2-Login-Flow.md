@@ -6,9 +6,9 @@ In this tutorial we will cover implementing a client flow for an OAuth2 Provider
 
 1. Configure and install [Catena Tools](overview.md)
 2. Create a [Discord OAuth Application](https://discord.com/developers/docs/topics/oauth2)
-   3. Take note of your client_id, & client secret
-   4. Set the redirect URL to https://localhost:5001/api/v1/authentication/PROVIDER_DISCORD/callback - This will be handled by [The Authentication Service's Callback Handler](https://github.com/CatenaTools/catena-tools-core/blob/55376240181152d9f81537051041cf8cf73956b2/Protos/api/v1/authentication.proto#L31)
-5. Add Your Discord Information to appsettings.Development.json
+   1. Take note of your client_id, & client secret
+   2. Set the redirect URL to https://localhost:5001/api/v1/authentication/PROVIDER_DISCORD/callback - This will be handled by [The Authentication Service's Callback Handler](https://github.com/CatenaTools/catena-tools-core/blob/55376240181152d9f81537051041cf8cf73956b2/Protos/api/v1/authentication.proto#L31)
+3. Add Your Discord Information to `appsettings.Development.json`
 
 ## Steps
 
@@ -27,7 +27,7 @@ public interface IAuthValidator
 
 **IsOauth2Provider()** - Should return true if this is an oauth provider
 
-**OAuthRedirectUrl(string sessionId)** - The URL that the client should redirect to to perform the authorization flow
+**OAuthRedirectUrl(string sessionId)** - The URL that the client should redirect to while performing the authorization flow.
 
 **Validate()** - Will be called by the Auth service, it should return an `AuthValidatorResponse` if the user successfully logged in or throw an Exception if the user failed to log in.
 

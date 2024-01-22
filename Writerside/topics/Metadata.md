@@ -52,17 +52,17 @@ JSON metadata is a special metadata type that supports a more flexible / expanda
 
 For Catena Accounts and Parties, metadata is stored in a backing database so that it can be retrieved later. The database model looks like:
 
-- Key - string
+- `Key` - string
     - Primary key
     - Used to uniquely identify the metadata entry
-- Id - string
+- `Id` - string
     - Primary key, foreign key
     - This can be party ID, player ID, or account ID
-- Payload_type - int32
+- `Payload_type` - int32
     - Enum that corresponds to `EntityMetadata.PayloadOneofCase` which is used when reconstructing the `EntityMetadata`
-- Int_payload - int64 or long
-- String_payload - string
-- Json_payload - string
+- `Int_payload` - int64 or long
+- `String_payload` - string
+- `Json_payload` - string
 
 # CRUD Operations
 
@@ -191,7 +191,7 @@ Metadata can be added or overwritten (**but not appended**) using the `UpdateAcc
 
 # Parties
 
-Parties are a little bit special in regards to metadata. This is due to the structure of the `Party` object and the `Player` object.
+Parties are a little bit special regarding metadata. This is due to the structure of the `Party` object and the `Player` object.
 
 ```protobuf
 message Party {
@@ -272,7 +272,7 @@ When a player leaves or is kicked from a party, their associated metadata is rem
 
 ## Associating player color to a party member
 
-For this example, assume that players want to have a color associated with them ingame. These colors are supposed to be visible to other party members and will be passed along as part of matchmaking as well. This is a perfect opportunity to use metadata as the information is important to the game but color is not a direct member of either `Player` or `Party`. This color will be represented by three floats in an array. Each float corresponds to a value of either red, green, or blue. If this were represented in a JSON object it might look similar to:
+For this example, assume that players want to have a color associated with them in the game. These colors are supposed to be visible to other party members and will be passed along as part of matchmaking as well. This is a perfect opportunity to use metadata as the information is important to the game but color is not a direct member of either `Player` or `Party`. This color will be represented by three floats in an array. Each float corresponds to a value of either red, green, or blue. If this were represented in a JSON object it might look similar to:
 
 ```json
 {
