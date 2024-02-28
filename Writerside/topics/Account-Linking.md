@@ -1,3 +1,3 @@
-# Account LInking
+# Account Linking
 
 Start typing here...
