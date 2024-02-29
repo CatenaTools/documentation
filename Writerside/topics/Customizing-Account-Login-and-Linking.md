@@ -97,13 +97,30 @@ The example below shows what a user may see if they have linked google and unsaf
 This page must juggle a few session tokens in order to complete the login step. It will do the following:
 
 1. Complete the user's login flow 
-2. Persist the user's login session token in local storage. It must retrieve this from the Next.js backend which maintains the state for the user. This token will be used in the next step.
+2. Persist the user's login session token in local storage. In order to do this, we must retrieve this from the Next.js backend. The backend wraps the user's token in a cookie. This token will be used in the next step.
+
 ```Typescript
-    const jsonData: { account: Account } = await getLoginInfo.json()
+async function CompleteLogin() {
+    // ... code excluded for brevity ...
+    
+    // First request the user's session id using our login info
     const getCatenaSessionID = await fetch(`/api/v1/authentication/session`, {
       credentials: "include",
     })
     const sessionData: { session: string } = await getCatenaSessionID.json()
+    
+    // ... code excluded for brevity ...
+    
+    return { session: sessionData.session}
+}
+  
+useEffect(() => {
+    CompleteLogin().then((data) => {
+        setSession(data.session)
+        // Once we retrieve the session, we can then persist it to local storage
+        localStorage.setItem("OriginalSession", data.session)
+    })
+}
 ```
 3. Allow the user to log in with another provider.
 4. Redirect the user to the final page `/link/step3`

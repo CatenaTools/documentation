@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE terms SYSTEM "https://resources.jetbrains.com/writerside/1.0/glossary.dtd">
+<terms>
+    <term name="session_token">A uuid which references a user's login session, of the form session_[uuidv4].</term>
+    <term name="Provider Login Payload">Used to Authenticate a user with a given provider. Made up of a Provider ID, Provider Type, and other Metadata.</term>
+</terms>
