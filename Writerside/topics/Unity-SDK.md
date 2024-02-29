@@ -1,25 +1,25 @@
-# Unity Client SDK
+# Unity SDK
 
-### Purpose
+## Purpose
 
-The Unity Client SDK provides a mechanism for clients to interact with the Catena platform from their games.
+The Unity SDK provides a mechanism for clients (and servers) to interact with the Catena platform from their games.
 
-### NuGet Package Requirements
+## Integration Process (Quick)
+Just copy the entire `UnitySDK/` directory from `catena-tools-core` into `Assets/Scripts/` directory of the Unity project.
 
-`.dll` files for these dependencies must be added to the Unity project in question.
+For Unity versions **older** than 2020.1 you will need to **remove** `UnitySDK/Plugins/System.Runtime.CompilerServices.Unsafe.dll`. [More information][Unity 2020.1 and protobuf]
 
-**Note that the versions of these packages may differ depending on the client’s version of Unity.**
+## Integration Process (For Custom Development)
 
-| Package | Version |
-| --- | --- |
-| Google.Protobuf | v3.23.2.0 |
-| System.Runtime.CompilerServices.Unsafe | v7.0.22.15202 |
+1. (Re)generate C# types from `.proto` files by running `buf generate` at the root of the `catena-tools-core` repo.
+2. Make any required changes to the service clients.
+3. Copy the entire `UnitySDK/` directory from `catena-tools-core` into `Assets/Scripts/` directory of the Unity project.
 
 ## Design & Structure
 
 ### Generated Types
 
-The `catena-tools-core` project contains a Buf module that allows for the generation of Protobuf message and enum types for various languages. In the case of the Unity Client SDK, the language is C#.
+The `catena-tools-core` project contains a Buf module that allows for the generation of Protobuf message and enum types for various languages. In the case of the Unity SDK, the language is C#.
 
 To generate these types, run `buf generate` at the root of the project’s directory.
 
@@ -33,7 +33,7 @@ These generated types are used to construct service clients which the `CatenaHtt
 
 ### Service Clients
 
-Each Catena service with at least one publicly facing endpoint will have a corresponding service client in the Unity Client SDK.
+Each Catena service with at least one publicly facing endpoint will have a corresponding service client in the Unity SDK.
 
 The two main purposes of these service clients are to:
 
@@ -48,7 +48,7 @@ We plan to generate them automatically in the future using a Go module and a tem
 
 ### `CatenaHttpClient`
 
-The `CatenaHttpClient` initializes and maintains an instance of each service client in the Unity Client SDK.
+The `CatenaHttpClient` initializes and maintains an instance of each service client in the Unity SDK.
 
 It defines a delegate function `SendHttpRequest` that is passed to each service client upon their initialization to ensure consistency in how we send requests across the board for each of our Catena services. This delegate verifies that requests that should not have a body do indeed not (i.e. GET and DELETE requests) and handles exceptions.
 
@@ -96,13 +96,6 @@ Q: What if a client is using a newer version of Unity that supports gRPC?
 
 A: In this case, to take advantage of the performance benefit this would give us, we may choose to modify the Buf module to also generate **client stubs**. These would function similarly to the service clients we have now and the model would become `sending a gRPC request --> receiving a Protobuf response message`.
 
-## Integration Process
-
-1. (Re)generate C# types from `.proto` files by running `buf generate` at the root of the `catena-tools-core` repo.
-2. Make any required changes to the service clients.
-3. Copy the entire `UnitySDK/` directory from `catena-tools-core` into `Assets/Scripts/` directory of the Unity project.
-4. Add a folder called `Plugins` to the `UnitySDK` folder and add `.dll` files for any required NuGet packages here.
-
 ```csharp
 // Parse the color from the player's json value
 JObject test = player.Value.Value<JObject>();
@@ -113,3 +106,5 @@ if (test != null && test.TryGetValue("player-color", out JToken value))
     _playerColorDict.Add(player.Key, playerColor);
 }
 ```
+
+[Unity 2020.1 and protobuf]: https://github.com/protocolbuffers/protobuf/issues/9618#issuecomment-1185348928

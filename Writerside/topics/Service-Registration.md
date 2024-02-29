@@ -6,7 +6,7 @@ A simple registration system for users to create new Catena services and for us 
 
 ## Problem
 
-Current service registration process is difficult and cumbersome. Additionally it can be unclear to the user how to setup a logger or register their services for use in Catena.
+Current service registration process is difficult and cumbersome. Additionally, it can be unclear to the user how to setup a logger or register their services for use in Catena.
 
 ## Design Overview & Scope
 
@@ -18,7 +18,7 @@ Users can add Routes via GRPC modifications and they will be picked up automatic
 
 ### CatenaService
 
-Below is the CatenaService interface, all services must implement this interface. For now the only relavent field is the ServiceName which is the name of the argument that the user must pass to start that service. Eventually this will also contain helper functions.
+Below is the CatenaService interface, all services must implement this interface. For now the only relevant field is the ServiceName which is the name of the argument that the user must pass to start that service. Eventually this will also contain helper functions.
 
 ```csharp
 public interface ICatenaService
@@ -88,7 +88,7 @@ public class GroupsService : Groups.GroupsBase, ICatenaServiceWithDatabase<Entit
 - CatenaService - One GRPC service in the Catena network, for example `Accounts` or `Auth`
 - Service Registration and Routing
     - User Configures one or many Catena Nodes with some number of services
-    - The `CatenaNode` registers with the service mesh what `CatenaServices` it is running as well as what `CatenaRoutingPolicies` they support. The `CatenaNode` also handles healthchecks and metrics for the service mesh.
+    - The `CatenaNode` registers with the service mesh what `CatenaServices` it is running as well as what `CatenaRoutingPolicies` they support. The `CatenaNode` also handles health checks and metrics for the service mesh.
         - `CatenaService` has a name and unique id
         - `CatenaRoutingPolicy` can be one of
             - `All` - Requests broadcast to all instance of a service

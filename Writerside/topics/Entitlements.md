@@ -8,7 +8,7 @@ Each entitlement also has one or more `entitlement_granting_purchases` associate
 
 Each `entitlement_granting_purchase` specifies a product that a user can purchase from one of our supported In-App Purchase (IAP) stores that will grant them the entitlement.
 
-As such, an `entitlement_granting_purchase` is comprised of an `entitlement_granting_purchase_id`, an `iap_store`, an `external_product_id`, and an `entitlement_id`.
+As such, an `entitlement_granting_purchase` is composed of an `entitlement_granting_purchase_id`, an `iap_store`, an `external_product_id`, and an `entitlement_id`.
 
 If a user purchases the product uniquely identified in `iap_store` by `external_product_id`, they are then granted the entitlement uniquely identified by `entitlement_id`.
 
@@ -275,7 +275,7 @@ Those with an `incomplete` or a `past_due` status are deemed invalid.
 
 `*past_due` - a subsequent invoice is not paid by its due date*
 
-Those with an `incomplete_expired`, a `canceled`, or an `unpaid` status are deemed invalid and are considered by Stripe to be in a “terminal state” meaning that a user will have to complete the purchase process for this product again to be regranted the purchase’s corresponding entitlements.
+Those with an `incomplete_expired`, a `canceled`, or an `unpaid` status are deemed invalid and are considered by Stripe to be in a “terminal state” meaning that a user will have to complete the purchase process for this product again to be granted the purchase’s corresponding entitlements again.
 
 **Note:**
 
