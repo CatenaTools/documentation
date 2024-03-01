@@ -8,14 +8,14 @@
     "/api/v1/accounts": {
       "post": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
         "summary": "CreateOrGetAccountFromToken",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrGetAccountFromTokenRequest"
+                "$ref": "#/components/schemas/Services.CatenaAccounts.CreateOrGetAccountFromTokenRequest"
               }
             }
           }
@@ -26,7 +26,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateOrGetAccountFromTokenResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.CreateOrGetAccountFromTokenResponse"
                 }
               }
             }
@@ -36,44 +36,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "UpdateAccount Updates a passed in account's display_name and metadata",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAccountRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateAccountResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -84,9 +47,9 @@
     "/api/v1/accounts/{accountId}": {
       "get": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
-        "summary": "GetAccountById",
+        "summary": "GetAccountByID Retrieves information about the account given an id. This route is to be used by users",
         "parameters": [
           {
             "name": "accountId",
@@ -103,7 +66,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetAccountByIdResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.GetAccountByIdResponse"
                 }
               }
             }
@@ -113,7 +76,95 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "summary": "UpdateAccount Updates a passed in account's display_name and metadata",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "The id of the account to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.UpdateAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.UpdateAccountResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/accounts/{accountId}": {
+      "get": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "summary": "AdminGetAccountById is to be used by admins to retrieve detailed account information",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.GetAccountByIdResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -124,14 +175,14 @@
     "/api/v1/accounts/link": {
       "post": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
         "summary": "LinkAccountToProvider",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkAccountToProviderRequest"
+                "$ref": "#/components/schemas/Services.CatenaAccounts.LinkAccountToProviderRequest"
               }
             }
           }
@@ -142,7 +193,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LinkAccountToProviderResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.LinkAccountToProviderResponse"
                 }
               }
             }
@@ -152,7 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -163,14 +214,14 @@
     "/api/v1/accounts/metadata": {
       "post": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
         "summary": "CreateMetadataEntry Creates a metadata entry for an account",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateMetadataEntryRequest"
+                "$ref": "#/components/schemas/Services.CatenaAccounts.CreateMetadataEntryRequest"
               }
             }
           }
@@ -181,7 +232,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.CreateMetadataEntryResponse"
                 }
               }
             }
@@ -191,7 +242,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -200,14 +251,14 @@
       },
       "put": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
         "summary": "UpdateMetadataEntry Updates a passed in account's metadata for a specific entry",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateMetadataEntryRequest"
+                "$ref": "#/components/schemas/Services.CatenaAccounts.UpdateMetadataEntryRequest"
               }
             }
           }
@@ -218,7 +269,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.UpdateMetadataEntryResponse"
                 }
               }
             }
@@ -228,7 +279,44 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "summary": "GetMetadataEntries Gets all metadata entries for a passed in account id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.GetMetadataEntriesResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -236,15 +324,15 @@
         }
       }
     },
-    "/api/v1/accounts/metadata/{id}/{entryKey}": {
+    "/api/v1/accounts/metadata/{entryKey}": {
       "delete": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
         "summary": "DeleteMetadataEntry Deletes a metadata entry for an account",
         "parameters": [
           {
-            "name": "id",
+            "name": "entryKey",
             "in": "path",
             "required": true,
             "schema": {
@@ -252,10 +340,8 @@
             }
           },
           {
-            "name": "entryKey",
-            "in": "path",
-            "description": "The key in the metadata whose entry needs to be deleted",
-            "required": true,
+            "name": "accountId",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -264,7 +350,7 @@
             "name": "jsonHandlingType",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/DeleteJsonMetadataType"
+              "$ref": "#/components/schemas/Catena.Groups.DeleteJsonMetadataType"
             }
           },
           {
@@ -284,7 +370,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.DeleteMetadataEntryResponse"
                 }
               }
             }
@@ -294,7 +380,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -303,18 +389,10 @@
       },
       "get": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
         "summary": "GetMetadataEntry Gets a metadata entry for a passed in key",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "entryKey",
             "in": "path",
@@ -322,43 +400,10 @@
             "schema": {
               "type": "string"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetMetadataEntryResponse"
-                }
-              }
-            }
           },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Status"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/accounts/metadata/{id}": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "GetMetadataEntries Gets all metadata entries for a passed in account id",
-        "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "accountId",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -370,7 +415,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetadataEntriesResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.GetMetadataEntryResponse"
                 }
               }
             }
@@ -380,7 +425,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -391,16 +436,16 @@
     "/api/v1/accounts/healthz": {
       "get": {
         "tags": [
-          "Accounts"
+          "CatenaAccounts"
         ],
-        "summary": "GetServiceHealth Gets the health of the Accounts service, logging any errors",
+        "summary": "GetServiceHealth Gets the health of the CatenaAccounts service, logging any errors",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                  "$ref": "#/components/schemas/Catena.Core.GetServiceHealthResponse"
                 }
               }
             }
@@ -410,7 +455,227 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/accounts": {
+      "post": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.CreateAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.CreateAccountResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.DeleteAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.DeleteAccountResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/accounts/metadata": {
+      "post": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.CreateMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.CreateMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.UpdateMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.UpdateMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.DeleteMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.DeleteMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "CatenaAccounts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAccounts.GetMetadataEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAccounts.GetMetadataEntryResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -421,14 +686,14 @@
     "/api/v1/authentication/login": {
       "post": {
         "tags": [
-          "Authentication"
+          "CatenaAuthentication"
         ],
         "summary": "LoginWithProvider Logs in a user with the given provider.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginWithProviderRequest"
+                "$ref": "#/components/schemas/Services.CatenaAuthentication.LoginWithProviderRequest"
               }
             }
           }
@@ -439,7 +704,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginWithProviderResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.LoginWithProviderResponse"
                 }
               }
             }
@@ -449,7 +714,202 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/providers": {
+      "get": {
+        "tags": [
+          "CatenaAuthentication"
+        ],
+        "summary": "GetEnabledProviders returns a list of all active OAuth providers.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.GetEnabledProvidersResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/authentication/providers/{provider}": {
+      "patch": {
+        "tags": [
+          "CatenaAuthentication"
+        ],
+        "summary": "AdminUpdateProviderConfig allows an admin to update the configuration of a specific provider",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAuthentication.AdminAddOrUpdateProviderConfigRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.AdminAddOrUpdateProviderConfigResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "CatenaAuthentication"
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.AdminGetProviderConfigResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/authentication/providers/{provider}/status": {
+      "put": {
+        "tags": [
+          "CatenaAuthentication"
+        ],
+        "summary": "AdminToggleProvider allows an admin to enable/disable a specific OAuth2 provider",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaAuthentication.AdminToggleProviderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.AdminToggleProviderResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/await": {
+      "get": {
+        "tags": [
+          "CatenaAuthentication"
+        ],
+        "summary": "AwaitSession will send a message if the user successfully logs in or fails to log in after a timeout.\r\nIn this flow you will log in & go through the oauth flow, then wait for the callback to be called.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.AwaitSessionResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -460,16 +920,16 @@
     "/api/v1/authentication/healthz": {
       "get": {
         "tags": [
-          "Authentication"
+          "CatenaAuthentication"
         ],
-        "summary": "GetServiceHealth Gets the health of the Authentication service, logging any errors",
+        "summary": "GetServiceHealth Gets the health of the CatenaAuthentication service, logging any errors",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                  "$ref": "#/components/schemas/Catena.Core.GetServiceHealthResponse"
                 }
               }
             }
@@ -479,7 +939,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -487,28 +947,18 @@
         }
       }
     },
-    "/api/v1/capacity/allocate": {
+    "/api/v1/authentication/logout": {
       "post": {
         "tags": [
-          "CatenaServerCapacity"
+          "CatenaAuthentication"
         ],
-        "summary": "AllocateServerRequest asks the capacity service for the connection details to the next free server",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AllocateServerRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AllocateServerResponse"
+                  "$ref": "#/components/schemas/Services.CatenaAuthentication.LogoutResponse"
                 }
               }
             }
@@ -518,46 +968,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/capacity/deallocate": {
-      "post": {
-        "tags": [
-          "CatenaServerCapacity"
-        ],
-        "summary": "DeAllocateServerRequest asks the capacity service to free up the server for other use",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeAllocateServerRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeAllocateServerResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -568,14 +979,14 @@
     "/api/v1/entitlements": {
       "post": {
         "tags": [
-          "Entitlements"
+          "CatenaEntitlements"
         ],
-        "summary": "AdminCreateEntitlement",
+        "summary": "AdminCreateEntitlement Creates a new entitlement in our system with the specified information.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AdminCreateEntitlementRequest"
+                "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminCreateEntitlementRequest"
               }
             }
           }
@@ -586,7 +997,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminCreateEntitlementResponse"
+                  "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminCreateEntitlementResponse"
                 }
               }
             }
@@ -596,7 +1007,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -605,14 +1016,14 @@
       },
       "put": {
         "tags": [
-          "Entitlements"
+          "CatenaEntitlements"
         ],
-        "summary": "TODO: impl. once we have entitlement --> account associations established\r\nrpc AdminDeleteAndRevokeEntitlement (AdminDeleteAndRevokeEntitlementRequest) returns (AdminDeleteAndRevokeEntitlementResponse);\r\nAdminUpdtateEntitlement",
+        "summary": "AdminUpdtateEntitlement Updates the name, description, and/or the entitlement granting purchases of an existing entitlement.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AdminUpdateEntitlementRequest"
+                "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminUpdateEntitlementRequest"
               }
             }
           }
@@ -623,7 +1034,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminUpdateEntitlementResponse"
+                  "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminUpdateEntitlementResponse"
                 }
               }
             }
@@ -633,7 +1044,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -642,16 +1053,16 @@
       },
       "get": {
         "tags": [
-          "Entitlements"
+          "CatenaEntitlements"
         ],
-        "summary": "AdminGetAllEntitlements",
+        "summary": "AdminGetAllEntitlements Fetches all existing entitlements in our system.",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminGetEntitlementsResponse"
+                  "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminGetEntitlementsResponse"
                 }
               }
             }
@@ -661,7 +1072,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -672,9 +1083,9 @@
     "/api/v1/entitlements/{entitlementId}": {
       "delete": {
         "tags": [
-          "Entitlements"
+          "CatenaEntitlements"
         ],
-        "summary": "AdminDeleteEntitlement",
+        "summary": "AdminDeleteEntitlement Deletes the specified entitlement from our system and revokes it from all users to whom it has previously been granted.",
         "parameters": [
           {
             "name": "entitlementId",
@@ -691,7 +1102,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminDeleteEntitlementResponse"
+                  "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminDeleteAndRevokeEntitlementResponse"
                 }
               }
             }
@@ -701,7 +1112,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -712,9 +1123,9 @@
     "/api/v1/entitlements/{approxEntitlementName}": {
       "get": {
         "tags": [
-          "Entitlements"
+          "CatenaEntitlements"
         ],
-        "summary": "AdminGetEntitlementsByApproxName should only be called when an admin clicks a search button so we are not making a request with each character typed into a search bar",
+        "summary": "AdminGetEntitlementsByApproxName Fetches all entitlements whose name contains the specified keyword or a single entitlement if an exact name is provided. \r\nThis should only be called when an admin clicks a search button so we are not \r\nmaking a request with each character typed into a search bar.",
         "parameters": [
           {
             "name": "approxEntitlementName",
@@ -731,7 +1142,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminGetEntitlementsResponse"
+                  "$ref": "#/components/schemas/Services.CatenaEntitlements.AdminGetEntitlementsResponse"
                 }
               }
             }
@@ -741,7 +1152,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -749,47 +1160,17 @@
         }
       }
     },
-    "/api/v1/events/subscribe": {
-      "get": {
-        "tags": [
-          "Events"
-        ],
-        "summary": "SubscribeToEvents",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubscribeToEventsResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Status"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/events/emit": {
+    "/api/v1/entitlements/purchase": {
       "post": {
         "tags": [
-          "Events"
+          "CatenaEntitlements"
         ],
-        "summary": "EmitUpdateEvent",
+        "summary": "Allows an account to purchase a product from a supported IAP store.\r\nThis purchase can either be a one-time purchase that the account is billed for once\r\nor a subscription purchase that the account is billed for on a recurring basis.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EmitUpdateEventRequest"
+                "$ref": "#/components/schemas/Services.CatenaEntitlements.CreateIAPStorePurchaseRequest"
               }
             }
           }
@@ -800,7 +1181,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmitUpdateEventResponse"
+                  "$ref": "#/components/schemas/Services.CatenaEntitlements.CreateIAPStorePurchaseResponse"
                 }
               }
             }
@@ -810,7 +1191,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -821,14 +1202,14 @@
     "/api/v1/matchmaking/start": {
       "post": {
         "tags": [
-          "Matchmaking"
+          "CatenaMatchmaking"
         ],
         "summary": "StartMatchmaking",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StartMatchmakingRequest"
+                "$ref": "#/components/schemas/Services.CatenaMatchmaking.StartMatchmakingRequest"
               }
             }
           }
@@ -839,7 +1220,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StartMatchmakingResponse"
+                  "$ref": "#/components/schemas/Services.CatenaMatchmaking.StartMatchmakingResponse"
                 }
               }
             }
@@ -849,7 +1230,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -860,14 +1241,14 @@
     "/api/v1/matchmaking/cancel": {
       "post": {
         "tags": [
-          "Matchmaking"
+          "CatenaMatchmaking"
         ],
         "summary": "CancelMatchmaking",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CancelMatchmakingRequest"
+                "$ref": "#/components/schemas/Services.CatenaMatchmaking.CancelMatchmakingRequest"
               }
             }
           }
@@ -878,7 +1259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CancelMatchmakingResponse"
+                  "$ref": "#/components/schemas/Services.CatenaMatchmaking.CancelMatchmakingResponse"
                 }
               }
             }
@@ -888,7 +1269,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -899,7 +1280,7 @@
     "/api/v1/matchmaking/{ticketId}": {
       "get": {
         "tags": [
-          "Matchmaking"
+          "CatenaMatchmaking"
         ],
         "summary": "GetMatchmakingStatus",
         "parameters": [
@@ -919,7 +1300,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMatchmakingStatusResponse"
+                  "$ref": "#/components/schemas/Services.CatenaMatchmaking.GetMatchmakingStatusResponse"
                 }
               }
             }
@@ -929,7 +1310,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -940,7 +1321,7 @@
     "/api/v1/matchmaking/healthz": {
       "get": {
         "tags": [
-          "Matchmaking"
+          "CatenaMatchmaking"
         ],
         "summary": "GetServiceHealth",
         "responses": {
@@ -949,7 +1330,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                  "$ref": "#/components/schemas/Catena.Core.GetServiceHealthResponse"
                 }
               }
             }
@@ -959,7 +1340,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -970,14 +1351,14 @@
     "/api/v1/parties/create": {
       "post": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "CreateParty Creates a new party setting the player who requested its creation as its leader.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePartyRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.CreatePartyRequest"
               }
             }
           }
@@ -988,7 +1369,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreatePartyResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.CreatePartyResponse"
                 }
               }
             }
@@ -998,7 +1379,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1007,16 +1388,16 @@
       }
     },
     "/api/v1/parties/update-player": {
-      "put": {
+      "patch": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "Note: Append operations are not currently supported when updating metadata with this method",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePartyPlayerRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.UpdatePartyPlayerRequest"
               }
             }
           }
@@ -1027,7 +1408,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdatePartyPlayerResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.UpdatePartyPlayerResponse"
                 }
               }
             }
@@ -1037,7 +1418,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1048,14 +1429,14 @@
     "/api/v1/parties/join": {
       "post": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "JoinPartyWithInviteCode Allows a player to join a party by specifying its invite code.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/JoinPartyWithInviteCodeRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.JoinPartyWithInviteCodeRequest"
               }
             }
           }
@@ -1066,7 +1447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JoinPartyWithInviteCodeResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.JoinPartyWithInviteCodeResponse"
                 }
               }
             }
@@ -1076,7 +1457,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1087,7 +1468,7 @@
     "/api/v1/parties": {
       "get": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "GetPartyInfo Fetches party information for the party that the requesting player is currently a member of.",
         "responses": {
@@ -1096,7 +1477,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPartyInfoResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.GetPartyInfoResponse"
                 }
               }
             }
@@ -1106,7 +1487,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1117,7 +1498,7 @@
     "/api/v1/parties/{partyId}": {
       "get": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "GetPartyInfoByPartyId Fetches information for a party given a party ID.",
         "parameters": [
@@ -1136,7 +1517,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPartyInfoResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.GetPartyInfoResponse"
                 }
               }
             }
@@ -1146,7 +1527,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1157,7 +1538,7 @@
     "/api/v1/parties/{playerId}": {
       "get": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "GetPlayerInfoById Fetches information for a player in a party given an ID.",
         "parameters": [
@@ -1176,7 +1557,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPlayerInfoByIdResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.GetPlayerInfoByIdResponse"
                 }
               }
             }
@@ -1186,7 +1567,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1197,14 +1578,14 @@
     "/api/v1/parties/set-leader": {
       "put": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "SetPartyLeader Allows the current leader of a party to set a new leader.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SetPartyLeaderRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.SetPartyLeaderRequest"
               }
             }
           }
@@ -1215,7 +1596,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SetPartyLeaderResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.SetPartyLeaderResponse"
                 }
               }
             }
@@ -1225,7 +1606,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1236,14 +1617,14 @@
     "/api/v1/parties/kick": {
       "put": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "KickFromParty Allows the leader of a party to kick another player from their party.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/KickFromPartyRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.KickFromPartyRequest"
               }
             }
           }
@@ -1254,7 +1635,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/KickFromPartyResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.KickFromPartyResponse"
                 }
               }
             }
@@ -1264,7 +1645,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1275,14 +1656,14 @@
     "/api/v1/parties/leave": {
       "put": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "LeaveParty Allows a player to leave their party and assigns a new leader if the leader leaves.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeavePartyRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.LeavePartyRequest"
               }
             }
           }
@@ -1293,7 +1674,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LeavePartyResponse"
+                  "$ref": "#/components/schemas/Services.CatenaParties.LeavePartyResponse"
                 }
               }
             }
@@ -1303,7 +1684,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1314,14 +1695,14 @@
     "/api/v1/parties/metadata": {
       "post": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "CreateMetadataEntry Creates a metadata entry for a party",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePartyMetadataEntryRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.CreatePartyMetadataEntryRequest"
               }
             }
           }
@@ -1332,7 +1713,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Catena.Groups.CreateMetadataEntryResponse"
                 }
               }
             }
@@ -1342,7 +1723,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1351,14 +1732,14 @@
       },
       "put": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "UpdateMetadataEntry Updates a passed in party's metadata for a specific entry",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePartyMetadataEntryRequest"
+                "$ref": "#/components/schemas/Services.CatenaParties.UpdatePartyMetadataEntryRequest"
               }
             }
           }
@@ -1369,7 +1750,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Catena.Groups.UpdateMetadataEntryResponse"
                 }
               }
             }
@@ -1379,7 +1760,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1390,7 +1771,7 @@
     "/api/v1/parties/metadata/{innerRequest.id}/{innerRequest.entryKey}": {
       "delete": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "DeleteMetadataEntry Deletes a metadata entry for a party",
         "parameters": [
@@ -1415,7 +1796,7 @@
             "name": "innerRequest.jsonHandlingType",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/DeleteJsonMetadataType"
+              "$ref": "#/components/schemas/Catena.Groups.DeleteJsonMetadataType"
             }
           },
           {
@@ -1442,7 +1823,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Catena.Groups.DeleteMetadataEntryResponse"
                 }
               }
             }
@@ -1452,7 +1833,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1461,7 +1842,7 @@
       },
       "get": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "GetMetadataEntry Gets a metadata entry for a passed in key",
         "parameters": [
@@ -1495,7 +1876,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetadataEntryResponse"
+                  "$ref": "#/components/schemas/Catena.Groups.GetMetadataEntryResponse"
                 }
               }
             }
@@ -1505,7 +1886,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1516,7 +1897,7 @@
     "/api/v1/parties/metadata/{innerRequest.id}": {
       "get": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "GetMetadataEntries Gets all metadata entries for a passed in party id",
         "parameters": [
@@ -1542,7 +1923,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetadataEntriesResponse"
+                  "$ref": "#/components/schemas/Catena.Groups.GetMetadataEntriesResponse"
                 }
               }
             }
@@ -1552,7 +1933,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1563,7 +1944,7 @@
     "/api/v1/parties/healthz": {
       "get": {
         "tags": [
-          "Parties"
+          "CatenaParties"
         ],
         "summary": "GetServiceHealth",
         "responses": {
@@ -1572,7 +1953,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetServiceHealthResponse"
+                  "$ref": "#/components/schemas/Catena.Core.GetServiceHealthResponse"
                 }
               }
             }
@@ -1582,7 +1963,594 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Status"
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/capacity/allocate": {
+      "post": {
+        "tags": [
+          "CatenaServerCapacity"
+        ],
+        "summary": "AllocateServerRequest asks the capacity service for the connection details to the next free server",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Catena.Capacity.AllocateServerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catena.Capacity.AllocateServerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/capacity/deallocate": {
+      "post": {
+        "tags": [
+          "CatenaServerCapacity"
+        ],
+        "summary": "DeAllocateServerRequest asks the capacity service to free up the server for other use",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Catena.Capacity.DeAllocateServerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catena.Capacity.DeAllocateServerResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions": {
+      "get": {
+        "tags": [
+          "CatenaSessions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaSessions.ListSessionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/healthz": {
+      "get": {
+        "tags": [
+          "CatenaSessions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catena.Core.GetServiceHealthResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/generate_presigned_url": {
+      "post": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "GeneratePresignedUrl Generates a presigned S3 URL for a given object key",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.GeneratePresignedUrlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.GeneratePresignedUrlResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/generate_presigned_url_from_uri": {
+      "post": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "GeneratePresignedUrlFromUri Generates a presigned URL for a given URL",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.GeneratePresignedUrlFromUriRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.GeneratePresignedUrlFromUriResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/titles": {
+      "get": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "GetTitles Returns a list of game titles that are supported via this instance of Catena",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.GetTitlesResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/titles/{titleId}/manifest": {
+      "get": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "GetTitleManifest Returns a manifest for releases and patches that are required to play the game",
+        "parameters": [
+          {
+            "name": "titleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.GetTitleManifestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/create": {
+      "post": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "AdminCreateTitle Creates a game title",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.AdminCreateTitleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.AdminCreateTitleResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/update": {
+      "put": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "AdminUpdateTitle Updates a game title",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.AdminUpdateTitleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.AdminUpdateTitleResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/delete": {
+      "delete": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "AdminDeleteTitle Deletes a game title",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.AdminDeleteTitleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.AdminDeleteTitleResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/create_title_release": {
+      "post": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "AdminCreateTitleRelease Creates a game title release",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.AdminCreateTitleReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.AdminCreateTitleReleaseResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/update_title_release": {
+      "put": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "AdminUpdateTitleRelease Updates a game title release",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.AdminUpdateTitleReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.AdminUpdateTitleReleaseResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/titles/delete_title_release": {
+      "delete": {
+        "tags": [
+          "CatenaTitles"
+        ],
+        "summary": "AdminDeleteTitleRelease Deletes a game title release",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Services.CatenaTitles.AdminDeleteTitleReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Services.CatenaTitles.AdminDeleteTitleReleaseResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events/subscribe": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "SubscribeToEvents",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catena.Events.SubscribeToEventsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/events/emit": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "EmitUpdateEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Catena.Events.EmitUpdateEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catena.Events.EmitUpdateEventResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Google.Rpc.Status"
                 }
               }
             }
@@ -1593,7 +2561,362 @@
   },
   "components": {
     "schemas": {
-      "Account": {
+      "Catena.Capacity.AllocateServerRequest": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "description": "a generic string to associate allocation requests with eachother"
+          },
+          "profileId": {
+            "type": "string",
+            "description": "the id of the profile to launch"
+          },
+          "matchId": {
+            "type": "string",
+            "description": "The ID of the match to be assigned to this server"
+          },
+          "matchData": {
+            "$ref": "#/components/schemas/Catena.Groups.Entity"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Capacity.AllocateServerResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Catena.Capacity.AllocateServerStatus"
+          },
+          "message": {
+            "type": "string"
+          },
+          "connectionInfo": {
+            "$ref": "#/components/schemas/Catena.Capacity.ServerConnectionInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Capacity.AllocateServerStatus": {
+        "enum": [
+          "ALLOCATE_SERVER_STATUS_UNSPECIFIED",
+          "ALLOCATE_SERVER_STATUS_SUCCESS",
+          "ALLOCATE_SERVER_STATUS_FAILURE",
+          "ALLOCATE_SERVER_STATUS_PENDING"
+        ],
+        "type": "string"
+      },
+      "Catena.Capacity.DeAllocateServerRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Catena.Capacity.DeAllocateServerResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Catena.Capacity.ServerConnectionInfo": {
+        "type": "object",
+        "properties": {
+          "ip": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Core.GetServiceHealthResponse": {
+        "type": "object",
+        "properties": {
+          "healthy": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Events.EmitUpdateEventRequest": {
+        "type": "object",
+        "properties": {
+          "nestedEvent": {
+            "$ref": "#/components/schemas/Catena.Events.Event"
+          },
+          "recipientIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventTags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Events.EmitUpdateEventResponse": {
+        "type": "object",
+        "properties": {
+          "broadcastSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Events.EmptyEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "EmptyEvent is used to send pings through the event service, eg to get around bugs where a stream is not opened until the first request comes through, or to do a heartbeat"
+      },
+      "Catena.Events.Event": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "recipientId": {
+            "type": "string"
+          },
+          "anyEvent": {
+            "$ref": "#/components/schemas/Google.Protobuf.WellKnownTypes.Any"
+          },
+          "partyUpdateEvent": {
+            "$ref": "#/components/schemas/Services.CatenaParties.PartyUpdateEvent"
+          },
+          "matchmakingStatusUpdateEvent": {
+            "$ref": "#/components/schemas/Services.CatenaMatchmaking.MatchmakingStatusUpdateEvent"
+          },
+          "emptyEvent": {
+            "$ref": "#/components/schemas/Catena.Events.EmptyEvent"
+          },
+          "authenticationEvent": {
+            "$ref": "#/components/schemas/Services.CatenaAuthentication.AuthenticationEvent"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Events.SubscribeToEventsResponse": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "$ref": "#/components/schemas/Catena.Events.Event"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.CreateMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string",
+            "description": "The key in the metadata to be added"
+          },
+          "entryValue": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.CreateMetadataEntryResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Catena.Groups.DeleteJsonMetadataType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "description": "If you are deleting a json, can choose whether to delete the entire entry or a partial part of an entry\r\nCurrently, only whole property removal is supported.\r\nRemoval of elements in a json array (e.g. trying to remove \"value\" from json {\"array\":[\"value\",\"value2\"]})\r\nis not currently supported by DeleteMetadataEntryRequest.",
+        "format": "int32"
+      },
+      "Catena.Groups.DeleteMetadataEntryResponse": {
+        "type": "object",
+        "properties": {
+          "entryDeleted": {
+            "type": "boolean",
+            "description": "If the entry was found in the database and deleted"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.Entity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "entityType": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityType"
+          },
+          "entities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Catena.Groups.Entity"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "We rely on the entity type for storing data about a user in the session token, this is crucial to enable"
+      },
+      "Catena.Groups.EntityMetadata": {
+        "type": "object",
+        "properties": {
+          "stringPayload": {
+            "type": "string"
+          },
+          "intPayload": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jsonPayload": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.EntityType": {
+        "enum": [
+          "ENTITY_TYPE_UNSPECIFIED",
+          "ENTITY_TYPE_GENERIC",
+          "ENTITY_TYPE_ACCOUNT",
+          "ENTITY_TYPE_GROUP",
+          "ENTITY_TYPE_MATCH"
+        ],
+        "type": "string",
+        "description": "Entities"
+      },
+      "Catena.Groups.GetMetadataEntriesResponse": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.GetMetadataEntryResponse": {
+        "type": "object",
+        "properties": {
+          "entryValue": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.MetadataEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Simple message containing a metadata key-value pair so that a metadata entry can be sent in update events"
+      },
+      "Catena.Groups.MetadataMap": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": "Simple message containing a metadata map so that metadata entries can be sent in update events (maps are by default not supported in oneof)"
+      },
+      "Catena.Groups.UpdateMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string",
+            "description": "The key in the metadata whose entry needs to be changed"
+          },
+          "entryValue": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          },
+          "updateOperationType": {
+            "$ref": "#/components/schemas/Catena.Groups.UpdateMetadataOperationType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Catena.Groups.UpdateMetadataEntryResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Catena.Groups.UpdateMetadataOperationType": {
+        "enum": [
+          "OVERWRITE",
+          "APPEND"
+        ],
+        "type": "string",
+        "description": "When updating a metadata entry, the entry can either be overwritten (supported by all types) or appended (supported by string and json)"
+      },
+      "Google.Protobuf.WellKnownTypes.Any": {
+        "required": [
+          "@type"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": { }
+      },
+      "Google.Rpc.Status": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Google.Protobuf.WellKnownTypes.Any"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.Account": {
         "type": "object",
         "properties": {
           "id": {
@@ -1611,15 +2934,347 @@
           "metadata": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
             },
             "description": "Metadata associated with the account"
+          },
+          "providers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+            },
+            "description": "List of providers that this account is linked to"
           }
         },
         "additionalProperties": false,
         "description": "Bundled data that describes an account and its metadata."
       },
-      "AdminCreateEntitlementRequest": {
+      "Services.CatenaAccounts.CreateAccountRequest": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.CreateAccountResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Services.CatenaAccounts.Account"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.CreateMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string"
+          },
+          "entryValue": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.CreateMetadataEntryResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.CreateOrGetAccountFromTokenRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.CreateOrGetAccountFromTokenResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Services.CatenaAccounts.Account"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.DeleteAccountRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.DeleteAccountResponse": {
+        "type": "object",
+        "properties": {
+          "accountDeleted": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.DeleteMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string"
+          },
+          "jsonHandlingType": {
+            "$ref": "#/components/schemas/Catena.Groups.DeleteJsonMetadataType"
+          },
+          "propertiesToRemovePaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.DeleteMetadataEntryResponse": {
+        "type": "object",
+        "properties": {
+          "entryDeleted": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.GetAccountByIdResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Services.CatenaAccounts.Account"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.GetMetadataEntriesResponse": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.GetMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.GetMetadataEntryResponse": {
+        "type": "object",
+        "properties": {
+          "entryValue": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.LinkAccountToProviderRequest": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "The session id to link into the currently logged in session id"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.LinkAccountToProviderResponse": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Services.CatenaAccounts.Account"
+          },
+          "accountLinked": {
+            "type": "boolean",
+            "description": "indicator of success of linking existing account to new auth provider"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.UpdateAccountRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "The id of the account to update"
+          },
+          "account": {
+            "$ref": "#/components/schemas/Services.CatenaAccounts.Account"
+          },
+          "accountMask": {
+            "type": "string"
+          },
+          "metadataDeletionKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of metadata keys to delete"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.UpdateAccountResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.UpdateMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "entryKey": {
+            "type": "string"
+          },
+          "entryValue": {
+            "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+          },
+          "updateOperationType": {
+            "$ref": "#/components/schemas/Catena.Groups.UpdateMetadataOperationType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAccounts.UpdateMetadataEntryResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AdminAddOrUpdateProviderConfigRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+          },
+          "providerConfig": {
+            "$ref": "#/components/schemas/Services.PublicCommon.ProviderConfig"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AdminAddOrUpdateProviderConfigResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AdminGetProviderConfigResponse": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+          },
+          "providerConfig": {
+            "$ref": "#/components/schemas/Services.PublicCommon.ProviderConfig"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AdminToggleProviderRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+          },
+          "isEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AdminToggleProviderResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AuthenticationEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/Services.CatenaAuthentication.AuthenticationUpdateType"
+          },
+          "accountId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.AuthenticationUpdateType": {
+        "enum": [
+          "LOGOUT"
+        ],
+        "type": "string"
+      },
+      "Services.CatenaAuthentication.AwaitSessionResponse": {
+        "type": "object",
+        "properties": {
+          "successfulAuth": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.GetEnabledProvidersResponse": {
+        "type": "object",
+        "properties": {
+          "enabledProviders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.LoginWithProviderRequest": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "$ref": "#/components/schemas/Services.PublicCommon.Provider"
+          },
+          "payload": {
+            "type": "string",
+            "description": "provider-specific auth token (username for unsafe provider)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.LoginWithProviderResponse": {
+        "type": "object",
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "description": "redirect URI to send the user to if we are dealing with an oauth provider"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaAuthentication.LogoutResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaEntitlements.AdminCreateEntitlementRequest": {
         "type": "object",
         "properties": {
           "entitlementName": {
@@ -1631,260 +3286,72 @@
           "entitlementGrantingPurchases": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/EntitlementGrantingPurchase"
+              "$ref": "#/components/schemas/Services.CatenaEntitlements.EntitlementGrantingPurchase"
             }
           }
         },
         "additionalProperties": false,
-        "description": "req, res messages"
+        "description": "admin functionality"
       },
-      "AdminCreateEntitlementResponse": {
+      "Services.CatenaEntitlements.AdminCreateEntitlementResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        },
         "additionalProperties": false
       },
-      "AdminDeleteEntitlementResponse": {
+      "Services.CatenaEntitlements.AdminDeleteAndRevokeEntitlementResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        },
         "additionalProperties": false
       },
-      "AdminGetEntitlementsResponse": {
+      "Services.CatenaEntitlements.AdminGetEntitlementsResponse": {
         "type": "object",
         "properties": {
           "entitlements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Entitlement"
+              "$ref": "#/components/schemas/Services.CatenaEntitlements.Entitlement"
             }
           }
         },
         "additionalProperties": false,
         "description": "shared between both GET RPCs"
       },
-      "AdminUpdateEntitlementRequest": {
+      "Services.CatenaEntitlements.AdminUpdateEntitlementRequest": {
         "type": "object",
         "properties": {
           "entitlement": {
-            "$ref": "#/components/schemas/Entitlement"
+            "$ref": "#/components/schemas/Services.CatenaEntitlements.Entitlement"
           }
         },
         "additionalProperties": false
       },
-      "AdminUpdateEntitlementResponse": {
+      "Services.CatenaEntitlements.AdminUpdateEntitlementResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        },
         "additionalProperties": false
       },
-      "AllocateServerRequest": {
+      "Services.CatenaEntitlements.CreateIAPStorePurchaseRequest": {
         "type": "object",
         "properties": {
-          "requestId": {
-            "type": "string",
-            "description": "a generic string to associate allocation requests with eachother"
+          "iapStore": {
+            "$ref": "#/components/schemas/Services.CatenaEntitlements.IAPStore"
           },
-          "profileId": {
-            "type": "string",
-            "description": "the id of the profile to launch"
+          "stripePurchaseRequestData": {
+            "$ref": "#/components/schemas/Services.CatenaEntitlements.StripePurchaseRequestData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaEntitlements.CreateIAPStorePurchaseResponse": {
+        "type": "object",
+        "properties": {
+          "iapStore": {
+            "$ref": "#/components/schemas/Services.CatenaEntitlements.IAPStore"
           },
-          "matchId": {
-            "type": "string",
-            "description": "The ID of the match to be assigned to this server"
-          },
-          "matchData": {
-            "$ref": "#/components/schemas/Entity"
+          "stripePurchaseResponseData": {
+            "$ref": "#/components/schemas/Services.CatenaEntitlements.StripePurchaseResponseData"
           }
         },
         "additionalProperties": false
       },
-      "AllocateServerResponse": {
-        "type": "object",
-        "properties": {
-          "requestId": {
-            "type": "string"
-          },
-          "status": {
-            "$ref": "#/components/schemas/AllocateServerStatus"
-          },
-          "message": {
-            "type": "string"
-          },
-          "connectionInfo": {
-            "$ref": "#/components/schemas/ServerConnectionInfo"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AllocateServerStatus": {
-        "enum": [
-          "ALLOCATE_SERVER_STATUS_UNSPECIFIED",
-          "ALLOCATE_SERVER_STATUS_SUCCESS",
-          "ALLOCATE_SERVER_STATUS_FAILURE",
-          "ALLOCATE_SERVER_STATUS_PENDING"
-        ],
-        "type": "string"
-      },
-      "Any": {
-        "required": [
-          "@type"
-        ],
-        "type": "object",
-        "properties": {
-          "@type": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": { }
-      },
-      "CancelMatchmakingRequest": {
-        "type": "object",
-        "properties": {
-          "ticketId": {
-            "type": "string",
-            "description": "The ID of the ticket for which we are cancelling matchmaking."
-          }
-        },
-        "additionalProperties": false
-      },
-      "CancelMatchmakingResponse": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "CreateMetadataEntryRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "entryKey": {
-            "type": "string",
-            "description": "The key in the metadata to be added"
-          },
-          "entryValue": {
-            "$ref": "#/components/schemas/EntityMetadata"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateMetadataEntryResponse": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "CreateOrGetAccountFromTokenRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "CreateOrGetAccountFromTokenResponse": {
-        "type": "object",
-        "properties": {
-          "account": {
-            "$ref": "#/components/schemas/Account"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreatePartyMetadataEntryRequest": {
-        "type": "object",
-        "properties": {
-          "innerRequest": {
-            "$ref": "#/components/schemas/CreateMetadataEntryRequest"
-          },
-          "playerId": {
-            "type": "string",
-            "description": "Optional: If included, query for a specific party member"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreatePartyRequest": {
-        "type": "object",
-        "properties": {
-          "creatingPlayerMetadata": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreatePartyResponse": {
-        "type": "object",
-        "properties": {
-          "party": {
-            "$ref": "#/components/schemas/Party"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DeAllocateServerRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "DeAllocateServerResponse": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "DeleteJsonMetadataType": {
-        "enum": [
-          0,
-          1
-        ],
-        "type": "integer",
-        "description": "If you are deleting a json, can choose whether to delete the entire entry or a partial part of an entry\r\nCurrently, only whole property removal is supported.\r\nRemoval of elements in a json array (e.g. trying to remove \"value\" from json {\"array\":[\"value\",\"value2\"]})\r\nis not currently supported by DeleteMetadataEntryRequest.",
-        "format": "int32"
-      },
-      "DeleteMetadataEntryResponse": {
-        "type": "object",
-        "properties": {
-          "entryDeleted": {
-            "type": "boolean",
-            "description": "If the entry was found in the database and deleted"
-          }
-        },
-        "additionalProperties": false
-      },
-      "EmitUpdateEventRequest": {
-        "type": "object",
-        "properties": {
-          "nestedEvent": {
-            "$ref": "#/components/schemas/Event"
-          },
-          "recipientIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "EmitUpdateEventResponse": {
-        "type": "object",
-        "properties": {
-          "broadcastSuccess": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "EmptyEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "description": "EmptyEvent is used to send pings through the event service, eg to get around bugs where a stream is not opened until the first request comes through, or to do a heartbeat"
-      },
-      "Entitlement": {
+      "Services.CatenaEntitlements.Entitlement": {
         "type": "object",
         "properties": {
           "entitlementId": {
@@ -1900,172 +3367,29 @@
           "entitlementGrantingPurchases": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/EntitlementGrantingPurchase"
+              "$ref": "#/components/schemas/Services.CatenaEntitlements.EntitlementGrantingPurchase"
             },
             "description": "references to IAP store purchases that grant this entitlement"
           }
         },
         "additionalProperties": false
       },
-      "EntitlementGrantingPurchase": {
+      "Services.CatenaEntitlements.EntitlementGrantingPurchase": {
         "type": "object",
         "properties": {
           "entitlementGrantingPurchaseId": {
-            "type": "string",
-            "description": "GUID, this is a Plan ID for Stripe but it's also called a Product ID in other IAP stores e.g. Apple"
+            "type": "string"
+          },
+          "externalProductId": {
+            "type": "string"
           },
           "iapStore": {
-            "$ref": "#/components/schemas/IAPStore"
+            "$ref": "#/components/schemas/Services.CatenaEntitlements.IAPStore"
           }
         },
         "additionalProperties": false
       },
-      "Entity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "displayName": {
-            "type": "string"
-          },
-          "entityType": {
-            "$ref": "#/components/schemas/EntityType"
-          },
-          "entities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Entity"
-            }
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
-            }
-          }
-        },
-        "additionalProperties": false,
-        "description": "We rely on the entity type for storing data about a user in the session token, this is crutial to enable"
-      },
-      "EntityMetadata": {
-        "type": "object",
-        "properties": {
-          "stringPayload": {
-            "type": "string"
-          },
-          "intPayload": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "jsonPayload": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "EntityType": {
-        "enum": [
-          "ENTITY_TYPE_UNSPECIFIED",
-          "ENTITY_TYPE_GENERIC",
-          "ENTITY_TYPE_ACCOUNT",
-          "ENTITY_TYPE_GROUP",
-          "ENTITY_TYPE_MATCH"
-        ],
-        "type": "string",
-        "description": "Entities"
-      },
-      "Event": {
-        "type": "object",
-        "properties": {
-          "eventId": {
-            "type": "string"
-          },
-          "recipientId": {
-            "type": "string"
-          },
-          "anyEvent": {
-            "$ref": "#/components/schemas/Any"
-          },
-          "partyUpdateEvent": {
-            "$ref": "#/components/schemas/PartyUpdateEvent"
-          },
-          "matchmakingStatusUpdateEvent": {
-            "$ref": "#/components/schemas/MatchmakingStatusUpdateEvent"
-          },
-          "emptyEvent": {
-            "$ref": "#/components/schemas/EmptyEvent"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetAccountByIdResponse": {
-        "type": "object",
-        "properties": {
-          "account": {
-            "$ref": "#/components/schemas/Account"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetMatchmakingStatusResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/MatchmakingStatus"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetMetadataEntriesResponse": {
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetMetadataEntryResponse": {
-        "type": "object",
-        "properties": {
-          "entryValue": {
-            "$ref": "#/components/schemas/EntityMetadata"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetPartyInfoResponse": {
-        "type": "object",
-        "properties": {
-          "party": {
-            "$ref": "#/components/schemas/Party"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetPlayerInfoByIdResponse": {
-        "type": "object",
-        "properties": {
-          "player": {
-            "$ref": "#/components/schemas/Player"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetServiceHealthResponse": {
-        "type": "object",
-        "properties": {
-          "healthy": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "IAPStore": {
+      "Services.CatenaEntitlements.IAPStore": {
         "enum": [
           "IAP_STORE_UNSPECIFIED",
           "IAP_STORE_STRIPE"
@@ -2073,7 +3397,162 @@
         "type": "string",
         "description": "supported In-App Purchase (IAP) stores"
       },
-      "JoinPartyWithInviteCodeRequest": {
+      "Services.CatenaEntitlements.StripePurchaseRequestData": {
+        "type": "object",
+        "properties": {
+          "priceId": {
+            "type": "string",
+            "description": "Stripe-generated unique ID of the pricing plan for the product being purchased"
+          }
+        },
+        "additionalProperties": false,
+        "description": "user functionality"
+      },
+      "Services.CatenaEntitlements.StripePurchaseResponseData": {
+        "type": "object",
+        "properties": {
+          "clientSecret": {
+            "type": "string",
+            "description": "used for browser checkout session"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaMatchmaking.CancelMatchmakingRequest": {
+        "type": "object",
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "The ID of the ticket for which we are cancelling matchmaking."
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaMatchmaking.CancelMatchmakingResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Services.CatenaMatchmaking.GetMatchmakingStatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Services.CatenaMatchmaking.MatchmakingStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaMatchmaking.MatchmakingStatus": {
+        "enum": [
+          "MATCHMAKING_STATUS_UNSPECIFIED",
+          "MATCHMAKING_STATUS_IN_PROGRESS",
+          "MATCHMAKING_STATUS_COMPLETED",
+          "MATCHMAKING_STATUS_CANCELLED",
+          "MATCHMAKING_STATUS_FAILED",
+          "MATCHMAKING_STATUS_FINDING_SERVER"
+        ],
+        "type": "string"
+      },
+      "Services.CatenaMatchmaking.MatchmakingStatusUpdateEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/Services.CatenaMatchmaking.MatchmakingStatusUpdateType"
+          },
+          "message": {
+            "type": "string"
+          },
+          "ticketId": {
+            "type": "string"
+          },
+          "serverConnectionInfo": {
+            "$ref": "#/components/schemas/Catena.Capacity.ServerConnectionInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaMatchmaking.MatchmakingStatusUpdateType": {
+        "enum": [
+          "MATCHMAKING_STATUS_UPDATE_TYPE_UNSPECIFIED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_IN_PROGRESS",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_FAILED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_CANCELLED",
+          "MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER"
+        ],
+        "type": "string"
+      },
+      "Services.CatenaMatchmaking.StartMatchmakingRequest": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "$ref": "#/components/schemas/Catena.Groups.Entity"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaMatchmaking.StartMatchmakingResponse": {
+        "type": "object",
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "The ID of the newly created matchmaking ticket."
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaParties.CreatePartyMetadataEntryRequest": {
+        "type": "object",
+        "properties": {
+          "innerRequest": {
+            "$ref": "#/components/schemas/Catena.Groups.CreateMetadataEntryRequest"
+          },
+          "playerId": {
+            "type": "string",
+            "description": "Optional: If included, query for a specific party member"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaParties.CreatePartyRequest": {
+        "type": "object",
+        "properties": {
+          "creatingPlayerMetadata": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaParties.CreatePartyResponse": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Services.CatenaParties.Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaParties.GetPartyInfoResponse": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Services.CatenaParties.Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaParties.GetPlayerInfoByIdResponse": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "$ref": "#/components/schemas/Services.CatenaParties.Player"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaParties.JoinPartyWithInviteCodeRequest": {
         "type": "object",
         "properties": {
           "inviteCode": {
@@ -2083,22 +3562,22 @@
           "joiningPlayerMetadata": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
             }
           }
         },
         "additionalProperties": false
       },
-      "JoinPartyWithInviteCodeResponse": {
+      "Services.CatenaParties.JoinPartyWithInviteCodeResponse": {
         "type": "object",
         "properties": {
           "party": {
-            "$ref": "#/components/schemas/Party"
+            "$ref": "#/components/schemas/Services.CatenaParties.Party"
           }
         },
         "additionalProperties": false
       },
-      "KickFromPartyRequest": {
+      "Services.CatenaParties.KickFromPartyRequest": {
         "type": "object",
         "properties": {
           "playerId": {
@@ -2112,11 +3591,11 @@
         },
         "additionalProperties": false
       },
-      "KickFromPartyResponse": {
+      "Services.CatenaParties.KickFromPartyResponse": {
         "type": "object",
         "additionalProperties": false
       },
-      "LeavePartyRequest": {
+      "Services.CatenaParties.LeavePartyRequest": {
         "type": "object",
         "properties": {
           "partyId": {
@@ -2126,103 +3605,11 @@
         },
         "additionalProperties": false
       },
-      "LeavePartyResponse": {
+      "Services.CatenaParties.LeavePartyResponse": {
         "type": "object",
         "additionalProperties": false
       },
-      "LinkAccountToProviderRequest": {
-        "type": "object",
-        "properties": {
-          "loginPayload": {
-            "$ref": "#/components/schemas/ProviderLoginPayload"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LinkAccountToProviderResponse": {
-        "type": "object",
-        "properties": {
-          "account": {
-            "$ref": "#/components/schemas/Account"
-          },
-          "accountLinked": {
-            "type": "boolean",
-            "description": "indicator of success of linking existing account to new auth provider"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LoginWithProviderRequest": {
-        "type": "object",
-        "properties": {
-          "provider": {
-            "$ref": "#/components/schemas/Provider"
-          },
-          "payload": {
-            "type": "string",
-            "description": "provider-specific auth token (username for unsafe provider)"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LoginWithProviderResponse": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "MatchmakingStatus": {
-        "enum": [
-          "MATCHMAKING_STATUS_UNSPECIFIED",
-          "MATCHMAKING_STATUS_IN_PROGRESS",
-          "MATCHMAKING_STATUS_COMPLETED",
-          "MATCHMAKING_STATUS_CANCELLED",
-          "MATCHMAKING_STATUS_FAILED",
-          "MATCHMAKING_STATUS_FINDING_SERVER"
-        ],
-        "type": "string"
-      },
-      "MatchmakingStatusUpdateEvent": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/MatchmakingStatusUpdateType"
-          },
-          "message": {
-            "type": "string"
-          },
-          "ticketId": {
-            "type": "string"
-          },
-          "serverConnectionInfo": {
-            "$ref": "#/components/schemas/ServerConnectionInfo"
-          }
-        },
-        "additionalProperties": false
-      },
-      "MatchmakingStatusUpdateType": {
-        "enum": [
-          "MATCHMAKING_STATUS_UPDATE_TYPE_UNSPECIFIED",
-          "MATCHMAKING_STATUS_UPDATE_TYPE_IN_PROGRESS",
-          "MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED",
-          "MATCHMAKING_STATUS_UPDATE_TYPE_FAILED",
-          "MATCHMAKING_STATUS_UPDATE_TYPE_CANCELLED",
-          "MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER"
-        ],
-        "type": "string"
-      },
-      "MetadataMap": {
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
-            }
-          }
-        },
-        "additionalProperties": false,
-        "description": "Simple message containing a metadata map so that metadata entries can be sent in update events (maps are by default not supported in oneof)"
-      },
-      "Party": {
+      "Services.CatenaParties.Party": {
         "type": "object",
         "properties": {
           "partyId": {
@@ -2237,48 +3624,48 @@
           "players": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Player"
+              "$ref": "#/components/schemas/Services.CatenaParties.Player"
             }
           },
           "metadata": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
             }
           }
         },
         "additionalProperties": false
       },
-      "PartyEventValue": {
+      "Services.CatenaParties.PartyEventValue": {
         "type": "object",
         "properties": {
           "boolValue": {
             "type": "boolean"
           },
           "metadataValue": {
-            "$ref": "#/components/schemas/EntityMetadata"
+            "$ref": "#/components/schemas/Catena.Groups.MetadataEntry"
           },
           "stringValue": {
             "type": "string"
           },
           "playerValue": {
-            "$ref": "#/components/schemas/Player"
+            "$ref": "#/components/schemas/Services.CatenaParties.Player"
           },
           "intValue": {
             "type": "integer",
             "format": "int32"
           },
           "metadataMapValue": {
-            "$ref": "#/components/schemas/MetadataMap"
+            "$ref": "#/components/schemas/Catena.Groups.MetadataMap"
           }
         },
         "additionalProperties": false
       },
-      "PartyUpdateEvent": {
+      "Services.CatenaParties.PartyUpdateEvent": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/PartyUpdateType"
+            "$ref": "#/components/schemas/Services.CatenaParties.PartyUpdateType"
           },
           "message": {
             "type": "string"
@@ -2290,13 +3677,13 @@
           "eventPayload": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/PartyEventValue"
+              "$ref": "#/components/schemas/Services.CatenaParties.PartyEventValue"
             }
           }
         },
         "additionalProperties": false
       },
-      "PartyUpdateType": {
+      "Services.CatenaParties.PartyUpdateType": {
         "enum": [
           "PARTY_UPDATE_TYPE_UNSPECIFIED",
           "PARTY_UPDATE_TYPE_PLAYER_JOINED",
@@ -2310,7 +3697,7 @@
         ],
         "type": "string"
       },
-      "Player": {
+      "Services.CatenaParties.Player": {
         "type": "object",
         "properties": {
           "playerId": {
@@ -2332,56 +3719,13 @@
           "metadata": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/EntityMetadata"
+              "$ref": "#/components/schemas/Catena.Groups.EntityMetadata"
             }
           }
         },
         "additionalProperties": false
       },
-      "Provider": {
-        "enum": [
-          "PROVIDER_UNSPECIFIED",
-          "PROVIDER_UNSAFE",
-          "PROVIDER_DISCORD"
-        ],
-        "type": "string",
-        "description": "Accepted auth providers."
-      },
-      "ProviderLoginPayload": {
-        "type": "object",
-        "properties": {
-          "providerAccountId": {
-            "type": "string",
-            "description": "provider-specific user ID"
-          },
-          "providerType": {
-            "$ref": "#/components/schemas/Provider"
-          },
-          "providerDisplayName": {
-            "type": "string",
-            "description": "provider-specific display name of user"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Bundled data required to log in or create an account using a given provider."
-      },
-      "ServerConnectionInfo": {
-        "type": "object",
-        "properties": {
-          "ip": {
-            "type": "string"
-          },
-          "port": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "serverId": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SetPartyLeaderRequest": {
+      "Services.CatenaParties.SetPartyLeaderRequest": {
         "type": "object",
         "properties": {
           "playerId": {
@@ -2395,109 +3739,15 @@
         },
         "additionalProperties": false
       },
-      "SetPartyLeaderResponse": {
+      "Services.CatenaParties.SetPartyLeaderResponse": {
         "type": "object",
         "additionalProperties": false
       },
-      "StartMatchmakingRequest": {
-        "type": "object",
-        "properties": {
-          "entity": {
-            "$ref": "#/components/schemas/Entity"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StartMatchmakingResponse": {
-        "type": "object",
-        "properties": {
-          "ticketId": {
-            "type": "string",
-            "description": "The ID of the newly created matchmaking ticket."
-          }
-        },
-        "additionalProperties": false
-      },
-      "Status": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Any"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "SubscribeToEventsResponse": {
-        "type": "object",
-        "properties": {
-          "event": {
-            "$ref": "#/components/schemas/Event"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateAccountRequest": {
-        "type": "object",
-        "properties": {
-          "account": {
-            "$ref": "#/components/schemas/Account"
-          },
-          "accountMask": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateAccountResponse": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "UpdateMetadataEntryRequest": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "entryKey": {
-            "type": "string",
-            "description": "The key in the metadata whose entry needs to be changed"
-          },
-          "entryValue": {
-            "$ref": "#/components/schemas/EntityMetadata"
-          },
-          "updateOperationType": {
-            "$ref": "#/components/schemas/UpdateMetadataOperationType"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateMetadataEntryResponse": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "UpdateMetadataOperationType": {
-        "enum": [
-          "OVERWRITE",
-          "APPEND"
-        ],
-        "type": "string",
-        "description": "When updating a metadata entry, the entry can either be overwritten (supported by all types) or appeneded (supported by string and json)"
-      },
-      "UpdatePartyMetadataEntryRequest": {
+      "Services.CatenaParties.UpdatePartyMetadataEntryRequest": {
         "type": "object",
         "properties": {
           "innerRequest": {
-            "$ref": "#/components/schemas/UpdateMetadataEntryRequest"
+            "$ref": "#/components/schemas/Catena.Groups.UpdateMetadataEntryRequest"
           },
           "playerId": {
             "type": "string",
@@ -2506,11 +3756,11 @@
         },
         "additionalProperties": false
       },
-      "UpdatePartyPlayerRequest": {
+      "Services.CatenaParties.UpdatePartyPlayerRequest": {
         "type": "object",
         "properties": {
           "payload": {
-            "$ref": "#/components/schemas/Player"
+            "$ref": "#/components/schemas/Services.CatenaParties.Player"
           },
           "payloadMask": {
             "type": "string"
@@ -2518,37 +3768,400 @@
         },
         "additionalProperties": false
       },
-      "UpdatePartyPlayerResponse": {
+      "Services.CatenaParties.UpdatePartyPlayerResponse": {
         "type": "object",
         "properties": {
           "party": {
-            "$ref": "#/components/schemas/Party"
+            "$ref": "#/components/schemas/Services.CatenaParties.Party"
           }
         },
         "additionalProperties": false
+      },
+      "Services.CatenaSessions.ListSessionsResponse": {
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Services.CatenaSessions.Session"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaSessions.Session": {
+        "type": "object",
+        "properties": {
+          "sessionData": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminCreateTitleReleaseRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "game title id"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "description": "subject to change: possibly protobuf.bytes type  / cant use long, have to use int64 in .proto files",
+            "format": "int64"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          },
+          "checksumAlg": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminCreateTitleReleaseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "release id"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of title"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminCreateTitleRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminCreateTitleResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminDeleteTitleReleaseRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "release id"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminDeleteTitleReleaseResponse": {
+        "type": "object",
+        "properties": {
+          "titleDeleted": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminDeleteTitleRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminDeleteTitleResponse": {
+        "type": "object",
+        "properties": {
+          "titleDeleted": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminUpdateTitleReleaseRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "game title release id"
+          },
+          "gameTitleId": {
+            "type": "string",
+            "description": "game title id"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          },
+          "checksumAlg": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminUpdateTitleReleaseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "game title release id"
+          },
+          "name": {
+            "type": "string",
+            "description": "game title name"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminUpdateTitleRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.AdminUpdateTitleResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GameTitle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GeneratePresignedUrlFromUriRequest": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GeneratePresignedUrlFromUriResponse": {
+        "type": "object",
+        "properties": {
+          "presignedHeadUrl": {
+            "type": "string"
+          },
+          "presignedGetUrl": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GeneratePresignedUrlRequest": {
+        "type": "object",
+        "properties": {
+          "objectKey": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GeneratePresignedUrlResponse": {
+        "type": "object",
+        "properties": {
+          "presignedHeadUrl": {
+            "type": "string"
+          },
+          "presignedGetUrl": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GetTitleManifestResponse": {
+        "type": "object",
+        "properties": {
+          "titleName": {
+            "type": "string"
+          },
+          "releases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Services.CatenaTitles.TitleRelease"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.GetTitlesResponse": {
+        "type": "object",
+        "properties": {
+          "titles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Services.CatenaTitles.GameTitle"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.TitlePatch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          },
+          "checksumAlg": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.CatenaTitles.TitleRelease": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          },
+          "checksumAlg": {
+            "type": "string",
+            "description": "StringValue allows for a field to be nullable"
+          },
+          "patches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Services.CatenaTitles.TitlePatch"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Services.PublicCommon.Provider": {
+        "enum": [
+          "PROVIDER_UNSPECIFIED",
+          "PROVIDER_UNSAFE",
+          "PROVIDER_DISCORD",
+          "PROVIDER_GOOGLE",
+          "PROVIDER_APPLE",
+          "PROVIDER_TWITCH"
+        ],
+        "type": "string",
+        "description": "Accepted auth providers."
+      },
+      "Services.PublicCommon.ProviderConfig": {
+        "type": "object",
+        "properties": {
+          "providerClientId": {
+            "type": "string"
+          },
+          "providerClientSecret": {
+            "type": "string"
+          },
+          "providerRedirectUri": {
+            "type": "string"
+          },
+          "providerIsEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Accepted auth provider configs."
       }
     }
   },
   "tags": [
     {
-      "name": "Authentication",
-      "description": "Authentication"
+      "name": "CatenaAuthentication",
+      "description": "CatenaAuthentication"
     },
     {
-      "name": "Accounts",
-      "description": "Accounts"
+      "name": "CatenaAccounts",
+      "description": "CatenaAccounts"
     },
     {
-      "name": "Parties",
-      "description": "Parties"
+      "name": "CatenaParties",
+      "description": "CatenaParties"
     },
     {
-      "name": "Matchmaking",
-      "description": "Matchmaking"
+      "name": "CatenaMatchmaking",
+      "description": "CatenaMatchmaking"
     },
     {
       "name": "CatenaServerCapacity",
       "description": "*\r\nThe CatenaServerCapacity is responsible for allocating a server using the defined allocation plugin. It also provides a place to add some\r\nalgorithmic capacity management down the line."
+    },
+    {
+      "name": "CatenaTitles",
+      "description": "CatenaTitles"
+    },
+    {
+      "name": "CatenaSessions",
+      "description": "A service that can be used to probe the session store directly for development or diagnostics.\r\nNot intended for regular production use!"
     },
     {
       "name": "Events",

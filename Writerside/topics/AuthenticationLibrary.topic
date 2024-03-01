@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
+<topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
+       title="AuthenticationLibrary" id="AuthenticationLibrary" is-library="true">
+
+    <snippet id="requires_user">
+        <tip>This workflow requires a user to be logged in and have created an account. See <a href="Creating-a-New-Account.md">Creating a New Account</a> for more info.</tip>
+    </snippet>
+
+    <snippet id="login-with-twitch">
+        <code-block lang="mermaid">
+            sequenceDiagram
+            Client->>Catena: LoginWithProviderRequest [PROVIDER_TWITCH]
+            Catena-->>Client: LoginWithProviderResponse (redirect_uri)
+            Client->>Twitch: OAuth Login
+            Twitch-->>Client: Authorization Code
+            Client->>Catena: OAuthCallback
+            Catena->>Twitch: Authorize + Query Account
+            Twitch-->>Catena: Account Data
+            Catena-->>Client: Login Success (session-id)
+            Client->>Catena: CreateOrGetAccountFromTokenRequest
+            Catena->>Client: CreateOrGetAccountFromTokenResponse
+        </code-block>
+    </snippet>
+
+</topic>
