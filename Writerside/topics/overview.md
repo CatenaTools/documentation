@@ -2,7 +2,7 @@
 
 ## What is Catena/Who should use Catena?
 
-An all in one game platform as a service intended to help game devs take their multiplayer game to the next level with live services. Including Parties, Matchmaking, Accounts and Authentication. We integrate industry best practices out of the box but allow maximum flexibility for game developers.
+An all-in-one game platform as a service intended to help game devs take their multiplayer game to the next level with live services. Including Parties, Matchmaking, Accounts and Authentication. We integrate industry best practices out of the box but allow maximum flexibility for game developers.
 
 ## Project Structure
 
@@ -17,13 +17,15 @@ Catena is structured as a monorepo. All services run attached to a “CatenaNode
    4. Redis - [https://redis.io](https://redis.io/)
    5. (Optional) Postman - [https://www.postman.com](https://www.postman.com/)
    6. (Optional) Docker - [https://www.docker.com](https://www.docker.com/)
-   7. (Optional) Visual Studio 
+   7. (Optional) Visual Studio
+
+   {type="alpha-lower"}
 2. Agree to the [Terms Of Service](https://tos.catenatools.com)
-   3. You will be invited to the CatenaTools Repo and the Catena Networking Demo Repo
+   * You will be invited to the CatenaTools Repo and the Catena Networking Demo Repo
 3. Clone the [Catena Tools](https://github.com/CatenaTools/CatenaTools) repository
-3. `cd CatenaTools`
-4. Start a redis server (platform dependent)
-5. Run Catena Tools `make dev`
+4. `cd CatenaTools`
+5. Start a redis server (platform dependent)
+6. Run Catena Tools `make dev`
 
 ## Running the Networking Demo
 
