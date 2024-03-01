@@ -9,6 +9,8 @@
     <toc-element topic="Section-Starting-Page.topic"/>
     <toc-element topic="overview.md"/>
     <toc-element topic="Services.md">
+        <toc-element topic="Match-Broker.md"/>
+        <toc-element topic="Server-Manager.md"/>
         <toc-element topic="Matchmaking.md"/>
         <toc-element topic="Entitlements.md">
             <toc-element topic="Entitlements-API.md"/>

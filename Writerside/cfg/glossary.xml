@@ -3,4 +3,6 @@
 <terms>
     <term name="session_token">A uuid which references a user's login session, of the form session_[uuidv4].</term>
     <term name="Provider Login Payload">Used to Authenticate a user with a given provider. Made up of a Provider ID, Provider Type, and other Metadata.</term>
+    <term name="Allocator">An allocator is responsible for increasing or decreasing game server capacity on specific platform or provider. An allocator may start/stop a process, a container, or make API calls to external services.</term>
+    <term name="JMESPath">JMESPath is a query language for JSON. It is used in the Catena match broker and server manager for filtering matches by their properties.</term>
 </terms>
