@@ -18,4 +18,8 @@
         <description>Created after removal of "Observability" from Catena Tools</description>
         <accepts>Observability.html</accepts>
     </rule>
+    <rule id="627e8b25">
+        <description>Created after removal of "Service Registration" from Catena Tools</description>
+        <accepts>Service-Registration.html</accepts>
+    </rule>
 </rules>
