@@ -1,6 +1,8 @@
 # Quickstart: Running Your Game With Catena
 
-In this quickstart guide we will walk through how to set up and run your game on your own infrastructure using Catena Tools. Through this guide you will set up a Catena Backend, basic Fleet Manager, and a Game Client and Game server. This is a __Static Fleet Management Solution.__ This means you will have to manually add servers.  
+In this quickstart guide we will walk through how to set up and run your game on your own infrastructure using Catena Tools. 
+Through this guide you will set up a backend, basic fleet manager, along with a game client and game server. This is a __Static Fleet Management Solution.__ 
+This means you will have to manually provision servers, but they will report themselves to the backend.
 
 > This tutorial will use the following Catena Components to support a Multiplayer Workflow.
 >   * [Match Broker](Match-Broker.md)
@@ -24,9 +26,10 @@ What you will need before following the steps in this guide.
 
 * Access to Catena Tools
 * A Game with a client server model or the [Catena Lyra Demo](https://github.com/catenaTools/catena-lyra-demo)
-* The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/aws)
-* [Terraform](https://www.terraform.io)
-* A Domain Name that you Control
+* The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/aws/catena-core)
+* [Terraform](https://www.terraform.io) V1.71 or higher
+* An AWS account
+* A domain name that you control and can configure in route53
 
 ## Setting up Catena
 
@@ -34,7 +37,7 @@ Prior to running the Terraform code, set up a hosted zone for the domain that yo
 
 See [Creating a public hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html). The Terraform configuration will create a few subdomain routes on this url.
 
-Next, the `infrastructure` repo and open it in your favorite editor. We will be working out of the `aws/` directory.
+Next, clone the `infrastructure` repo and open it in your favorite editor. We will be working out of the `aws/catena-core/` directory.
 
 ```bash
 git clone git@github.com:CatenaTools/infrastructure.git
@@ -47,38 +50,41 @@ This template sets up a working [dokku](https://dokku.com) instance on the domai
 
 The Terraform configuration defaults to using an s3 bucket to store it's state, this must be updated to an s3 bucket on your account. You may create this s3 bucket in the AWS Console.
 
-Open `main.tf` and modify the following portion to match your s3 bucket, or remove it to store state locally.
+Open `terraform_config.tf` and modify the following portion to match your s3 bucket, or remove it to store state locally.
 
 ```
   backend "s3" {
       bucket  = "catena-terraform-state"
       key     = "updated-infra/terraform.tfstate"
       region  = "us-east-1"
-      profile = "catena"
+      profile = "catena_admin"
   }
 ```
 
 Be sure to replace `bucket` with your bucket's name, `region` with your region, and `profile` with your local [aws profile](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configure/index.html).
+
+> If you do not need to back up or share your terraform state, you can remove the "backend" block and terraform will store it's state locally.
 
 Next, we need to set some specific-to-you configurations.
 
 Create a `vars.tfvars` file similar to the following:
 
 ```
-aws_profile="catena"                        # Your AWS Profile
+aws_profile="catena_admin"                  # Your AWS Profile
 aws_region="us-east-1"                      # The region you are working in
 ec2_ami="ami-0c7217cdde317cfec"             # AWS Ubuntu 22.04 LTS AMI for your region
 ec2_instance_size="t2.small"                # Instance Size for the machine running the catena backend
 ssh_private_key_path="~/.ssh/id_rsa"        # Your private key
 ssh_public_key_path="~/.ssh/id_rsa.pub"     # Your public key
 route_53_hosted_zone_name="catenatools.com" # The name of the hosted zone in route53
+letsencrypt_email="example@example.com"     # The email address LetsEncrypt will send cert expiry notifications to
 ```
 
 ### Provision the Infrastructure
 
 ```bash
-terraform workspace switch -or-create dev
 terraform init                        # Initialize the terraform backend and install modules
+terraform workspace switch -or-create dev
 terraform plan -var-file="vars.tfvar" # Preview the steps terraform will take
 terraform apply -var-file="vars.tfvar"
 ```
@@ -93,10 +99,15 @@ ec2_ip = "100.28.26.117"
 powershell_deploy_command = "$env:GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes'; git push dokku main"
 unix_deploy_command = "GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes' git push dokku main"
 windows_deploy_command = "set \"GIT_SSH_COMMAND=ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes\" && git push dokku main"
+catena_url = "https://platform.dev.catenatools.com"
 ```
 
 These outputs will be used to deploy the platform to your newly configured instance.
 
+>> The rest of this tutorial will use the environment variable `$CATENA_URL`. Set it to the value of the catena_url output.
+> ```
+> export CATENA_URL="https://platform.dev.catenatools.com"
+> ```
 ### Install Catena
 
 Installing Catena is as easy as doing a git push.
@@ -108,9 +119,7 @@ git clone git@github.com:CatenaTools/catena-tools-core.git
 cd catena-tools-core/
 ```
 
-Then add a new remote and do a git push, this will deploy the `HEAD` of the repo. 
-
-This will be the value of the `add_doku_remote_command` output above.
+Then add a new remote and do a git push, this will deploy the `HEAD` of the repo. The command to do so is the value of the `add_doku_remote_command` output.
 
 ```bash
 git remote add dokku dokku@dev.catenatools.com:platform
@@ -143,8 +152,8 @@ remote: #4 DONE 0.0s
 ### Truncated for Brevity
 
 =====> Application deployed:
-       http://platform.jlyon1.catenatools.com
-       https://platform.jlyon1.catenatools.com
+       http://platform.dev.catenatools.com
+       https://platform.dev.catenatools.com
 
 To jlyon1.catenatools.com:platform
  * [new branch]      HEAD -> main
@@ -158,14 +167,14 @@ Now we're all set!
 You can test your platform by logging in:
 
 ```Bash
-SESSION_ID=$(curl -D - -sS --location 'https://platform.jlyon1.catenatools.com/api/v1/authentication/login' \
+SESSION_ID=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
       --header 'Content-Type: application/json' \
       --data '{
       "provider": "PROVIDER_UNSAFE",
       "payload": "test53"
   }' | grep "session-*" | cut -d' ' -f2)
 
-curl --location 'https://platform.jlyon1.catenatools.com/api/v1/accounts' \
+curl --location '$CATENA_URL/api/v1/accounts' \
 --header "session-id: $SESSION_ID" \
 --header 'Content-Type: application/json' \
 --data '{}'
@@ -173,12 +182,14 @@ curl --location 'https://platform.jlyon1.catenatools.com/api/v1/accounts' \
 # {"account":{"id":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","displayName":"test53","authRole":"user","metadata":{},"providers":["PROVIDER_UNSAFE"]}}
 ```
 
-
+[//]: # (TODO: Add the link here.)
 The full postman collection can be found here. Set the http-host environment variable to your domain prior to use.
 
 ## Running your game in a multiplayer configuration
 
-Next we will use the [Sidecar](Sidecar.md) along with our backend to support a multiplayer workflow.
+Next we will use the server [Sidecar](Sidecar.md) along with our backend to support a multiplayer workflow.
+
+> The sidecar enables you to configure your game to work with one API interface, and deploy it on multiple fleet managers. It can also make requests on behalf of the game server, enabling integrations which require zero server-side integration.
 
 We are making some assumptions and trade-offs to simplify this guide. There is an example implementation in our [catena-lyra-demo repo.](https://github.com/CatenaTools/catena-lyra-demo/tree/main)
 
@@ -188,7 +199,7 @@ We are making some assumptions and trade-offs to simplify this guide. There is a
 
 ### Setup our Game Server
 
-We will be running our game on an AWS EC2 Instance running Windows Server, these instructions also work with a Linux sever using minor modifications.
+We will be running our game on an AWS EC2 Instance running Windows Server, these instructions also work with a Linux server using minor modifications.
 
 First create a key pair in the AWS console for remote access to the machine:
 
@@ -255,12 +266,17 @@ terraform plan -var-file="vars.tfvar"
 terraform apply -var-file="vars.tfvar"
 ```
 
-Once terraform finishes, you can go to the AWS EC2 Console, click your instance, and click "Connect to instance." Under the RDP Tab, download the
+Once terraform finishes, you can go to the AWS EC2 Console, click your instance, and click "Connect to instance." Under the RDP tab, download the
 Remote Desktop File. Then click "Get Password" and paste in the private key from the keypair you created previously.
 
 At this point you can connect to the Windows server using RDP.
 
-> Here you can setup your server to run and listen on a certain port on this machine, our example server runs on port 7777.
+<procedure title="Game Server Setup" id="lyra_setup" collapsible="true">
+    <p>These instructions use the <a href="https://github.com/catenatools/catena-lyra-demo">catena-lyra-demo</a> server.</p>
+    <step>Download the server onto the machine. The download can be found <a href="https://catena-public-content.s3.amazonaws.com/WindowsServer.zip">here.</a></step>
+    <step>Extract the zip file.</step>
+    <step>Run the game server from command prompt: <pre>LyraServer.exe -networkversionoverride=1234</pre></step>
+</procedure>
 
 ### Run the Server Sidecar
 
@@ -335,7 +351,7 @@ The key is to set the following fields:
 `app.resolver.configs.ec2_resolver.Min` - The min port to use for clients to connect.
 `app.resolver.configs.ec2_resolver.Max` - The max port to use for clients to connect.
 
-_For this demo, min and max port should be the same, and be the port your server runs on._
+_For this demo, min and max port should be the same, and be the port your server runs on. If you are following this demo, it should be `7777`
 
 After which you can launch the sidecar using `cmd.exe`
 
@@ -344,7 +360,7 @@ At this point you should see the sidecar querying for matches repeatedly. that's
 You can see this by listing servers:
 
 ```cURL
-curl --location 'https://platform.dev.catenatools.com/api/v1/servers' \
+curl --location '$CATENA_URL/api/v1/servers' \
 --header 'Content-Type: application/json' \
 --data '{}'
 ```
@@ -368,28 +384,28 @@ Let's take a look at how this works and what the client interactions look like.
 First, Login and Create two Accounts. This may be easier in postman, but curl works too!
 
 ```cURL
-SESSION_ID_1=$(curl -D - -sS --location 'https://platform.jlyon1.catenatools.com/api/v1/authentication/login' \
+SESSION_ID_1=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
       --header 'Content-Type: application/json' \
       --data '{
       "provider": "PROVIDER_UNSAFE",
       "payload": "test53"
   }' | grep "session-*" | cut -d' ' -f2)
 
-curl --location 'https://platform.jlyon1.catenatools.com/api/v1/accounts' \
+curl --location '$CATENA_URL/api/v1/accounts' \
 --header "session-id: $SESSION_ID_1" \
 --header 'Content-Type: application/json' \
 --data '{}'
 ```
 
 ```cURL
-SESSION_ID_2=$(curl -D - -sS --location 'https://platform.jlyon1.catenatools.com/api/v1/authentication/login' \
+SESSION_ID_2=$(curl -D - -sS --location '$CATENA_URL.catenatools.com/api/v1/authentication/login' \
       --header 'Content-Type: application/json' \
       --data '{
       "provider": "PROVIDER_UNSAFE",
       "payload": "test01"
   }' | grep "session-*" | cut -d' ' -f2)
 
-curl --location 'https://platform.jlyon1.catenatools.com/api/v1/accounts' \
+curl --location '$CATENA_URL.catenatools.com/api/v1/accounts' \
 --header "session-id: $SESSION_ID_2" \
 --header 'Content-Type: application/json' \
 --data '{}'
@@ -400,7 +416,7 @@ Take note of the two account ids.
 Next, subscribe to events for one account, this is how we will get matchmaking notifications:
 
 ```cURL
-curl --location --request GET 'https://platform.jlyon1.catenatools.com/api/v1/events/subscribe' \
+curl --location --request GET '$CATENA_URL/api/v1/events/subscribe' \
 --header "session-id: $SESSION_ID_1" \
 --header 'Content-Type: application/json' \
 --data '{}'
@@ -409,7 +425,7 @@ curl --location --request GET 'https://platform.jlyon1.catenatools.com/api/v1/ev
 Finally, kick off matchmaking for the two connected accounts. Make sure to substitute your account ids.
 
 ```cURL
-curl --location 'https://platform.dev.catenatools.com/api/v1/matchmaking/start' \
+curl --location '$CATENA_URL/api/v1/matchmaking/start' \
 --header "session-id: $SESSION_ID_1" \
 --header 'Content-Type: application/json' \
 --data '{
@@ -428,7 +444,7 @@ curl --location 'https://platform.dev.catenatools.com/api/v1/matchmaking/start' 
 ```
 
 ```cURL
-curl --location 'https://platform.dev.catenatools.com/api/v1/matchmaking/start' \
+curl --location '$CATENA_URL/api/v1/matchmaking/start' \
 --header "session-id: $SESSION_ID_2" \
 --header 'Content-Type: application/json' \
 --data '{
@@ -449,7 +465,7 @@ curl --location 'https://platform.dev.catenatools.com/api/v1/matchmaking/start' 
 If all goes well you should see your players found a match and were assigned to a server!
 
 ```
-joeylyon@Joeys-MacBook-Pro catena-tools-core % curl --location --request GET 'https://platform.jlyon1.catenatools.com/api/v1/events/subscribe' \
+joeylyon@Joeys-MacBook-Pro catena-tools-core % curl --location --request GET '$CATENA_URL/api/v1/events/subscribe' \
 --header "session-id: $SESSION_ID_1" \
 --header 'Content-Type: application/json' \
 --data '{}'
@@ -459,5 +475,4 @@ joeylyon@Joeys-MacBook-Pro catena-tools-core % curl --location --request GET 'ht
 {"event":{"eventId":"event-7faf0362-70ae-453b-b3ac-8656c0fb6888","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER","message":"Finding server for ticket 0b4a0ca2-7da6-4d5c-ae9d-e3340f5487c1","ticketId":"0b4a0ca2-7da6-4d5c-ae9d-e3340f5487c1"}}}
 {"event":{"eventId":"event-d25eb479-257e-462a-b51f-4f983b65e03d","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED","message":"Server found and matchmaking completed for match match-c2420756-a298-4066-8ee2-7f5fb9891900","ticketId":"","serverConnectionInfo":{"ip":"34.228.12.6:7777","port":0,"serverId":""}}}}
 {"event":{"eventId":"event-d25eb479-257e-462a-b51f-4f983b65e03d","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED","message":"Server found and matchmaking completed for match match-c2420756-a298-4066-8ee2-7f5fb9891900","ticketId":"","serverConnectionInfo":{"ip":"34.228.12.6:7777","port":0,"serverId":""}}}}
-
 ```
