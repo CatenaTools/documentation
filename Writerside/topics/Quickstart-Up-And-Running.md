@@ -29,9 +29,10 @@ What you will need before following the steps in this guide.
 * The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/aws/catena-core)
 * [Terraform](https://www.terraform.io) V1.71 or higher
 * An AWS account
+* Git bash (optional)
 * A domain name that you control and can configure in route53
 
-## Setting up Catena
+## Setup the Infrastructure
 
 Prior to running the Terraform code, set up a hosted zone for the domain that you will use. In the example, this will be `catenatools.com.`
 
@@ -39,6 +40,7 @@ See [Creating a public hosted zone](https://docs.aws.amazon.com/Route53/latest/D
 
 Next, clone the `infrastructure` repo and open it in your favorite editor. We will be working out of the `aws/catena-core/` directory.
 
+**Git Bash**
 ```bash
 git clone git@github.com:CatenaTools/infrastructure.git
 cd infrastructure/aws
@@ -104,16 +106,18 @@ catena_url = "https://platform.dev.catenatools.com"
 
 These outputs will be used to deploy the platform to your newly configured instance.
 
->> The rest of this tutorial will use the environment variable `$CATENA_URL`. Set it to the value of the catena_url output.
-> ```
+> The rest of this tutorial will use the environment variable `$CATENA_URL`. Set it to the value of the catena_url output.
+> ```bash
 > export CATENA_URL="https://platform.dev.catenatools.com"
 > ```
+
 ### Install Catena
 
 Installing Catena is as easy as doing a git push.
 
 Start by cloning the `catena-tools-core` repo:
 
+**Git Bash**
 ```bash
 git clone git@github.com:CatenaTools/catena-tools-core.git
 cd catena-tools-core/
@@ -121,6 +125,7 @@ cd catena-tools-core/
 
 Then add a new remote and do a git push, this will deploy the `HEAD` of the repo. The command to do so is the value of the `add_doku_remote_command` output.
 
+**Git Bash**
 ```bash
 git remote add dokku dokku@dev.catenatools.com:platform
 git push dokku HEAD:main
@@ -166,6 +171,7 @@ Now we're all set!
 
 You can test your platform by logging in:
 
+**Git Bash**
 ```Bash
 SESSION_ID=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
       --header 'Content-Type: application/json' \
@@ -195,7 +201,6 @@ We are making some assumptions and trade-offs to simplify this guide. There is a
 
 1. The server will be "always open" and accepting players
 2. There will be only one type of match
-
 
 ### Setup our Game Server
 
@@ -269,21 +274,24 @@ terraform apply -var-file="vars.tfvar"
 Once terraform finishes, you can go to the AWS EC2 Console, click your instance, and click "Connect to instance." Under the RDP tab, download the
 Remote Desktop File. Then click "Get Password" and paste in the private key from the keypair you created previously.
 
-At this point you can connect to the Windows server using RDP.
+At this point you can connect to the Windows server using RDP by opening the file and logging into the machine with the "Administrator" account and password
+from the AWS console.
 
-<procedure title="Game Server Setup" id="lyra_setup" collapsible="true">
+At this point you should download and prepare to run your game on the server. Instructions for the Lyra Demo are below.
+
+<procedure title="Lyra Game Server Installation" id="lyra_setup" collapsible="true">
     <p>These instructions use the <a href="https://github.com/catenatools/catena-lyra-demo">catena-lyra-demo</a> server.</p>
     <step>Download the server onto the machine. The download can be found <a href="https://catena-public-content.s3.amazonaws.com/WindowsServer.zip">here.</a></step>
     <step>Extract the zip file.</step>
     <step>Run the game server from command prompt: <pre>LyraServer.exe -networkversionoverride=1234</pre></step>
 </procedure>
 
-### Run the Server Sidecar
+## Run the Server Sidecar
 
 The server sidecar enables Catena to be aware of your game server without requiring any changes to the code of the game server itself. It is additionally able to make requests on behalf of your game server
 if you so choose. See [Sidecar](Sidecar.md).
 
-First download the Sidecar to the machine, the latest release can be found [here](https://github.com/CatenaTools/sidecar/releases/tag/v0.0.1). Alternatively, clone and build the sidecar.
+First download the Sidecar to the machine, the latest release can be found [here](https://github.com/CatenaTools/sidecar/releases/). Alternatively, clone and build the sidecar.
 
 In the same directory as the sidecar, add a `config.json.` There is an example in the  sidecar repo here: https://github.com/CatenaTools/sidecar/blob/main/config.json
 
@@ -355,9 +363,16 @@ _For this demo, min and max port should be the same, and be the port your server
 
 After which you can launch the sidecar using `cmd.exe`
 
-At this point you should see the sidecar querying for matches repeatedly. that's it, Catena know's about your server and it is requesting matches We're done!
+```
+sidecar-windows-amd64.exe
+```
 
-You can see this by listing servers:
+At this point you should see the sidecar querying for matches repeatedly. that's it, Catena is aware of your server, and is able to assign matches. So long as your server is running on the same machine as the sidecar you 
+can now enter a match.
+
+> See [Match Broker](Match-Broker.md) to read about how Catena manages servers.
+
+You can see the new server in the list by listing servers from the API:
 
 ```cURL
 curl --location '$CATENA_URL/api/v1/servers' \
@@ -376,6 +391,41 @@ curl --location '$CATENA_URL/api/v1/servers' \
     ]
 }
 ```
+
+## Testing it out
+
+[//]: # (TODO)
+Next we will download the sample game and test it out. In this case we will use a prebuilt version of the catena lyra demo. It can be found [here]().
+
+So long as the server is still running from the last example`, we simply need to launch the game with a few arguments and we're good to go.
+
+Grab a logged-in session token. (Run these in git bash)
+
+```
+SESSION_ID_1=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
+--header 'Content-Type: application/json' \
+--data '{
+"provider": "PROVIDER_UNSAFE",
+"payload": "test01"
+}' | grep "session-*" | cut -d' ' -f2)
+
+curl --location '$CATENA_URL/api/v1/accounts' \
+--header "session-id: $SESSION_ID_1" \
+--header 'Content-Type: application/json' \
+--data '{}'
+
+echo $SESSION_ID
+
+# session-ca8fb665-69df-462f-941e-3341275fd91c
+```
+
+Launch the game
+
+```
+LyraGame.exe -BackendURL $CATENA_URL -session-id $SESSION_ID -networkversionoverride=1234
+```
+
+
 
 Let's take a look at how this works and what the client interactions look like.
 
