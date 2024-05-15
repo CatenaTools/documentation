@@ -215,19 +215,24 @@ Next, configure terraform to provision an ec2 instance where we will run the ser
 ```
 resource aws_instance "server_instance" {
     ami = "ami-0f496107db66676ff"
-    instance_type = "t2.small"
+    instance_type = "t2.medium"
     key_name = "windows-server"
 
     root_block_device {
-        volume_size = 50
+        volume_size = 100
     }
+
+    user_data = <<-EOF
+<powershell>
+# Open port 7777 UDP for the game server
+New-NetFirewallRule -Direction Inbound -LocalPort 7777 -Protocol UDP -Action Allow -DisplayName gameserver
+EOF
 
     vpc_security_group_ids = [var.security_group_id]
     subnet_id = var.subnets[0].id
 
     tags = {
         Name = "${var.workspace_prepend}Windows Server"
-    
     }
 }
 ```
@@ -283,13 +288,14 @@ At this point you should download and prepare to run your game on the server. In
     <p>These instructions use the <a href="https://github.com/catenatools/catena-lyra-demo">catena-lyra-demo</a> server.</p>
     <step>Download the server onto the machine. The download can be found <a href="https://catena-public-content.s3.amazonaws.com/WindowsServer.zip">here.</a></step>
     <step>Extract the zip file.</step>
-    <step>Run the game server from command prompt: <pre>LyraServer.exe -networkversionoverride=1234</pre></step>
+    <step>Run the game server from command prompt: <pre>LyraServer.exe -networkversionoverride=1234 -BackendUrl=localhost:8085</pre></step>
+    <step>Now the game server will communicate with the backend through the sidecar.</step>
 </procedure>
 
 ## Run the Server Sidecar
 
 The server sidecar enables Catena to be aware of your game server without requiring any changes to the code of the game server itself. It is additionally able to make requests on behalf of your game server
-if you so choose. See [Sidecar](Sidecar.md).
+if you so choose. The sidecar will augment connection details and can translate requests between different backends so your server only needs to implement one SDK interface. See [Sidecar](Sidecar.md) for more details.
 
 First download the Sidecar to the machine, the latest release can be found [here](https://github.com/CatenaTools/sidecar/releases/). Alternatively, clone and build the sidecar.
 
@@ -304,10 +310,11 @@ In the same directory as the sidecar, add a `config.json.` There is an example i
       "encoder": "console"
     },
     "event_source": {
-      "use": "virtual_server_event_source",
+      "use": "catena_api_event_source",
       "configs": {
         "catena_api_event_source": {
-          "GrpcListenAddr": "0.0.0.0:8080"
+          "GrpcListenAddr": "0.0.0.0:8080",
+          "HttpListenAddr": ":8085"
         },
         "virtual_server_event_source": {
           "strategy": "continuous_strategy",
@@ -337,7 +344,7 @@ In the same directory as the sidecar, add a `config.json.` There is an example i
     "backend": {
       "configs": {
         "catena_backend": {
-          "url": "https://platform.dev.catenatools.com"
+          "url": "$CATENA_URL"
         },
         "noop_backend": {}
       },
@@ -346,6 +353,7 @@ In the same directory as the sidecar, add a `config.json.` There is an example i
     "sidecar": {
       "DebugPanelAddr": "localhost:8081",
       "MatchManagementStrategy": {
+        "OverrideConnectionDetails": true,
         "AutoPopulateIDs": true
       }
     }
@@ -361,36 +369,24 @@ The key is to set the following fields:
 
 _For this demo, min and max port should be the same, and be the port your server runs on. If you are following this demo, it should be `7777`
 
+> Also set is the `app.event_source.use` field, which is `catena_api_event_source.` If your server implements the [Catena Server Manager](https://github.com/CatenaTools/catena-tools-core/blob/main/Protos/api/v1/catena_server_manager.proto) interface
+> it can make requests to this backend.
+
 After which you can launch the sidecar using `cmd.exe`
 
 ```
 sidecar-windows-amd64.exe
 ```
 
-At this point you should see the sidecar querying for matches repeatedly. that's it, Catena is aware of your server, and is able to assign matches. So long as your server is running on the same machine as the sidecar you 
-can now enter a match.
+At this point you should see the sidecar start up. It will resolve connection details and make requests on behalf of the game server. Our lyra demo is setup to request matches through the sidecar.
 
+> If you don't want to interface with the sidecar or want the quickest path to a working setup, the sidecar can pretend to be a server and request matches on behalf of your server. To do this, simply change `app.event_source.use` to `virtual_server_event_source`. This tells the sidecar to act as a server and request new matches
+> every 5 seconds. So long as your server is listening on port 7777 clients will be able to connect to your server.
+> 
+> If you restart the sidecar with this config, you will see it requesting matches repeatedly.
+> 
 > See [Match Broker](Match-Broker.md) to read about how Catena manages servers.
 
-You can see the new server in the list by listing servers from the API:
-
-```cURL
-curl --location '$CATENA_URL/api/v1/servers' \
---header 'Content-Type: application/json' \
---data '{}'
-```
-
-```json
-{
-    "servers": [
-        {
-            "serverId": "server-a622324b-fdce-4896-8229-16a9edcc1d7c",
-            "requestedMatch": true,
-            "matches": []
-        }
-    ]
-}
-```
 
 ## Testing it out
 
@@ -424,14 +420,67 @@ Launch the game
 ```
 LyraGame.exe -BackendURL $CATENA_URL -session-id $SESSION_ID -networkversionoverride=1234
 ```
+From here, you can navigate through Play Lyra -> Matchmaking -> Elimination. You should see your game enter matchmkaing.
+
+If you enter another client into the matchmaking queue (or enter one via curl or postman) you will see your game and the other client connect to the same server and the game should start!
+
+### What calls are we making?
+
+In order to more deeply understand the workflow, We can examine the workflow by using two command line clients.
+
+Firstly, lets setup our sidecar to constantly request new matches. If you followed the instructions above, the sidecar will not request a match unless the game server requests, one, lets set it up to
+request matches in a loop instead.
+
+Terminate the sidecar on the Game Server Using <shortcut>Ctrl+C</shortcut>.
+
+Next, modify `config.json` to use the `virtual_server_event_source` by changing the "use" field of the `event_source` config.
 
 
+```
+// -- Truncated
+    "event_source": {
+      "use": "virtual_server_event_source",
+      "configs": {
+        "catena_api_event_source": {
+          "GrpcListenAddr": "0.0.0.0:8080",
+          "HttpListenAddr": ":8085"
+        },
+        "virtual_server_event_source": {
+          "strategy": "continuous_strategy",
+          "continuous_strategy": {
+            "RequestInterval": "5s"
+          }
+        }
+      }
+    },
+// -- Truncated
+```
 
-Let's take a look at how this works and what the client interactions look like.
+Restart the sidecar. You should see it repeatedly requesting new matches.
 
-### Client Calls
+You can also see the sidecar's virtual server in the list by listing servers from the API:
 
-First, Login and Create two Accounts. This may be easier in postman, but curl works too!
+```cURL
+curl --location '$CATENA_URL/api/v1/servers' \
+--header 'Content-Type: application/json' \
+--data '{}'
+```
+
+```json
+{
+    "servers": [
+        {
+            "serverId": "server-a622324b-fdce-4896-8229-16a9edcc1d7c",
+            "requestedMatch": true,
+            "matches": []
+        }
+    ]
+}
+```
+
+Next, lets test out matchmaking!
+
+First, Login and Create two Accounts. This may be easier in postman, but curl works too. Be sure to do it in two terminal windows, or ensure you are applying session ids consistently.
 
 ```cURL
 SESSION_ID_1=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
@@ -448,20 +497,20 @@ curl --location '$CATENA_URL/api/v1/accounts' \
 ```
 
 ```cURL
-SESSION_ID_2=$(curl -D - -sS --location '$CATENA_URL.catenatools.com/api/v1/authentication/login' \
+SESSION_ID_2=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
       --header 'Content-Type: application/json' \
       --data '{
       "provider": "PROVIDER_UNSAFE",
       "payload": "test01"
   }' | grep "session-*" | cut -d' ' -f2)
 
-curl --location '$CATENA_URL.catenatools.com/api/v1/accounts' \
+curl --location '$CATENA_URL/api/v1/accounts' \
 --header "session-id: $SESSION_ID_2" \
 --header 'Content-Type: application/json' \
 --data '{}'
 ```
 
-Take note of the two account ids.
+Take note of the two account ids which will be returned by the second curl command.
 
 Next, subscribe to events for one account, this is how we will get matchmaking notifications:
 
@@ -515,14 +564,21 @@ curl --location '$CATENA_URL/api/v1/matchmaking/start' \
 If all goes well you should see your players found a match and were assigned to a server!
 
 ```
-joeylyon@Joeys-MacBook-Pro catena-tools-core % curl --location --request GET '$CATENA_URL/api/v1/events/subscribe' \
+curl --location --request GET '$CATENA_URL/api/v1/events/subscribe' \
 --header "session-id: $SESSION_ID_1" \
 --header 'Content-Type: application/json' \
 --data '{}'
+
 {"event":{"eventId":"event-0813d3d5-7033-4714-bddf-5a4e481985c4","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","emptyEvent":{}}}
-{"event":{"eventId":"event-a6c101ec-e0b2-4707-a3c6-92edef38921d","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_IN_PROGRESS","message":"Ticket 0b4a0ca2-7da6-4d5c-ae9d-e3340f5487c1 started matchmaking","ticketId":"0b4a0ca2-7da6-4d5c-ae9d-e3340f5487c1"}}}
-{"event":{"eventId":"event-c01c1210-c05e-497c-8539-560d393c3030","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER","message":"Finding server for ticket ca4a506a-b279-4abb-b971-794864d99354","ticketId":"ca4a506a-b279-4abb-b971-794864d99354"}}}
 {"event":{"eventId":"event-7faf0362-70ae-453b-b3ac-8656c0fb6888","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER","message":"Finding server for ticket 0b4a0ca2-7da6-4d5c-ae9d-e3340f5487c1","ticketId":"0b4a0ca2-7da6-4d5c-ae9d-e3340f5487c1"}}}
 {"event":{"eventId":"event-d25eb479-257e-462a-b51f-4f983b65e03d","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED","message":"Server found and matchmaking completed for match match-c2420756-a298-4066-8ee2-7f5fb9891900","ticketId":"","serverConnectionInfo":{"ip":"34.228.12.6:7777","port":0,"serverId":""}}}}
-{"event":{"eventId":"event-d25eb479-257e-462a-b51f-4f983b65e03d","recipientId":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","matchmakingStatusUpdateEvent":{"type":"MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED","message":"Server found and matchmaking completed for match match-c2420756-a298-4066-8ee2-7f5fb9891900","ticketId":"","serverConnectionInfo":{"ip":"34.228.12.6:7777","port":0,"serverId":""}}}}
 ```
+
+### Wrap it 
+
+This tutorial covered several concepts in Catena's Ecosystem. To read about them in more detail use the links below:
+
+* [Matchmaking](Matchmaking.md)
+* [Match Broker](Match-Broker.md)
+* [Sidecar](Sidecar.md)
+* [Accounts](Accounts.md)
