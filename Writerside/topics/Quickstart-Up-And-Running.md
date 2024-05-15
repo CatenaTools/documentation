@@ -25,18 +25,18 @@ By the end of this quickstart, you will be able to run your game, or a sample ga
 What you will need before following the steps in this guide.
 
 * Access to Catena Tools
-* A Game with a client server model or the [Catena Lyra Demo](https://github.com/catenaTools/catena-lyra-demo)
-* The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/aws/catena-core)
+* A Game with a client/dedicated game server model or the [Catena Lyra Demo](https://github.com/catenaTools/catena-lyra-demo)
+* The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/AWS/catena-core)
 * [Terraform](https://www.terraform.io) V1.71 or higher
 * An AWS account
 * Git bash (optional)
-* A domain name that you control and can configure in route53
+* A domain name that you control and can configure in [AWS Route 53](https://aws.amazon.com/route53/)
 
 ## Setup the Infrastructure
 
-Prior to running the Terraform code, set up a hosted zone for the domain that you will use. In the example, this will be `catenatools.com.`
+Prior to provisioning any infrastructure, you will need to set up a hosted zone in Route 53 for the domain that you will use. In the example, this will be `catenatools.com.`
 
-See [Creating a public hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html). The Terraform configuration will create a few subdomain routes on this url.
+See [Creating a public hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html). The Terraform configuration in the AWS Infrastructure Template will create a few subdomain routes on this URL.
 
 Next, clone the `infrastructure` repo and open it in your favorite editor. We will be working out of the `aws/catena-core/` directory.
 
@@ -48,22 +48,24 @@ cd infrastructure/aws
 
 This template sets up a working [dokku](https://dokku.com) instance on the domain you select, along with a few additional settings to simplify deploying and running the platform, including an IAM role for `aws ssm` logins and an Elastic IP.
 
+> We set things up this way to make deploying your Catena instance as simple as running `git push`. You don't need to worry too much about all of the infrastructure if you don't want to. This tutorial will outline the pieces that are important for you to understand in order to get up and running.
+
 ### Configure Terraform
 
-The Terraform configuration defaults to using an s3 bucket to store it's state, this must be updated to an s3 bucket on your account. You may create this s3 bucket in the AWS Console.
+The Terraform configuration defaults to using an S3 bucket to store it's state, this must be updated to an S3 bucket on your account. You may create this S3 bucket in the AWS Console.
 
-Open `terraform_config.tf` and modify the following portion to match your s3 bucket, or remove it to store state locally.
+Open `terraform_config.tf` and modify the following portion to match your S3 bucket, or remove it to store state locally.
 
 ```
   backend "s3" {
       bucket  = "catena-terraform-state"
-      key     = "updated-infra/terraform.tfstate"
+      key     = "updated-infra/terraform.tfstte"
       region  = "us-east-1"
       profile = "catena_admin"
   }
 ```
 
-Be sure to replace `bucket` with your bucket's name, `region` with your region, and `profile` with your local [aws profile](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configure/index.html).
+Be sure to replace `bucket` with your bucket's name, `region` with your region, and `profile` with your local [AWS Profile](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configure/index.html).
 
 > If you do not need to back up or share your terraform state, you can remove the "backend" block and terraform will store it's state locally.
 
@@ -123,12 +125,12 @@ git clone git@github.com:CatenaTools/catena-tools-core.git
 cd catena-tools-core/
 ```
 
-Then add a new remote and do a git push, this will deploy the `HEAD` of the repo. The command to do so is the value of the `add_doku_remote_command` output.
+Then add a new remote and do a git push, this will deploy the `HEAD` of the repo. The command to do so is the value of the `add_doku_remote_command` output. The push command is platform specific, use the `{powershell,unix,windows}_deploy_command` output above.
 
 **Git Bash**
 ```bash
 git remote add dokku dokku@dev.catenatools.com:platform
-git push dokku HEAD:main
+git push dokku HEAD:main ## Replace this with your platform's deploy command
 ```
 
 Dokku will then show deploy logs:
@@ -276,7 +278,7 @@ terraform plan -var-file="vars.tfvar"
 terraform apply -var-file="vars.tfvar"
 ```
 
-Once terraform finishes, you can go to the AWS EC2 Console, click your instance, and click "Connect to instance." Under the RDP tab, download the
+Once Terraform finishes, you can go to the AWS EC2 Console, click your instance, and click "Connect to instance." Under the RDP tab, download the
 Remote Desktop File. Then click "Get Password" and paste in the private key from the keypair you created previously.
 
 At this point you can connect to the Windows server using RDP by opening the file and logging into the machine with the "Administrator" account and password
@@ -286,7 +288,7 @@ At this point you should download and prepare to run your game on the server. In
 
 <procedure title="Lyra Game Server Installation" id="lyra_setup" collapsible="true">
     <p>These instructions use the <a href="https://github.com/catenatools/catena-lyra-demo">catena-lyra-demo</a> server.</p>
-    <step>Download the server onto the machine. The download can be found <a href="https://catena-public-content.s3.amazonaws.com/WindowsServer.zip">here.</a></step>
+    <step>Download the server onto the machine. The download can be found <a href="https://catena-public-content.S3.amazonaws.com/WindowsServer.zip">here.</a></step>
     <step>Extract the zip file.</step>
     <step>Run the game server from command prompt: <pre>LyraServer.exe -networkversionoverride=1234 -BackendUrl=localhost:8085</pre></step>
     <step>Now the game server will communicate with the backend through the sidecar.</step>
@@ -367,7 +369,7 @@ The key is to set the following fields:
 `app.resolver.configs.ec2_resolver.Min` - The min port to use for clients to connect.
 `app.resolver.configs.ec2_resolver.Max` - The max port to use for clients to connect.
 
-_For this demo, min and max port should be the same, and be the port your server runs on. If you are following this demo, it should be `7777`
+_For this demo, min and max port should be the same, and be the port your server runs on. If you are following this demo, it should be `7777`_
 
 > Also set is the `app.event_source.use` field, which is `catena_api_event_source.` If your server implements the [Catena Server Manager](https://github.com/CatenaTools/catena-tools-core/blob/main/Protos/api/v1/catena_server_manager.proto) interface
 > it can make requests to this backend.
