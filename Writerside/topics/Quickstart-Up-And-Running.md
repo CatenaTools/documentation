@@ -26,7 +26,7 @@ What you will need before following the steps in this guide.
 
 * Access to Catena Tools
 * A Game with a client/dedicated game server model or the [Catena Lyra Demo](https://github.com/catenaTools/catena-lyra-demo)
-* The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/AWS/catena-core)
+* The Catena Tools [AWS Infrastructure Template](https://github.com/CatenaTools/infrastructure/tree/main/aws/catena-core)
 * [Terraform](https://www.terraform.io) V1.71 or higher
 * An AWS account
 * Git bash (optional)
@@ -392,10 +392,9 @@ At this point you should see the sidecar start up. It will resolve connection de
 
 ## Testing it out
 
-[//]: # (TODO)
-Next we will download the sample game and test it out. In this case we will use a prebuilt version of the catena lyra demo. It can be found [here]().
+Next we will download the sample game and test it out. In this case we will use a prebuilt version of the catena lyra demo. It can be found [here](https://catena-public-content.s3.amazonaws.com/WindowsClient.zip).
 
-So long as the server is still running from the last example`, we simply need to launch the game with a few arguments and we're good to go.
+So long as the server is still running from the last example`, we simply need to launch the game with a few arguments, and we're good to go.
 
 Grab a logged-in session token. (Run these in git bash)
 
