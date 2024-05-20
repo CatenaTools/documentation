@@ -13,7 +13,3 @@ Through a combination of these components, the sidecar can translate your server
 
 > The following tutorials utilize the Sidecar:
 > <include from="Sidecar-Snippets-Library.md" element-id="list-of-sidecar-tutorials"/>
-
-## Configuring the Sidecar
-
-The sidecar uses a json file `config.json` which sits next to the sidecar bin``ary.
