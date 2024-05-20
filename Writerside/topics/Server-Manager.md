@@ -72,9 +72,32 @@ has/should end. After this point the server may shut down, or it may request a n
 through its own channel with client(s) or just end, skipping this call, but this will result in the Catena server
 manager hitting timeouts before cleaning up tracking of servers, making it less effective.
 
-A future extension may allow for any/all the following:
+## Game server endpoint hints
 
-- A hint in the request to the backend server manager that the game server intends to shut down after this call and
-  should no longer be used in capacity calculations
-- A hint in the response from the backend server manager to the game server indicating the game server should shut down
-  regardless of whether it can run another match.
+Some game server request or response messages can contain hints. These hints are entirely optional but may make certain
+arrangements more efficient. Hints are predefined flags, shared across the server manager API, which may also be
+combined with each other. Hints may be sent with a request or response but interpretation is up the backend/SDK
+implementation, situation, and message type. Hints may be ignored when they are not supported or are not
+relevant to the situation or message type.
+
+> Since they are entirely optional, an SDK or client should not require that a particular hint is available to function
+> correctly.
+
+For example, the Catena match broker does not assume a game server exits after it calls `EndMatch`; it continues to
+track that server as available in case it can run another match, backfill itself, etc. However, if a game server _does_
+exit after `EndMatch`, then the broker may wait to start a new game server when a new match arrives, believing there is
+an idle game server that will soon call `RequestMatch`. After a delay, the match broker will identify the new match has
+not been picked up, more capacity is required, and it will start a new game server.
+
+This inefficiency/delay can be avoided if the game server adds `HintFlag.Shutdown` to the hints in its `EndMatch`
+request when it knows it will exit afterward. The Catena match broker will immediately stop tracking the game server and
+avoid unnecessary delays when the next new match arrives.
+
+### Available hints
+
+These hints are implemented in the Catena [match broker](Match-Broker.md).
+
+Shutdown
+: This flag indicates to the backend that the game server will shut down after it receives a response to `EndMatch`.
+: This flag indicates to the game server that the backend would like it to shut down after it receives a response
+to `EndMatch`.
