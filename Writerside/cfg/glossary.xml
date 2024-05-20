@@ -7,4 +7,6 @@
     <term name="JMESPath">JMESPath is a query language for JSON. It is used in the Catena match broker and server manager for filtering matches by their properties.</term>
     <term name="services list">The list of service names or group names to include/exclude when building and starting a Catena node. It may be specified in the configuration or on the command line.</term>
     <term name="game server">Usually hosted in a cloud environment using a client/server model, this is your game logic responsible for players, world simulation and gameplay.</term>
+    <term name="backend platform">The non-game server portions of your game, usually supporting things like matchmaking, parties, accounts and inventory.</term>
+    <term name="fleet manager">A service or tool responsible for allocating and managing a collection of game servers.</term>
 </terms>

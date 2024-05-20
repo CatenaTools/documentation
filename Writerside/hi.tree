@@ -18,7 +18,9 @@
             <toc-element topic="Resolver.md"/>
             <toc-element hidden="true" topic="Sidecar-Snippets-Library.md"/>
         </toc-element>
-        <toc-element topic="Match-Broker.md"/>
+        <toc-element topic="Match-Broker.md">
+            <toc-element hidden="true" topic="MatchBroker-Snippets-Library.md"/>
+        </toc-element>
         <toc-element topic="Server-Manager.md"/>
         <toc-element topic="Matchmaking.md"/>
         <toc-element topic="Entitlements.md">
