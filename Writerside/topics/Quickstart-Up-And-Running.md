@@ -52,9 +52,9 @@ This template sets up a working [dokku](https://dokku.com) instance on the domai
 
 ### Configure Terraform
 
-The Terraform configuration defaults to using an S3 bucket to store it's state, this must be updated to an S3 bucket on your account. You may create this S3 bucket in the AWS Console.
+The Terraform configuration defaults to using an S3 bucket to store it's state. You may create an S3 bucket in your account with the AWS Console and update the configuration or remove the S3 configuration to store state locally.
 
-Open `terraform_config.tf` and modify the following portion to match your S3 bucket, or remove it to store state locally.
+Open `terraform_config.tf` and modify the following portion to match your S3 bucket if you have created one.
 
 ```
   backend "s3" {
@@ -69,7 +69,7 @@ Be sure to replace `bucket` with your bucket's name, `region` with your region, 
 
 > If you do not need to back up or share your terraform state, you can remove the "backend" block and terraform will store it's state locally.
 
-Next, we need to set some specific-to-you configurations.
+Next, we need to set some configurations specific to your game.
 
 Create a `vars.tfvars` file similar to the following:
 
@@ -190,14 +190,13 @@ curl --location '$CATENA_URL/api/v1/accounts' \
 # {"account":{"id":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","displayName":"test53","authRole":"user","metadata":{},"providers":["PROVIDER_UNSAFE"]}}
 ```
 
-[//]: # (TODO: Add the link here.)
-The full postman collection can be found here. Set the http-host environment variable to your domain prior to use.
+The full postman collection can be found [here](https://github.com/CatenaTools/catena-tools-core/tree/main/scripts). Set the http-host environment variable to your domain prior to use.
 
 ## Running your game in a multiplayer configuration
 
 Next we will use the server [Sidecar](Sidecar.md) along with our backend to support a multiplayer workflow.
 
-> The sidecar enables you to configure your game to work with one API interface, and deploy it on multiple fleet managers. It can also make requests on behalf of the game server, enabling integrations which require zero server-side integration.
+> The sidecar enables you to configure your game to work with one API interface, and deploy it on multiple fleet managers. It can also make requests on behalf of the game server reducing the burden to set up a dedicated game server.
 
 We are making some assumptions and trade-offs to simplify this guide. There is an example implementation in our [catena-lyra-demo repo.](https://github.com/CatenaTools/catena-lyra-demo/tree/main)
 
@@ -296,12 +295,14 @@ At this point you should download and prepare to run your game on the server. In
 
 ## Run the Server Sidecar
 
-The server sidecar enables Catena to be aware of your game server without requiring any changes to the code of the game server itself. It is additionally able to make requests on behalf of your game server
+The server sidecar enables Catena to be aware of your game server without requiring any changes to the code of the game server itself. Additionally, it is able to make requests on behalf of your game server
 if you so choose. The sidecar will augment connection details and can translate requests between different backends so your server only needs to implement one SDK interface. See [Sidecar](Sidecar.md) for more details.
 
-First download the Sidecar to the machine, the latest release can be found [here](https://github.com/CatenaTools/sidecar/releases/). Alternatively, clone and build the sidecar.
+First download the Sidecar to the machine you are running the game server on. The latest release can be found [here](https://github.com/CatenaTools/sidecar/releases/). Be sure to download the version for your platform. If you are following this tutorial, use the Windows x64 Version. 
 
-In the same directory as the sidecar, add a `config.json.` There is an example in the  sidecar repo here: https://github.com/CatenaTools/sidecar/blob/main/config.json
+Alternatively, if you so choose, you can clone and build the sidecar.
+
+In the same directory where the sidecar compiled binary is located, add a `config.json.` There is an example in the [sidecar repo](https://github.com/CatenaTools/sidecar/blob/main/config.json).
 
 ```json
 {
@@ -365,7 +366,7 @@ In the same directory as the sidecar, add a `config.json.` There is an example i
 
 The key is to set the following fields:
 
-`app.backend.catena_backend.url` field, which must point to your deployed instance url.
+`app.backend.catena_backend.url` The url of your deployed backend.
 `app.resolver.configs.ec2_resolver.Min` - The min port to use for clients to connect.
 `app.resolver.configs.ec2_resolver.Max` - The max port to use for clients to connect.
 
@@ -376,9 +377,14 @@ _For this demo, min and max port should be the same, and be the port your server
 
 After which you can launch the sidecar using `cmd.exe`
 
-```
-sidecar-windows-amd64.exe
-```
+<procedure collapsible="true" title="Run the sidecar">
+<step>
+Press <shortcut>Ctrl+R</shortcut> or Start -> Run
+</step>
+<step>Type cmd.exe and click run</step>
+<step>Change to the directory you are running the sidecar from <code>cd C:\Path\To\sidecar-windows-amd64.exe</code></step>
+<step>Launch the sidecar <code>sidecar-windows-amd64.exe</code></step>
+</procedure>
 
 At this point you should see the sidecar start up. It will resolve connection details and make requests on behalf of the game server. Our lyra demo is setup to request matches through the sidecar.
 
@@ -394,7 +400,7 @@ At this point you should see the sidecar start up. It will resolve connection de
 
 Next we will download the sample game and test it out. In this case we will use a prebuilt version of the catena lyra demo. It can be found [here](https://catena-public-content.s3.amazonaws.com/WindowsClient.zip).
 
-So long as the server is still running from the last example`, we simply need to launch the game with a few arguments, and we're good to go.
+So long as the server is still running from the last example, we simply need to launch the game with a few arguments, and we're good to go.
 
 Grab a logged-in session token. (Run these in git bash)
 
@@ -421,7 +427,7 @@ Launch the game
 ```
 LyraGame.exe -BackendURL $CATENA_URL -session-id $SESSION_ID -networkversionoverride=1234
 ```
-From here, you can navigate through Play Lyra -> Matchmaking -> Elimination. You should see your game enter matchmkaing.
+From here, you can navigate through Play Lyra -> Matchmaking -> Elimination. You should see your game enter matchmaking.
 
 If you enter another client into the matchmaking queue (or enter one via curl or postman) you will see your game and the other client connect to the same server and the game should start!
 
