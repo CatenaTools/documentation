@@ -5,7 +5,7 @@ Decoupling the match broker from the matchmaker allows them both to operate inde
 
 Specifically, a match broker is responsible for picking up match-containing `new-match` events produced by a matchmaker and presenting them to or signalling to other components such as game clients or servers. A match broker is not defined by an API, but by this common event type/tag and a common `Match` payload. A match broker implementation only needs to adhere to utilizing these types/tags. The default match broker is `CatenaMatchBroker`.
 
-[Match broker `Match` reference](https://github.com/CatenaTools/catena-tools-core/blob/main/Protos/api/v1/match_broker.proto)
+[Match broker `Match` reference](https://github.com/CatenaTools/catena-tools-core/blob/main/catena-tools-core/Protos/api/v1/match_broker.proto)
 
 ## Catena Match Broker
 
