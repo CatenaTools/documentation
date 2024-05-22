@@ -67,7 +67,7 @@ Open `terraform_config.tf` and modify the following portion to match your S3 buc
 
 Be sure to replace `bucket` with your bucket's name, `region` with your region, and `profile` with your local [AWS Profile](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configure/index.html).
 
-> If you do not need to back up or share your terraform state, you can remove the "backend" block and terraform will store it's state locally.
+> If you do not need to back up or share your Terraform state, you can remove the "backend" block and Terraform will store it's state locally.
 
 Next, we need to set some configurations specific to your game.
 
@@ -129,7 +129,7 @@ Then add a new remote and do a git push, this will deploy the `HEAD` of the repo
 
 **Git Bash**
 ```bash
-git remote add dokku dokku@dev.catenatools.com:platform
+git remote add dokku dokku@dev.catenatools.com:platform ## Replace this with the "add_dokku_remote_command" output by Terraform
 git push dokku HEAD:main ## Replace this with your platform's deploy command
 ```
 
@@ -190,7 +190,7 @@ curl --location '$CATENA_URL/api/v1/accounts' \
 # {"account":{"id":"account-f378e3c2-8760-4059-ba91-69f5343dfb48","displayName":"test53","authRole":"user","metadata":{},"providers":["PROVIDER_UNSAFE"]}}
 ```
 
-The full postman collection can be found [here](https://github.com/CatenaTools/catena-tools-core/tree/main/scripts). Set the http-host environment variable to your domain prior to use.
+The full Postman collection can be found [here](https://github.com/CatenaTools/catena-tools-core/tree/main/scripts). Set the http-host environment variable to your domain prior to use.
 
 ## Running your game in a multiplayer configuration
 
@@ -211,63 +211,17 @@ First create a key pair in the AWS console for remote access to the machine:
 
 ![access_key_quickstart](access_key_quickstart.png)
 
-Next, configure terraform to provision an ec2 instance where we will run the server, this should be in `ec2/main.tf`
+Next, configure terraform to provision an ec2 instance where we will run the server. we have provided a template for this in the `aws/ec2-gameserver` directory of the infrastructure repo.
 
-```
-resource aws_instance "server_instance" {
-    ami = "ami-0f496107db66676ff"
-    instance_type = "t2.medium"
-    key_name = "windows-server"
+Similar to the previous infrastructure, we must set some variables. Create another `vars.tfvar` file with the following contents:
 
-    root_block_device {
-        volume_size = 100
-    }
-
-    user_data = <<-EOF
-<powershell>
-# Open port 7777 UDP for the game server
-New-NetFirewallRule -Direction Inbound -LocalPort 7777 -Protocol UDP -Action Allow -DisplayName gameserver
-EOF
-
-    vpc_security_group_ids = [var.security_group_id]
-    subnet_id = var.subnets[0].id
-
-    tags = {
-        Name = "${var.workspace_prepend}Windows Server"
-    }
-}
-```
-
-Additionally, we should add additional exposed ports to the security group:
-
-> For the purpose of this tutorial, we can add these to the existing security group, but in production it is a better choice to have 
-> separate security groups for your game servers and to not expose RDP
-
-```
-    ingress {
-        description = "Game Server Traffic"
-        from_port   = 7777
-        to_port     = 7777
-        protocol    = "udp"
-        cidr_blocks = ["0.0.0.0/0"] 
-    }
-
-    ingress {
-        description = "RDP Traffic"
-        from_port   = 3389
-        to_port     = 3389
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress {
-        description = "RDP UDP Traffic"
-        from_port   = 3389
-        to_port     = 3389
-        protocol    = "udp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
+```hcl
+aws_profile="catena_admin"
+aws_region="us-east-1"
+game_server_os="windows"                               # Defaults to linux
+ec2_instance_size="t2.medium"
+ssh_private_key_path="~/.ssh/catena_deploy_key"        # Your private key
+ssh_public_key_path="~/.ssh/catena_deploy_key.pub"     # Your public key
 ```
 
 Next plan and apply your infrastructure
@@ -291,6 +245,8 @@ At this point you should download and prepare to run your game on the server. In
     <step>Extract the zip file.</step>
     <step>Run the game server from command prompt: <pre>LyraServer.exe -networkversionoverride=1234 -BackendUrl=localhost:8085</pre></step>
     <step>Now the game server will communicate with the backend through the sidecar.</step>
+    
+> To copy your game server to the remote server, either copy and paste through remote desktop if you are using windows, or use `scp` if you are using a linux machine. `scp -i ~/.ssh/catena_deploy_key gameserver.zip user@remote_host:/remote/directory/`
 </procedure>
 
 ## Run the Server Sidecar
@@ -398,35 +354,50 @@ At this point you should see the sidecar start up. It will resolve connection de
 
 ## Testing it out
 
-Next we will download the sample game and test it out. In this case we will use a prebuilt version of the catena lyra demo. It can be found [here](https://catena-public-content.s3.amazonaws.com/WindowsClient.zip).
+Next we will download the sample game and test it out. In this case we will use a prebuilt version of the Catena Lyra Demo. It can be found [here](https://catena-public-content.s3.amazonaws.com/WindowsClient.zip).
 
 So long as the server is still running from the last example, we simply need to launch the game with a few arguments, and we're good to go.
 
-Grab a logged-in session token. (Run these in git bash)
+Grab a logged-in session token. Catena has a multi step login process, since not all operations will require a full account.
 
-```
+<procedure title="Log into Catena">
+<step>
+    Grab a session token.
+<code-block lang="bash">
 SESSION_ID_1=$(curl -D - -sS --location '$CATENA_URL/api/v1/authentication/login' \
---header 'Content-Type: application/json' \
---data '{
-"provider": "PROVIDER_UNSAFE",
-"payload": "test01"
+    --header 'Content-Type: application/json' \
+    --data '{
+    "provider": "PROVIDER_UNSAFE",
+    "payload": "test01"
 }' | grep "session-*" | cut -d' ' -f2)
+    </code-block>
+</step>
+<step>
+Create an account for that session.
 
+<code-block lang="bash">
 curl --location '$CATENA_URL/api/v1/accounts' \
---header "session-id: $SESSION_ID_1" \
---header 'Content-Type: application/json' \
---data '{}'
-
-echo $SESSION_ID
-
+    --header "session-id: $SESSION_ID_1" \
+    --header 'Content-Type: application/json' \
+    --data '{}'
+</code-block>
+</step>
+<step>View the new session token.
+<code-block lang="bash">
+echo $SESSION_ID_1
 # session-ca8fb665-69df-462f-941e-3341275fd91c
-```
+</code-block>
+</step>
+</procedure>
 
 Launch the game
 
 ```
-LyraGame.exe -BackendURL $CATENA_URL -session-id $SESSION_ID -networkversionoverride=1234
+LyraGame.exe -BackendURL $CATENA_URL -networkversionoverride=1234
 ```
+
+> By default, catena will log in with a test account, if you wish to login with another account a login token can be provided on the command line by passing a `-session-id $SESSION_ID` argument.
+
 From here, you can navigate through Play Lyra -> Matchmaking -> Elimination. You should see your game enter matchmaking.
 
 If you enter another client into the matchmaking queue (or enter one via curl or postman) you will see your game and the other client connect to the same server and the game should start!
