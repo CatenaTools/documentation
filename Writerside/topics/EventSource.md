@@ -7,13 +7,20 @@ Currently, Catena supports the following event sources:
 
 <snippet id="event-source-list">
 <ul>
-<li>Catena Backend Event Source - An event source which matches the <a href="Server-Manager.md">Catena Server Manager</a> API.</li>
+<li>Catena API Event Source - An event source which matches the <a href="Server-Manager.md">Catena Server Manager</a> API.</li>
 <li>Virtual Server Event Source - A mock server for simulating calls or doing zero-code implementations</li>
 </ul>
 </snippet>
 
-
 <chapter title="Why use a Virtual Server?" collapsible="true">
+<p>
+A virtual server can be used instead of implementing a backend server api on your game server for development. 
+
+The sidecar will pretend to be your server, and follow a match management strategy as defined by the `strategy` in the configuration.
+
+`continuous_strategy` for example will repeatedly request a match, and if one is returned, report that match as ready. If you run a game server next to this sidecar, the effect will be 
+a continuous stream of new matches being sent to that server.
+</p>
 
 </chapter>
 
@@ -51,19 +58,44 @@ Below is an example configuration for an event source in the sidecar.
 
 ## Catena API Event Source
 
-This event source will make calls to the backend on behalf of the sidecar. Their behavior is documented below, & the protobuf definitions can be found [here](https://github.com/CatenaTools/sidecar/blob/main/sidecar/proto/catena-tools-core/api/v1/catena_server_manager.proto).
+This event source will make calls to the backend on behalf of the sidecar. In practice that means a game server can make http or grpc requests to the sidecar, and it will augment those requests with necessary data and pass them to the
+backend for you.
+
+An example of how this works is shown below:
+
+
+```mermaid
+sequenceDiagram
+    participant A as Game Server
+    participant B as Event Source
+    participant C as Internal Translation
+    participant D as Sidecar
+    participant E as Backend
+
+    A->>B: RequestMatchRequest
+    B->>C: RequestMatchRequest
+    C->>D: RequestMatch
+    D->>E: RequestMatch
+    E->>D: Match
+    D->>C: Match
+    C->>B: RequestMatchResponse
+    B->>A: RequestMatchResponse
+    
+```
+
+### Catena API Event Source Endpoints
 
 <include from="MatchBroker-Snippets-Library.md" element-id="request-match-request"></include>
 
-For request match, we will also register the server with the sidecar. If no ServerID is specified, one will be generated.
+For `RequestMatch`, we will also register the server with the sidecar. If no ServerID is specified, one will be generated.
 
 <include from="MatchBroker-Snippets-Library.md" element-id="match-ready-request"></include>
 
-Match Ready can be sent with no Match ID. If it is omitted, the sidecar will assume one match per server and handle it automatically.
+`MatchReady` can be sent with no Match ID. If it is omitted, the sidecar will assume one match per server and handle it automatically.
 
 <include from="MatchBroker-Snippets-Library.md" element-id="end-match-request"></include>
 
-Match end can be sent with no Match ID, the sidecar will manage it manually.
+`MatchEnd` can be sent with no Match ID, the sidecar will manage it manually.
 
 ### Config Fields
 
