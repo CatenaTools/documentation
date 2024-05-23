@@ -10,13 +10,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: catenatools/catena-tools-core
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CATENA_PAT_GH }}
           path: catena-tools-core
 
       - uses: actions/checkout@v4
         with:
           repository: catenatools/documentation
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CATENA_PAT_GH }}
           path: documentation
 
       - uses: bufbuild/buf-setup-action@v1
@@ -41,7 +41,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           path: documentation
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CATENA_PAT_GH }}
           commit-message: 'update swagger docs'
           title: 'Update swagger docs'
           body: 'Automated update of swagger docs.'
