@@ -12,6 +12,11 @@ Currently, Catena supports the following event sources:
 </ul>
 </snippet>
 
+
+<chapter title="Why use a Virtual Server?" collapsible="true">
+
+</chapter>
+
 ## Configuration
 
 Below is an example configuration for an event source in the sidecar.
@@ -46,7 +51,7 @@ Below is an example configuration for an event source in the sidecar.
 
 ## Catena API Event Source
 
-This event source will make calls to the backend on behalf of the sidecar. Their behavior is documented below, & the full spec can be found [here](https://github.com/CatenaTools/sidecar/blob/main/sidecar/proto/catena-tools-core/api/v1/catena_server_manager.proto).
+This event source will make calls to the backend on behalf of the sidecar. Their behavior is documented below, & the protobuf definitions can be found [here](https://github.com/CatenaTools/sidecar/blob/main/sidecar/proto/catena-tools-core/api/v1/catena_server_manager.proto).
 
 <include from="MatchBroker-Snippets-Library.md" element-id="request-match-request"></include>
 
