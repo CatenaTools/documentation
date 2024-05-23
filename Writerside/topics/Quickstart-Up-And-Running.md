@@ -43,7 +43,7 @@ Next, clone the `infrastructure` repo and open it in your favorite editor. We wi
 **Git Bash**
 ```bash
 git clone git@github.com:CatenaTools/infrastructure.git
-cd infrastructure/aws
+cd infrastructure/aws/catena-core/
 ```
 
 This template sets up a working [dokku](https://dokku.com) instance on the domain you select, along with a few additional settings to simplify deploying and running the platform, including an IAM role for `aws ssm` logins and an Elastic IP.
@@ -207,11 +207,7 @@ We are making some assumptions and trade-offs to simplify this guide. There is a
 
 We will be running our game on an AWS EC2 Instance running Windows Server, these instructions also work with a Linux server using minor modifications.
 
-First create a key pair in the AWS console for remote access to the machine:
-
-![access_key_quickstart](access_key_quickstart.png)
-
-Next, configure terraform to provision an ec2 instance where we will run the server. we have provided a template for this in the `aws/ec2-gameserver` directory of the infrastructure repo.
+Next, configure terraform to provision an ec2 instance where we will run the server. We have provided a template for this in the `aws/ec2-gameserver` directory of the infrastructure repo.
 
 Similar to the previous infrastructure, we must set some variables. Create another `vars.tfvar` file with the following contents:
 
@@ -232,12 +228,12 @@ terraform apply -var-file="vars.tfvar"
 ```
 
 Once Terraform finishes, you can go to the AWS EC2 Console, click your instance, and click "Connect to instance." Under the RDP tab, download the
-Remote Desktop File. Then click "Get Password" and paste in the private key from the keypair you created previously.
+Remote Desktop File. 
+
+You can retrieve the password for the administrator account by running: `terraform output -raw ec2_windows_password`.
 
 At this point you can connect to the Windows server using RDP by opening the file and logging into the machine with the "Administrator" account and password
-from the AWS console.
-
-At this point you should download and prepare to run your game on the server. Instructions for the Lyra Demo are below.
+from the AWS console. Subsequently, you should download and prepare to run your game on the server. Instructions for the Lyra Demo are below.
 
 <procedure title="Lyra Game Server Installation" id="lyra_setup" collapsible="true">
     <p>These instructions use the <a href="https://github.com/catenatools/catena-lyra-demo">catena-lyra-demo</a> server.</p>
