@@ -24,7 +24,8 @@
     <toc-element topic="Parties.md">
         <toc-element topic="Parties-API.md"/>
     </toc-element>
-    <toc-element topic="Matchmaking.md"/>
+    <toc-element topic="Matchmaking.md">
+    </toc-element>
     <toc-element topic="Services.md">
         <toc-element topic="Sidecar.md"/>
         <toc-element topic="Match-Broker.md"/>
