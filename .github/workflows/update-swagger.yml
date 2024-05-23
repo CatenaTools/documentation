@@ -20,6 +20,8 @@ jobs:
           path: documentation
 
       - uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.CATENA_PAT_GH }}
   
       - run: cd catena-tools-core && buf generate
       # Copy the openapi/ directory from catena-tools core to the Writerside/apispec/ directory in documentation/
