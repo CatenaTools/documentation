@@ -1,3 +1,3 @@
-# Concepts
+# Catena Core
 
 Start typing here...

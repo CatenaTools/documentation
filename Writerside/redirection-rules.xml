@@ -22,4 +22,24 @@
         <description>Created after removal of "Service Registration" from Catena Tools</description>
         <accepts>Service-Registration.html</accepts>
     </rule>
+    <rule id="40c03974">
+        <description>Created after removal of "Unstable Features" from Catena Tools</description>
+        <accepts>Unstable-Features.html</accepts>
+    </rule>
+    <rule id="6ae75f31">
+        <description>Created after removal of "Full API Specification" from Catena Tools</description>
+        <accepts>API-Specification.html</accepts>
+    </rule>
+    <rule id="364bacbb">
+        <description>Created after removal of "Entitlements API" from Catena Tools</description>
+        <accepts>Entitlements-API.html</accepts>
+    </rule>
+    <rule id="5cfcac77">
+        <description>Created after removal of "Entitlements" from Catena Tools</description>
+        <accepts>Entitlements.html</accepts>
+    </rule>
+    <rule id="6356ce2c">
+        <description>Created after removal of "Account Merging" from Catena Tools</description>
+        <accepts>Account-Merging.html</accepts>
+    </rule>
 </rules>

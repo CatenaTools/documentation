@@ -1,4 +1,4 @@
-# OAuth2 Discord Login Flow (Client)
+# Implementing an OAuth2 Client 
 
 In this tutorial we will cover implementing a client flow for an OAuth2 Provider from the client. For example log in with discord from a game launcher.
 
