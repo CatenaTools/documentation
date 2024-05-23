@@ -42,4 +42,8 @@
         <description>Created after removal of "Account Merging" from Catena Tools</description>
         <accepts>Account-Merging.html</accepts>
     </rule>
+    <rule id="1fb8be38">
+        <description>Created after removal of "Matchmaking API" from Catena Tools</description>
+        <accepts>Matchmaking-API.html</accepts>
+    </rule>
 </rules>
