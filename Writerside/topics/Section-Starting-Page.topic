@@ -24,13 +24,13 @@
         <!--    Add up to 2 topics that you want to promote. Use the "type" attribute to select an icon.    -->
         <spotlight>
             <a href="overview.md" type="start" summary="Getting Started (Unity Game)">Getting Started</a>
-            <a href="Services.md" type="search" summary="Summary of services provided by Catena Tools">Services</a>
+            <a href="Fleet-Management.md" type="search" summary="Summary of services provided by Catena Tools">Services</a>
         </spotlight>
 
         <!--    Add several topics that are most important for this section.    -->
         <primary>
             <title>Get started</title>
-            <a href="Services.md"/>
+            <a href="Fleet-Management.md"/>
             <a href="Parties.md"/>
             <a href="Accounts.md"/>
             <a href="Authentication.md"/>
