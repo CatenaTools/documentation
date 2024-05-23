@@ -1,0 +1,862 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/catena_titles.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CatenaTitles"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/titles/create": {
+      "post": {
+        "summary": "AdminCreateTitle Creates a game title",
+        "operationId": "CatenaTitles_AdminCreateTitle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminCreateTitleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminCreateTitleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/create_title_patch": {
+      "post": {
+        "summary": "AdminCreateTitlePatch Creates a game title patch",
+        "operationId": "CatenaTitles_AdminCreateTitlePatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminCreateTitlePatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminCreateTitlePatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/create_title_release": {
+      "post": {
+        "summary": "AdminCreateTitleRelease Creates a game title release",
+        "operationId": "CatenaTitles_AdminCreateTitleRelease",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminCreateTitleReleaseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminCreateTitleReleaseRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/delete": {
+      "delete": {
+        "summary": "AdminDeleteTitle Deletes a game title",
+        "operationId": "CatenaTitles_AdminDeleteTitle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminDeleteTitleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminDeleteTitleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/delete_title_patch": {
+      "delete": {
+        "summary": "AdminDeleteTitlePatch deletes a game title patch",
+        "operationId": "CatenaTitles_AdminDeleteTitlePatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminDeleteTitlePatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminDeleteTitlePatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/delete_title_release": {
+      "delete": {
+        "summary": "AdminDeleteTitleRelease Deletes a game title release",
+        "operationId": "CatenaTitles_AdminDeleteTitleRelease",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminDeleteTitleReleaseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminDeleteTitleReleaseRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/generate_presigned_url": {
+      "post": {
+        "summary": "GeneratePresignedUrl Generates a presigned S3 URL for a given object key",
+        "operationId": "CatenaTitles_GeneratePresignedUrl",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesGeneratePresignedUrlResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesGeneratePresignedUrlRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/generate_presigned_url_from_uri": {
+      "post": {
+        "summary": "GeneratePresignedUrlFromUri Generates a presigned URL for a given URL",
+        "operationId": "CatenaTitles_GeneratePresignedUrlFromUri",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesGeneratePresignedUrlFromUriResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesGeneratePresignedUrlFromUriRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/titles": {
+      "get": {
+        "summary": "GetTitles Returns a list of game titles that are supported via this instance of Catena",
+        "operationId": "CatenaTitles_GetTitles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesGetTitlesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/titles/{titleId}/manifest": {
+      "get": {
+        "summary": "GetTitleManifest Returns a manifest for releases and patches that are required to play the game",
+        "operationId": "CatenaTitles_GetTitleManifest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesGetTitleManifestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "titleId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/update": {
+      "put": {
+        "summary": "AdminUpdateTitle Updates a game title",
+        "operationId": "CatenaTitles_AdminUpdateTitle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminUpdateTitleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminUpdateTitleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/update_title_patch": {
+      "put": {
+        "summary": "AdminUpdateTitlePatch Updates a game title patch",
+        "operationId": "CatenaTitles_AdminUpdateTitlePatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminUpdateTitlePatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminUpdateTitlePatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    },
+    "/api/v1/titles/update_title_release": {
+      "put": {
+        "summary": "AdminUpdateTitleRelease Updates a game title release",
+        "operationId": "CatenaTitles_AdminUpdateTitleRelease",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminUpdateTitleReleaseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_titlesAdminUpdateTitleReleaseRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaTitles"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "catena_titlesAdminCreateTitlePatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "game title release id"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "string",
+          "format": "int64",
+          "title": "subject to change: possibly protobuf.bytes type  / cant use long, have to use int64 in .proto files"
+        },
+        "checksum": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "checksumAlg": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        }
+      }
+    },
+    "catena_titlesAdminCreateTitlePatchResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "patch id"
+        },
+        "name": {
+          "type": "string",
+          "title": "name of title"
+        }
+      }
+    },
+    "catena_titlesAdminCreateTitleReleaseRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "game title id"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "string",
+          "format": "int64",
+          "title": "subject to change: possibly protobuf.bytes type  / cant use long, have to use int64 in .proto files"
+        },
+        "checksum": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "checksumAlg": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "platform": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesAdminCreateTitleReleaseResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "release id"
+        },
+        "name": {
+          "type": "string",
+          "title": "name of title"
+        }
+      }
+    },
+    "catena_titlesAdminCreateTitleRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesAdminCreateTitleResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesAdminDeleteTitlePatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "patch id"
+        }
+      }
+    },
+    "catena_titlesAdminDeleteTitlePatchResponse": {
+      "type": "object",
+      "properties": {
+        "titleDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_titlesAdminDeleteTitleReleaseRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "release id"
+        }
+      }
+    },
+    "catena_titlesAdminDeleteTitleReleaseResponse": {
+      "type": "object",
+      "properties": {
+        "titleDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_titlesAdminDeleteTitleRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesAdminDeleteTitleResponse": {
+      "type": "object",
+      "properties": {
+        "titleDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_titlesAdminUpdateTitlePatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "game patch id"
+        },
+        "gameTitleReleaseId": {
+          "type": "string",
+          "title": "game title release id"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "checksum": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "checksumAlg": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        }
+      }
+    },
+    "catena_titlesAdminUpdateTitlePatchResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "game patch id"
+        },
+        "name": {
+          "type": "string",
+          "title": "game title name"
+        }
+      }
+    },
+    "catena_titlesAdminUpdateTitleReleaseRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "game title release id"
+        },
+        "gameTitleId": {
+          "type": "string",
+          "title": "game title id"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "checksum": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "checksumAlg": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "platform": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesAdminUpdateTitleReleaseResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "game title release id"
+        },
+        "name": {
+          "type": "string",
+          "title": "game title name"
+        }
+      }
+    },
+    "catena_titlesAdminUpdateTitleRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesAdminUpdateTitleResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesGameTitle": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesGeneratePresignedUrlFromUriRequest": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesGeneratePresignedUrlFromUriResponse": {
+      "type": "object",
+      "properties": {
+        "presignedHeadUrl": {
+          "type": "string"
+        },
+        "presignedGetUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesGeneratePresignedUrlRequest": {
+      "type": "object",
+      "properties": {
+        "objectKey": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesGeneratePresignedUrlResponse": {
+      "type": "object",
+      "properties": {
+        "presignedHeadUrl": {
+          "type": "string"
+        },
+        "presignedGetUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_titlesGetTitleManifestResponse": {
+      "type": "object",
+      "properties": {
+        "titleName": {
+          "type": "string"
+        },
+        "releases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_titlesTitleRelease"
+          }
+        }
+      }
+    },
+    "catena_titlesGetTitlesResponse": {
+      "type": "object",
+      "properties": {
+        "titles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_titlesGameTitle"
+          }
+        }
+      }
+    },
+    "catena_titlesTitlePatch": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "checksum": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "checksumAlg": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        }
+      }
+    },
+    "catena_titlesTitleRelease": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "checksum": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "checksumAlg": {
+          "type": "string",
+          "title": "StringValue allows for a field to be nullable"
+        },
+        "patches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_titlesTitlePatch"
+          }
+        },
+        "platform": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        }
+      },
+      "additionalProperties": {},
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

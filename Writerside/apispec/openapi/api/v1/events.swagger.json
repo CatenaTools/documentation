@@ -1,0 +1,471 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/events.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Events"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/events/emit": {
+      "post": {
+        "summary": "EmitUpdateEvent",
+        "operationId": "Events_EmitUpdateEvent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/eventsEmitUpdateEventResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/eventsEmitUpdateEventRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/events/subscribe": {
+      "get": {
+        "summary": "SubscribeToEvents",
+        "operationId": "Events_SubscribeToEvents",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/eventsSubscribeToEventsResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of eventsSubscribeToEventsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/events/subscribe/tags": {
+      "get": {
+        "operationId": "Events_SubscribeToEventsByTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/eventsSubscribeToEventsByTagResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of eventsSubscribeToEventsByTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "senderId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "eventTags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "Events"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "capacityServerConnectionInfo": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "serverId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_authenticationAuthenticationEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/catena_authenticationAuthenticationUpdateType"
+        },
+        "accountId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_authenticationAuthenticationUpdateType": {
+      "type": "string",
+      "enum": [
+        "LOGOUT"
+      ],
+      "default": "LOGOUT"
+    },
+    "catena_matchmakingMatchmakingStatusUpdateEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/catena_matchmakingMatchmakingStatusUpdateType"
+        },
+        "message": {
+          "type": "string"
+        },
+        "ticketId": {
+          "type": "string"
+        },
+        "serverConnectionInfo": {
+          "$ref": "#/definitions/capacityServerConnectionInfo"
+        }
+      }
+    },
+    "catena_matchmakingMatchmakingStatusUpdateType": {
+      "type": "string",
+      "enum": [
+        "MATCHMAKING_STATUS_UPDATE_TYPE_UNSPECIFIED",
+        "MATCHMAKING_STATUS_UPDATE_TYPE_IN_PROGRESS",
+        "MATCHMAKING_STATUS_UPDATE_TYPE_COMPLETED",
+        "MATCHMAKING_STATUS_UPDATE_TYPE_FAILED",
+        "MATCHMAKING_STATUS_UPDATE_TYPE_CANCELLED",
+        "MATCHMAKING_STATUS_UPDATE_TYPE_FINDING_SERVER"
+      ],
+      "default": "MATCHMAKING_STATUS_UPDATE_TYPE_UNSPECIFIED"
+    },
+    "catena_matchmakingNewMatchEvent": {
+      "type": "object",
+      "properties": {
+        "match": {
+          "$ref": "#/definitions/match_brokerMatch"
+        }
+      }
+    },
+    "catena_partiesPartyEventValue": {
+      "type": "object",
+      "properties": {
+        "boolValue": {
+          "type": "boolean"
+        },
+        "metadataValue": {
+          "$ref": "#/definitions/groupsMetadataEntry"
+        },
+        "stringValue": {
+          "type": "string"
+        },
+        "playerValue": {
+          "$ref": "#/definitions/catena_partiesPlayer"
+        },
+        "intValue": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "metadataMapValue": {
+          "$ref": "#/definitions/groupsMetadataMap"
+        }
+      }
+    },
+    "catena_partiesPartyUpdateEvent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/catena_partiesPartyUpdateType"
+        },
+        "message": {
+          "type": "string"
+        },
+        "partyId": {
+          "type": "string",
+          "title": "The party id this event is associated with"
+        },
+        "eventPayload": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/catena_partiesPartyEventValue"
+          }
+        }
+      }
+    },
+    "catena_partiesPartyUpdateType": {
+      "type": "string",
+      "enum": [
+        "PARTY_UPDATE_TYPE_UNSPECIFIED",
+        "PARTY_UPDATE_TYPE_PLAYER_JOINED",
+        "PARTY_UPDATE_TYPE_PLAYER_LEFT",
+        "PARTY_UPDATE_TYPE_PLAYER_KICKED",
+        "PARTY_UPDATE_TYPE_PLAYER_READY_CHANGED",
+        "PARTY_UPDATE_TYPE_PLAYER_LEADER_CHANGED",
+        "PARTY_UPDATE_TYPE_METADATA_CREATED",
+        "PARTY_UPDATE_TYPE_METADATA_UPDATED",
+        "PARTY_UPDATE_TYPE_METADATA_DELETED"
+      ],
+      "default": "PARTY_UPDATE_TYPE_UNSPECIFIED"
+    },
+    "catena_partiesPlayer": {
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "isReady": {
+          "type": "boolean"
+        },
+        "isLeader": {
+          "type": "boolean"
+        },
+        "teamNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "eventsEmitUpdateEventRequest": {
+      "type": "object",
+      "properties": {
+        "nestedEvent": {
+          "$ref": "#/definitions/eventsEvent"
+        },
+        "recipientIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "eventTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "eventsEmitUpdateEventResponse": {
+      "type": "object",
+      "properties": {
+        "broadcastSuccess": {
+          "type": "boolean"
+        }
+      }
+    },
+    "eventsEmptyEvent": {
+      "type": "object",
+      "title": "EmptyEvent is used to send pings through the event service, eg to get around bugs where a stream is not opened until the first request comes through, or to do a heartbeat"
+    },
+    "eventsEvent": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string"
+        },
+        "recipientId": {
+          "type": "string"
+        },
+        "anyEvent": {
+          "$ref": "#/definitions/protobufAny"
+        },
+        "partyUpdateEvent": {
+          "$ref": "#/definitions/catena_partiesPartyUpdateEvent"
+        },
+        "matchmakingStatusUpdateEvent": {
+          "$ref": "#/definitions/catena_matchmakingMatchmakingStatusUpdateEvent"
+        },
+        "emptyEvent": {
+          "$ref": "#/definitions/eventsEmptyEvent"
+        },
+        "authenticationEvent": {
+          "$ref": "#/definitions/catena_authenticationAuthenticationEvent"
+        },
+        "newMatchEvent": {
+          "$ref": "#/definitions/catena_matchmakingNewMatchEvent"
+        }
+      }
+    },
+    "eventsSubscribeToEventsByTagResponse": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/eventsEvent"
+        },
+        "eventTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "eventsSubscribeToEventsResponse": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/eventsEvent"
+        }
+      }
+    },
+    "groupsEntityMetadata": {
+      "type": "object",
+      "properties": {
+        "stringPayload": {
+          "type": "string"
+        },
+        "intPayload": {
+          "type": "string",
+          "format": "int64"
+        },
+        "jsonPayload": {
+          "type": "string"
+        }
+      }
+    },
+    "groupsMetadataEntry": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      },
+      "title": "Simple message containing a metadata key-value pair so that a metadata entry can be sent in update events"
+    },
+    "groupsMetadataMap": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      },
+      "title": "Simple message containing a metadata map so that metadata entries can be sent in update events (maps are by default not supported in oneof)"
+    },
+    "match_brokerMatch": {
+      "type": "object",
+      "properties": {
+        "matchId": {
+          "type": "string"
+        },
+        "playerIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "TODO: other required match properties and custom data passing fields"
+        },
+        "matchProperties": {
+          "type": "string",
+          "title": "A JSON object that contains all the custom match properties\nMay be empty"
+        },
+        "playerProperties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "A JSON object per-player where the map key is a player_id in the player_ids field\nMay contain values for none, some, or all players"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        }
+      },
+      "additionalProperties": {},
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
