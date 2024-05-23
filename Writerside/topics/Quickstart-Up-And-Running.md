@@ -207,7 +207,22 @@ We are making some assumptions and trade-offs to simplify this guide. There is a
 
 We will be running our game on an AWS EC2 Instance running Windows Server, these instructions also work with a Linux server using minor modifications.
 
-Next, configure terraform to provision an ec2 instance where we will run the server. We have provided a template for this in the `aws/ec2-gameserver` directory of the infrastructure repo.
+<note>
+If you don't have an ssh key, you will need to generate one.
+
+<code-block lang="bash">
+ssh-keygen -t rsa -b 2048 -m PEM -f catena_deploy_key
+
+</code-block>
+
+This will generate two files
+* `catena_deploy_key`
+* `catena_deploy_key.pub`
+
+Reference the files in the  `vars.tfvars` file below.
+</note>
+
+Next, configure terraform to provision an ec2 instance where we will run the server. we have provided a template for this in the `aws/ec2-gameserver` directory of the infrastructure repo.
 
 Similar to the previous infrastructure, we must set some variables. Create another `vars.tfvar` file with the following contents:
 
