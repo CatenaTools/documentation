@@ -1,0 +1,52 @@
+name: Update Swagger Docs
+on:
+  schedule:
+    - cron: '1,9 * * *' # Runs at 1:00 and 9:00 UTC or 9:00am and 5:00pm EST
+  workflow_dispatch:
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: catenatools/catena-tools-core
+          token: {{ secrets.GITHUB_TOKEN }}
+          path: catena-tools-core
+
+      - uses: actions/checkout@v4
+        with:
+          repository: catenatools/documentation
+          token: {{ secrets.GITHUB_TOKEN }}
+          path: documentation
+
+      - uses: bufbuild/buf-setup-action@v1
+  
+      - run: cd catena-tools-core && buf generate
+      # Copy the openapi/ directory from catena-tools core to the Writerside/apispec/ directory in documentation/
+      - run: cp -r catena-tools-core/openapi/ documentation/Writerside/apispec/ && ls documentation/Writerside/apispec/
+      # check if there are any changes, if so open a PR
+      - name: Check for changes to swagger docs
+        id: check_changes
+        run: |
+          cd documentation
+          if [[ $(git status --porcelain) ]]; then
+            echo "Changes found, marking for commit"
+            echo "UPDATED_PROTOS=true" >> $GITHUB_ENV
+          else
+            echo "No changes found"
+            echo "UPDATED_PROTOS=false" >> $GITHUB_ENV
+          fi
+      - name: Create PR
+        if: env.UPDATED_PROTOS == 'true'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          path: documentation
+          token: {{ secrets.GITHUB_TOKEN }}
+          commit-message: 'update swagger docs'
+          title: 'Update swagger docs'
+          body: 'Automated update of swagger docs.'
+          branch: 'update-swagger-docs'
+          base: 'main'
+          labels: ''
+          reviewers: ''
+          assignees: ''
