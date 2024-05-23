@@ -1,7 +1,7 @@
 name: Update Swagger Docs
 on:
   schedule:
-    - cron: '1,9 * * *' # Runs at 1:00 and 9:00 UTC or 9:00am and 5:00pm EST
+    - cron: '9 * * *' # Runs at 5:00pm EST
   workflow_dispatch:
 jobs:
   create-pr:
