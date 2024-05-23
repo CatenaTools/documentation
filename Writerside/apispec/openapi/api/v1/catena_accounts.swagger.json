@@ -1,0 +1,952 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/catena_accounts.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CatenaAccounts"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/accounts": {
+      "post": {
+        "summary": "CreateOrGetAccountFromToken",
+        "operationId": "CatenaAccounts_CreateOrGetAccountFromToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateOrGetAccountFromTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateOrGetAccountFromTokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/healthz": {
+      "get": {
+        "summary": "GetServiceHealth Gets the health of the CatenaAccounts service, logging any errors",
+        "operationId": "CatenaAccounts_GetServiceHealth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/coreGetServiceHealthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/ids": {
+      "get": {
+        "summary": "GetAccountIds Retrieves a list of account ids. This route is to be used by users",
+        "operationId": "CatenaAccounts_GetAccountIds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsGetAccountIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/link": {
+      "post": {
+        "summary": "LinkAccountToProvider",
+        "operationId": "CatenaAccounts_LinkAccountToProvider",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsLinkAccountToProviderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsLinkAccountToProviderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/metadata": {
+      "get": {
+        "summary": "GetMetadataEntries Gets all metadata entries for a passed in account id",
+        "operationId": "CatenaAccounts_GetMetadataEntries",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsGetMetadataEntriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "post": {
+        "summary": "CreateMetadataEntry Creates a metadata entry for an account",
+        "operationId": "CatenaAccounts_CreateMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "put": {
+        "summary": "UpdateMetadataEntry Updates a passed in account's metadata for a specific entry",
+        "operationId": "CatenaAccounts_UpdateMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/metadata/{entryKey}": {
+      "get": {
+        "summary": "GetMetadataEntry Gets a metadata entry for a passed in key",
+        "operationId": "CatenaAccounts_GetMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsGetMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entryKey",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "delete": {
+        "summary": "DeleteMetadataEntry Deletes a metadata entry for an account",
+        "operationId": "CatenaAccounts_DeleteMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsDeleteMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "entryKey",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "jsonHandlingType",
+            "description": " - ENTIRE_ENTRY: Delete the entire json\n - PARTIAL_ENTRY: Delete a specific part of json",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ENTIRE_ENTRY",
+              "PARTIAL_ENTRY"
+            ],
+            "default": "ENTIRE_ENTRY"
+          },
+          {
+            "name": "propertiesToRemovePaths",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/{accountId}": {
+      "get": {
+        "summary": "GetAccountByID Retrieves information about the account given an id. This route is to be used by users",
+        "operationId": "CatenaAccounts_GetAccountById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsGetAccountByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "patch": {
+        "summary": "UpdateAccount Updates a passed in account's display_name and metadata",
+        "operationId": "CatenaAccounts_UpdateAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsUpdateAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "description": "The id of the account to update",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatenaAccountsUpdateAccountBody"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/admin/accounts": {
+      "delete": {
+        "operationId": "CatenaAccounts_AdminDeleteAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsDeleteAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsDeleteAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "post": {
+        "operationId": "CatenaAccounts_AdminCreateAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/admin/accounts/metadata": {
+      "get": {
+        "operationId": "CatenaAccounts_AdminGetMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsGetMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "entryKey",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "delete": {
+        "operationId": "CatenaAccounts_AdminDeleteMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsDeleteMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsDeleteMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "post": {
+        "operationId": "CatenaAccounts_AdminCreateMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsCreateMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "put": {
+        "operationId": "CatenaAccounts_AdminUpdateMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/admin/accounts/{accountId}": {
+      "get": {
+        "summary": "AdminGetAccountById is to be used by admins to retrieve detailed account information",
+        "operationId": "CatenaAccounts_AdminGetAccountById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsGetAccountByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CatenaAccountsUpdateAccountBody": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/catena_accountsAccount",
+          "title": "The modified account whose values will overwrite those currently in the database"
+        },
+        "accountMask": {
+          "type": "string"
+        },
+        "metadataDeletionKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "A list of metadata keys to delete"
+        }
+      }
+    },
+    "catena_accountsAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "GUID for this account"
+        },
+        "displayName": {
+          "type": "string",
+          "title": "display name for this account"
+        },
+        "authRole": {
+          "type": "string",
+          "title": "The auth level of the account"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          },
+          "title": "Metadata associated with the account"
+        },
+        "providers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/public_commonProvider"
+          },
+          "title": "List of providers that this account is linked to"
+        }
+      },
+      "description": "Bundled data that describes an account and its metadata."
+    },
+    "catena_accountsCreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_accountsCreateAccountResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/catena_accountsAccount"
+        }
+      }
+    },
+    "catena_accountsCreateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      }
+    },
+    "catena_accountsCreateMetadataEntryResponse": {
+      "type": "object"
+    },
+    "catena_accountsCreateOrGetAccountFromTokenRequest": {
+      "type": "object"
+    },
+    "catena_accountsCreateOrGetAccountFromTokenResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/catena_accountsAccount"
+        }
+      }
+    },
+    "catena_accountsDeleteAccountRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_accountsDeleteAccountResponse": {
+      "type": "object",
+      "properties": {
+        "accountDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_accountsDeleteMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        },
+        "jsonHandlingType": {
+          "$ref": "#/definitions/groupsDeleteJsonMetadataType"
+        },
+        "propertiesToRemovePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "catena_accountsDeleteMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_accountsGetAccountByIdResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/catena_accountsAccount"
+        }
+      }
+    },
+    "catena_accountsGetAccountIdsResponse": {
+      "type": "object",
+      "properties": {
+        "accountIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "catena_accountsGetMetadataEntriesResponse": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catena_accountsGetMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      }
+    },
+    "catena_accountsLinkAccountToProviderRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "title": "The session id to link into the currently logged in session id"
+        }
+      }
+    },
+    "catena_accountsLinkAccountToProviderResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/catena_accountsAccount"
+        },
+        "accountLinked": {
+          "type": "boolean",
+          "title": "indicator of success of linking existing account to new auth provider"
+        }
+      }
+    },
+    "catena_accountsUpdateAccountResponse": {
+      "type": "object"
+    },
+    "catena_accountsUpdateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        },
+        "updateOperationType": {
+          "$ref": "#/definitions/groupsUpdateMetadataOperationType"
+        }
+      }
+    },
+    "catena_accountsUpdateMetadataEntryResponse": {
+      "type": "object"
+    },
+    "coreComponentHealth": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "healthy": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "coreGetServiceHealthResponse": {
+      "type": "object",
+      "properties": {
+        "healthy": {
+          "type": "boolean"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/coreComponentHealth"
+          }
+        }
+      }
+    },
+    "groupsDeleteJsonMetadataType": {
+      "type": "string",
+      "enum": [
+        "ENTIRE_ENTRY",
+        "PARTIAL_ENTRY"
+      ],
+      "default": "ENTIRE_ENTRY",
+      "description": "If you are deleting a json, can choose whether to delete the entire entry or a partial part of an entry\nCurrently, only whole property removal is supported.\nRemoval of elements in a json array (e.g. trying to remove \"value\" from json {\"array\":[\"value\",\"value2\"]})\nis not currently supported by DeleteMetadataEntryRequest.\n\n - ENTIRE_ENTRY: Delete the entire json\n - PARTIAL_ENTRY: Delete a specific part of json"
+    },
+    "groupsEntityMetadata": {
+      "type": "object",
+      "properties": {
+        "stringPayload": {
+          "type": "string"
+        },
+        "intPayload": {
+          "type": "string",
+          "format": "int64"
+        },
+        "jsonPayload": {
+          "type": "string"
+        }
+      }
+    },
+    "groupsUpdateMetadataOperationType": {
+      "type": "string",
+      "enum": [
+        "OVERWRITE",
+        "APPEND"
+      ],
+      "default": "OVERWRITE",
+      "description": "- OVERWRITE: Works with all payload types\n - APPEND: Only works with string and json payload",
+      "title": "When updating a metadata entry, the entry can either be overwritten (supported by all types) or appended (supported by string and json)"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        }
+      },
+      "additionalProperties": {},
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "public_commonProvider": {
+      "type": "string",
+      "enum": [
+        "PROVIDER_UNSPECIFIED",
+        "PROVIDER_UNSAFE",
+        "PROVIDER_DISCORD",
+        "PROVIDER_GOOGLE",
+        "PROVIDER_APPLE",
+        "PROVIDER_TWITCH"
+      ],
+      "default": "PROVIDER_UNSPECIFIED",
+      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

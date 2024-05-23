@@ -1,0 +1,1200 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/catena_parties.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CatenaParties"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/admin/parties/create": {
+      "post": {
+        "summary": "AdminCreateParty Creates a new party, setting the leader and party members at creation time",
+        "operationId": "CatenaParties_AdminCreateParty",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminCreatePartyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminCreatePartyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/admin/parties/delete/{partyId}": {
+      "delete": {
+        "summary": "AdminDeleteParty deletes a party given a party ID",
+        "operationId": "CatenaParties_AdminDeleteParty",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminDeletePartyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "partyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/admin/parties/list-parties": {
+      "get": {
+        "summary": "AdminListParties lists all parties",
+        "operationId": "CatenaParties_AdminListParties",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminListPartiesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/admin/parties/update": {
+      "patch": {
+        "summary": "AdminUpdateParty Updates data for a party",
+        "operationId": "CatenaParties_AdminUpdateParty",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminUpdatePartyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminUpdatePartyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/admin/parties/{partyId}": {
+      "get": {
+        "summary": "AdminGetPartyByID Fetches data for a party given a party ID",
+        "operationId": "CatenaParties_AdminGetPartyById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesAdminGetPartyByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "partyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties": {
+      "get": {
+        "summary": "GetPartyInfo Fetches party information for the party that the requesting player is currently a member of.",
+        "operationId": "CatenaParties_GetPartyInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesGetPartyInfoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/create": {
+      "post": {
+        "summary": "CreateParty Creates a new party setting the player who requested its creation as its leader.",
+        "operationId": "CatenaParties_CreateParty",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesCreatePartyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesCreatePartyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/healthz": {
+      "get": {
+        "summary": "GetServiceHealth",
+        "operationId": "CatenaParties_GetServiceHealth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/coreGetServiceHealthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/join": {
+      "post": {
+        "summary": "JoinPartyWithInviteCode Allows a player to join a party by specifying its invite code.",
+        "operationId": "CatenaParties_JoinPartyWithInviteCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesJoinPartyWithInviteCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesJoinPartyWithInviteCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/kick": {
+      "put": {
+        "summary": "KickFromParty Allows the leader of a party to kick another player from their party.",
+        "operationId": "CatenaParties_KickFromParty",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesKickFromPartyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesKickFromPartyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/leave": {
+      "put": {
+        "summary": "LeaveParty Allows a player to leave their party and assigns a new leader if the leader leaves.",
+        "operationId": "CatenaParties_LeaveParty",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesLeavePartyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesLeavePartyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/metadata": {
+      "post": {
+        "summary": "CreateMetadataEntry Creates a metadata entry for a party",
+        "operationId": "CatenaParties_CreateMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/groupsCreateMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesCreatePartyMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      },
+      "put": {
+        "summary": "UpdateMetadataEntry Updates a passed in party's metadata for a specific entry",
+        "operationId": "CatenaParties_UpdateMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/groupsUpdateMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesUpdatePartyMetadataEntryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/metadata/{innerRequest.id}": {
+      "get": {
+        "summary": "GetMetadataEntries Gets all metadata entries for a passed in party id",
+        "operationId": "CatenaParties_GetMetadataEntries",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/groupsGetMetadataEntriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "innerRequest.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "playerId",
+            "description": "Optional: If included, query for a specific party member",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/metadata/{innerRequest.id}/{innerRequest.entryKey}": {
+      "get": {
+        "summary": "GetMetadataEntry Gets a metadata entry for a passed in key",
+        "operationId": "CatenaParties_GetMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/groupsGetMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "innerRequest.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "innerRequest.entryKey",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "playerId",
+            "description": "Optional: If included, query for a specific party member",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      },
+      "delete": {
+        "summary": "DeleteMetadataEntry Deletes a metadata entry for a party",
+        "operationId": "CatenaParties_DeleteMetadataEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/groupsDeleteMetadataEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "innerRequest.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "innerRequest.entryKey",
+            "description": "The key in the metadata whose entry needs to be deleted",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "innerRequest.jsonHandlingType",
+            "description": " - ENTIRE_ENTRY: Delete the entire json\n - PARTIAL_ENTRY: Delete a specific part of json",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ENTIRE_ENTRY",
+              "PARTIAL_ENTRY"
+            ],
+            "default": "ENTIRE_ENTRY"
+          },
+          {
+            "name": "innerRequest.propertiesToRemovePaths",
+            "description": "Use this to remove entire properties from a json. This value is a Path",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "playerId",
+            "description": "Optional: If included, query for a specific party member",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/players/{playerId}": {
+      "get": {
+        "summary": "GetPlayerInfoById Fetches information for a player in a party given an ID.",
+        "operationId": "CatenaParties_GetPlayerInfoById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesGetPlayerInfoByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/set-leader": {
+      "put": {
+        "summary": "SetPartyLeader Allows the current leader of a party to set a new leader.",
+        "operationId": "CatenaParties_SetPartyLeader",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesSetPartyLeaderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesSetPartyLeaderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/update-player": {
+      "patch": {
+        "summary": "Note: Append operations are not currently supported when updating metadata with this method",
+        "operationId": "CatenaParties_UpdatePartyPlayer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesUpdatePartyPlayerResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_partiesUpdatePartyPlayerRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    },
+    "/api/v1/parties/{partyId}": {
+      "get": {
+        "summary": "GetPartyInfoByPartyId Fetches information for a party given a party ID.",
+        "operationId": "CatenaParties_GetPartyInfoByPartyId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_partiesGetPartyInfoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "partyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaParties"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "catena_partiesAdminCreatePartyRequest": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty",
+          "title": "Admin provides party with all necessary data to be created (Leader, Party members, metadata, etc)"
+        }
+      }
+    },
+    "catena_partiesAdminCreatePartyResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty",
+          "title": "returns party that was created"
+        }
+      }
+    },
+    "catena_partiesAdminDeletePartyResponse": {
+      "type": "object",
+      "properties": {
+        "partyDeleted": {
+          "type": "boolean",
+          "title": "returns true if party was deleted from database, false otherwise"
+        }
+      }
+    },
+    "catena_partiesAdminGetPartyByIdResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty"
+        }
+      }
+    },
+    "catena_partiesAdminListPartiesResponse": {
+      "type": "object",
+      "properties": {
+        "parties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_partiesParty"
+          },
+          "title": "list of all the existing parties"
+        }
+      }
+    },
+    "catena_partiesAdminUpdateParty": {
+      "type": "object",
+      "properties": {
+        "leaderId": {
+          "type": "string"
+        },
+        "kick": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "join": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "joinDisplayNames": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catena_partiesAdminUpdatePartyRequest": {
+      "type": "object",
+      "properties": {
+        "partyId": {
+          "type": "string",
+          "title": "id of party to be updated"
+        },
+        "payload": {
+          "$ref": "#/definitions/catena_partiesAdminUpdateParty",
+          "title": "includes option to update leader id, join / kick party members, party metadata"
+        }
+      }
+    },
+    "catena_partiesAdminUpdatePartyResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty",
+          "title": "the updated party"
+        }
+      }
+    },
+    "catena_partiesCreatePartyMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "innerRequest": {
+          "$ref": "#/definitions/groupsCreateMetadataEntryRequest"
+        },
+        "playerId": {
+          "type": "string",
+          "title": "Optional: If included, query for a specific party member"
+        }
+      }
+    },
+    "catena_partiesCreatePartyRequest": {
+      "type": "object",
+      "properties": {
+        "creatingPlayerMetadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catena_partiesCreatePartyResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty",
+          "title": "newly created party"
+        }
+      }
+    },
+    "catena_partiesGetPartyInfoResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty"
+        }
+      }
+    },
+    "catena_partiesGetPlayerInfoByIdResponse": {
+      "type": "object",
+      "properties": {
+        "player": {
+          "$ref": "#/definitions/catena_partiesPlayer"
+        }
+      }
+    },
+    "catena_partiesJoinPartyWithInviteCodeRequest": {
+      "type": "object",
+      "properties": {
+        "inviteCode": {
+          "type": "string",
+          "title": "code used to join the party"
+        },
+        "joiningPlayerMetadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catena_partiesJoinPartyWithInviteCodeResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty",
+          "title": "the party that was joined"
+        }
+      }
+    },
+    "catena_partiesKickFromPartyRequest": {
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string",
+          "title": "ID of player to kick from party"
+        },
+        "partyId": {
+          "type": "string",
+          "title": "ID of party to kick player from"
+        }
+      }
+    },
+    "catena_partiesKickFromPartyResponse": {
+      "type": "object"
+    },
+    "catena_partiesLeavePartyRequest": {
+      "type": "object",
+      "properties": {
+        "partyId": {
+          "type": "string",
+          "title": "ID of party to leave"
+        }
+      }
+    },
+    "catena_partiesLeavePartyResponse": {
+      "type": "object"
+    },
+    "catena_partiesParty": {
+      "type": "object",
+      "properties": {
+        "partyId": {
+          "type": "string"
+        },
+        "leaderId": {
+          "type": "string"
+        },
+        "inviteCode": {
+          "type": "string"
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_partiesPlayer"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catena_partiesPlayer": {
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "isReady": {
+          "type": "boolean"
+        },
+        "isLeader": {
+          "type": "boolean"
+        },
+        "teamNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catena_partiesSetPartyLeaderRequest": {
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string",
+          "title": "ID of player to set as party leader"
+        },
+        "partyId": {
+          "type": "string",
+          "title": "ID of party to set leader of"
+        }
+      }
+    },
+    "catena_partiesSetPartyLeaderResponse": {
+      "type": "object"
+    },
+    "catena_partiesUpdatePartyMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "innerRequest": {
+          "$ref": "#/definitions/groupsUpdateMetadataEntryRequest"
+        },
+        "playerId": {
+          "type": "string",
+          "title": "Optional: If included, query for a specific party member"
+        }
+      }
+    },
+    "catena_partiesUpdatePartyPlayerRequest": {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "$ref": "#/definitions/catena_partiesPlayer",
+          "title": "payload specifying what player info. to update"
+        },
+        "payloadMask": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_partiesUpdatePartyPlayerResponse": {
+      "type": "object",
+      "properties": {
+        "party": {
+          "$ref": "#/definitions/catena_partiesParty",
+          "title": "the updated party (that the updated player is a member of)"
+        }
+      }
+    },
+    "coreComponentHealth": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "healthy": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "coreGetServiceHealthResponse": {
+      "type": "object",
+      "properties": {
+        "healthy": {
+          "type": "boolean"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/coreComponentHealth"
+          }
+        }
+      }
+    },
+    "groupsCreateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string",
+          "title": "The key in the metadata to be added"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata",
+          "title": "The metadata entry value"
+        }
+      }
+    },
+    "groupsCreateMetadataEntryResponse": {
+      "type": "object"
+    },
+    "groupsDeleteJsonMetadataType": {
+      "type": "string",
+      "enum": [
+        "ENTIRE_ENTRY",
+        "PARTIAL_ENTRY"
+      ],
+      "default": "ENTIRE_ENTRY",
+      "description": "If you are deleting a json, can choose whether to delete the entire entry or a partial part of an entry\nCurrently, only whole property removal is supported.\nRemoval of elements in a json array (e.g. trying to remove \"value\" from json {\"array\":[\"value\",\"value2\"]})\nis not currently supported by DeleteMetadataEntryRequest.\n\n - ENTIRE_ENTRY: Delete the entire json\n - PARTIAL_ENTRY: Delete a specific part of json"
+    },
+    "groupsDeleteMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string",
+          "title": "The key in the metadata whose entry needs to be deleted"
+        },
+        "jsonHandlingType": {
+          "$ref": "#/definitions/groupsDeleteJsonMetadataType"
+        },
+        "propertiesToRemovePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Use this to remove entire properties from a json. This value is a Path"
+        }
+      }
+    },
+    "groupsDeleteMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryDeleted": {
+          "type": "boolean",
+          "title": "If the entry was found in the database and deleted"
+        }
+      }
+    },
+    "groupsEntityMetadata": {
+      "type": "object",
+      "properties": {
+        "stringPayload": {
+          "type": "string"
+        },
+        "intPayload": {
+          "type": "string",
+          "format": "int64"
+        },
+        "jsonPayload": {
+          "type": "string"
+        }
+      }
+    },
+    "groupsGetMetadataEntriesRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "groupsGetMetadataEntriesResponse": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "groupsGetMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        }
+      }
+    },
+    "groupsGetMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      }
+    },
+    "groupsUpdateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string",
+          "title": "The key in the metadata whose entry needs to be changed"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata",
+          "title": "The metadata entry value"
+        },
+        "updateOperationType": {
+          "$ref": "#/definitions/groupsUpdateMetadataOperationType",
+          "title": "The update type"
+        }
+      }
+    },
+    "groupsUpdateMetadataEntryResponse": {
+      "type": "object"
+    },
+    "groupsUpdateMetadataOperationType": {
+      "type": "string",
+      "enum": [
+        "OVERWRITE",
+        "APPEND"
+      ],
+      "default": "OVERWRITE",
+      "description": "- OVERWRITE: Works with all payload types\n - APPEND: Only works with string and json payload",
+      "title": "When updating a metadata entry, the entry can either be overwritten (supported by all types) or appended (supported by string and json)"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        }
+      },
+      "additionalProperties": {},
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
