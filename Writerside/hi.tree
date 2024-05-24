@@ -44,5 +44,5 @@
     <toc-element topic="Dashboard.md">
         <toc-element topic="Customizing-Account-Login-and-Linking.md"/>
     </toc-element>
-    <toc-element topic="AuthenticationLibrary.topic"/>
+    <toc-element hidden="true" topic="AuthenticationLibrary.topic"/>
 </instance-profile>
