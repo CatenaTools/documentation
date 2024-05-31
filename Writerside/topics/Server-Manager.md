@@ -22,6 +22,10 @@ to run matches.
 An example of the simple flow, running a single match, is included in
 a [mock game server script](https://github.com/CatenaTools/catena-tools-core/blob/main/mocks/gameserver.py).
 
+### API reference {collapsible="true"}
+
+<api-doc openapi-path="../apispec/openapi/api/v1/catena_server_manager.swagger.json"></api-doc>
+
 ### `RequestMatch`
 
 When a game server is idle (or backfilling or running matches in parallel) and has room for a new match it can
