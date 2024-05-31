@@ -2,7 +2,7 @@
 
 ## Developing/Testing Locally
 
-Apple doesn’t allow their redirect URLs to be `http` or contain `[localhost](http://localhost)` which obviously has issues when working locally, the easiest way around this is use something like [Caddy](https://caddyserver.com/) and setup a reverse-proxy.
+Apple doesn't allow their redirect URLs to be `http` or contain `[localhost](http://localhost)` which obviously has issues when working locally, the easiest way around this is use something like [Caddy](https://caddyserver.com/) and setup a reverse-proxy.
 
 ### Setting up Caddy using Docker
 
@@ -43,7 +43,7 @@ Apple doesn’t allow their redirect URLs to be `http` or contain `[localhost](h
 
 - **SSL Certificate**
 
-  Since Apple requires the the redirect URI to be `https` we’ll need a certificate for `apple.localhost`
+  Since Apple requires the redirect URI to be `https` we’ll need a certificate for `apple.localhost`
 
   Luckily Caddy handles all this for us and you just need to download the certificate off the docker container and add it to your machine as a trusted certificate. The root.crt on the container is located here: `/data/caddy/pki/authorities/local/root.crt`
 
@@ -53,7 +53,7 @@ Apple doesn’t allow their redirect URLs to be `http` or contain `[localhost](h
 
   After starting up the container and making sure you’ve added the certificate to your trust store, you should be able to sign in to your Apple ID. You will be redirected back to `[https://apple.localhost/api/v1/authentication/PROVIDER_APPLE/callback](https://apple.localhost/api/v1/authentication/PROVIDER_APPLE/callback)` where Caddy is waiting to forward you to `localhost`
 
-  Just as a precaution keep the Caddy logs running incase something does go wrong and authentication is successful
+  Just as a precaution keep the Caddy logs running in case something does go wrong and authentication is successful
 
   `docker compose logs caddy -n=1000 -f`
 
@@ -84,6 +84,6 @@ Apple doesn’t allow their redirect URLs to be `http` or contain `[localhost](h
 
   In an effort to keep things consistent with our other, already, implemented providers this is circumvented with some additional JS and the request is still made to the backend.
 
-  It would have been nice if we could have removed those `meta` tags, but the button ultimately doesn’t render without them
+  It would have been nice if we could have removed those `meta` tags, but the button ultimately doesn't render without them
 
-  Another option here, although not fully explored, is to use their button generation API and use an svg of their button, and hopefully not need to use `meta` tags or their JS
+  Another option here, although not fully explored, is to use their button generation API and use an SVG of their button, and hopefully not need to use `meta` tags or their JS
