@@ -19,6 +19,23 @@ Multiplay allocator. Other components, such as an admin dashboard, may also be a
 The server manager is the point of interaction for game servers. The game server SDK interacts with the server manager
 to run matches.
 
+### Typical/simple flow
+
+```mermaid
+sequenceDiagram
+    participant SM as Server Manager
+    participant GS as Game Server
+    loop Until match received
+        GS->>SM: RequestMatchRequest
+        SM->>GS: RequestMatchResponse
+    end
+    GS->>SM: MatchReadyRequest
+    SM->>GS: MatchReadyResponse
+    Note over GS: Run match
+    GS-->>SM: EndMatchRequest
+    SM-->>GS: EndMatchResponse
+```
+
 An example of the simple flow, running a single match, is included in
 a [mock game server script](https://github.com/CatenaTools/catena-tools-core/blob/main/mocks/gameserver.py).
 
