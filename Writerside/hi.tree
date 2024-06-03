@@ -29,6 +29,7 @@
     <toc-element topic="Running-game-servers.md">
         <toc-element topic="Sidecar.md"/>
         <toc-element topic="Match-Broker.md"/>
+        <toc-element topic="Match-Broker-Allocators.md"/>
         <toc-element topic="Server-Manager.md"/>
     </toc-element>
     <toc-element topic="Catena-Core.md">

@@ -8,6 +8,8 @@ The default Catena server manager is contained within the [default match broker]
 
 Allocators utilize a simple interface that a server manager can use to allocate or deallocate game servers as necessary on a particular platform or provider. Examples may include a local process allocator, a docker container allocator, or a Multiplay allocator. Other components, such as an admin dashboard, may also be able to utilize allocators directly.
 
+> A full list of allocators and configuration options is available here: [](Match-Broker-Allocators.md).
+
 ## Game server endpoints
 
 The server manager is the point of interaction for game servers. The game server SDK interacts with the server manager to run matches.

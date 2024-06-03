@@ -15,36 +15,42 @@ The Catena default match broker implementation is an "integrated" match broker. 
 
 #### Allocator configuration
 
+> A full list of allocators and configuration options is available here: [](Match-Broker-Allocators.md).
+
 The Catena match broker optionally supports using one or more allocators to maintain game servers. This starts with adding one or more allocator configurations to the match broker. Each allocator has its own configuration options. Here is an example of a multi-instance configuration with two uses of the `CatenaLocalBareMetalAllocator`:
 
 ```json
 "MatchBroker": {
-	"Allocators": [
-		{
-			"Allocator":"CatenaLocalBareMetalAllocator",
-			"AllocatorDescription": "Lostwoods allocator",
-			"Configuration": {
-				"GameServerPath": "<the path to the game server>",
-				"GameServerArguments": "-map lostwoods",
-				"AllocatorReaperPeriodSeconds": 10,
-				"ReadyDeadlineSeconds": 30,
-				"MaxRunTimeMinutes": 15
-			},
-			"Requirements": "MatchProperties.map == 'lostwoods'"
-		},
-		{
-			"Allocator":"CatenaLocalBareMetalAllocator",
-			"AllocatorDescription": "Forbidden forest allocator",
-			"Configuration": {
-				"GameServerPath": "<the path to the game server>",
-				"GameServerArguments": "-map forbidden_forest",
-				"AllocatorReaperPeriodSeconds": 10,
-				"ReadyDeadlineSeconds": 45,
-				"MaxRunTimeMinutes": 15
-			},
-			"Requirements": "MatchProperties.map == 'forbidden_forest'"
-		}
-	]
+  "Allocators": [
+    {
+      "Allocator":"CatenaLocalBareMetalAllocator",
+      "AllocatorDescription": "Lostwoods allocator",
+      "Configuration": {
+        "GameServerPath": "<the path to the game server>",
+        "GameServerArguments": "-map lostwoods",
+        "ReadyDeadlineSeconds": 30,
+        "ReaperConfiguration": {
+          "AllocatorReaperPeriodSeconds": 10,
+          "MaxRunTimeMinutes": 125
+        }
+      },
+      "Requirements": "MatchProperties.map == 'lostwoods'"
+    },
+    {
+      "Allocator":"CatenaLocalBareMetalAllocator",
+      "AllocatorDescription": "Forbidden forest allocator",
+      "Configuration": {
+        "GameServerPath": "<the path to the game server>",
+        "GameServerArguments": "-map forbidden_forest",
+        "ReadyDeadlineSeconds": 45,
+        "ReaperConfiguration": {
+          "AllocatorReaperPeriodSeconds": 10,
+          "MaxRunTimeMinutes": 125
+        }
+      },
+      "Requirements": "MatchProperties.map == 'forbidden_forest'"
+    }
+  ]
 }
 ```
 
