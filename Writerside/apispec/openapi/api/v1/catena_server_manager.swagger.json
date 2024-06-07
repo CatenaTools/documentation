@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/server/deallocate": {
+      "post": {
+        "operationId": "CatenaServerManager_AdminDeallocateServer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_server_managerAdminDeallocateServerResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_server_managerAdminDeallocateServerRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaServerManager"
+        ]
+      }
+    },
     "/api/v1/server/end_match": {
       "post": {
         "operationId": "CatenaServerManager_EndMatch",
@@ -146,6 +178,32 @@
     }
   },
   "definitions": {
+    "catena_server_managerAdminDeallocateServerRequest": {
+      "type": "object",
+      "properties": {
+        "serverId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_server_managerAdminDeallocateServerResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "state": {
+          "$ref": "#/definitions/catena_server_managerServerState"
+        },
+        "matches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_server_managerServerMatchInfo"
+          }
+        }
+      }
+    },
     "catena_server_managerEndMatchRequest": {
       "type": "object",
       "properties": {
@@ -272,6 +330,16 @@
           "type": "string"
         }
       }
+    },
+    "catena_server_managerServerState": {
+      "type": "string",
+      "enum": [
+        "SERVER_STATE_UNSPECIFIED",
+        "SERVER_STATE_PENDING",
+        "SERVER_STATE_AVAILABLE"
+      ],
+      "default": "SERVER_STATE_UNSPECIFIED",
+      "title": "The server state as in its capability to request matches\nNote: This is intentionally a subset of the specific states that exist inside the Catena Match Broker"
     },
     "match_brokerMatch": {
       "type": "object",
