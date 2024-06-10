@@ -1,3 +1,1 @@
 # Resolver
-
-Start typing here...
