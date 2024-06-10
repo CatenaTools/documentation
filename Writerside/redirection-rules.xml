@@ -46,4 +46,52 @@
         <description>Created after removal of "Matchmaking API" from Catena Tools</description>
         <accepts>Matchmaking-API.html</accepts>
     </rule>
+    <rule id="f4d2942">
+        <description>Created after removal of "Matchmaking" from Catena Tools</description>
+        <accepts>Matchmaking.html</accepts>
+    </rule>
+    <rule id="743c86fe">
+        <description>Created after removal of "Sidecar" from Catena Tools</description>
+        <accepts>Sidecar.html</accepts>
+    </rule>
+    <rule id="7abe61e6">
+        <description>Created after removal of "Backend" from Catena Tools</description>
+        <accepts>Backend.html</accepts>
+    </rule>
+    <rule id="246e9ed0">
+        <description>Created after removal of "EventSource" from Catena Tools</description>
+        <accepts>EventSource.html</accepts>
+    </rule>
+    <rule id="74eefe58">
+        <description>Created after removal of "Resolver" from Catena Tools</description>
+        <accepts>Resolver.html</accepts>
+    </rule>
+    <rule id="7901a668">
+        <description>Created after removal of "Sidecar-Snippets-Library" from Catena Tools</description>
+        <accepts>Sidecar-Snippets-Library.html</accepts>
+    </rule>
+    <rule id="3e77a699">
+        <description>Created after removal of "Match Broker" from Catena Tools</description>
+        <accepts>Match-Broker.html</accepts>
+    </rule>
+    <rule id="210f96a7">
+        <description>Created after removal of "MatchBroker-Snippets-Library" from Catena Tools</description>
+        <accepts>MatchBroker-Snippets-Library.html</accepts>
+    </rule>
+    <rule id="30973b4c">
+        <description>Created after removal of "Server Manager" from Catena Tools</description>
+        <accepts>Server-Manager.html</accepts>
+    </rule>
+    <rule id="52df07ac">
+        <description>Created after removal of "Entitlements" from Catena Tools</description>
+        <accepts>Entitlements.html</accepts>
+    </rule>
+    <rule id="2cea50b1">
+        <description>Created after removal of "Entitlements API" from Catena Tools</description>
+        <accepts>Entitlements-API.html</accepts>
+    </rule>
+    <rule id="3a40ef66">
+        <description>Created after removal of "Components" from Catena Tools</description>
+        <accepts>Services.html</accepts>
+    </rule>
 </rules>

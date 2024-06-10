@@ -7,24 +7,9 @@
                  start-page="Section-Starting-Page.topic">
 
     <toc-element topic="Section-Starting-Page.topic"/>
-    <toc-element topic="overview.md">
+    <toc-element topic="overview.md"><![CDATA[>
+        ]]>
         <toc-element topic="Quickstart-Up-And-Running.md">
-    </toc-element>
-    <toc-element topic="overview.md"/>
-    <toc-element topic="Services.md">
-        <toc-element topic="Sidecar.md">
-            <toc-element topic="Backend.md"/>
-            <toc-element topic="EventSource.md"/>
-            <toc-element topic="Resolver.md"/>
-            <toc-element hidden="true" topic="Sidecar-Snippets-Library.md"/>
-        </toc-element>
-        <toc-element topic="Match-Broker.md">
-            <toc-element hidden="true" topic="MatchBroker-Snippets-Library.md"/>
-        </toc-element>
-        <toc-element topic="Server-Manager.md"/>
-        <toc-element topic="Matchmaking.md"/>
-        <toc-element topic="Entitlements.md">
-            <toc-element topic="Entitlements-API.md"/>
         </toc-element>
         <toc-element topic="OAuth2-Login-Flow.md"/>
     </toc-element>
@@ -43,7 +28,11 @@
     <toc-element topic="Matchmaking.md">
     </toc-element>
     <toc-element topic="Running-game-servers.md">
-        <toc-element topic="Sidecar.md"/>
+        <toc-element topic="Sidecar.md">
+            <toc-element topic="EventSource.md"/>
+            <toc-element topic="Backend.md"/>
+            <toc-element topic="Resolver.md"/>
+        </toc-element>
         <toc-element topic="Match-Broker.md"/>
         <toc-element topic="Match-Broker-Allocators.md"/>
         <toc-element topic="Server-Manager.md"/>
