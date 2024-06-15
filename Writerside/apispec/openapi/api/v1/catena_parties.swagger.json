@@ -353,7 +353,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/groupsCreateMetadataEntryResponse"
+              "$ref": "#/definitions/catenagroupsCreateMetadataEntryResponse"
             }
           },
           "default": {
@@ -384,7 +384,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/groupsUpdateMetadataEntryResponse"
+              "$ref": "#/definitions/catenagroupsUpdateMetadataEntryResponse"
             }
           },
           "default": {
@@ -417,7 +417,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/groupsGetMetadataEntriesResponse"
+              "$ref": "#/definitions/catenagroupsGetMetadataEntriesResponse"
             }
           },
           "default": {
@@ -455,7 +455,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/groupsGetMetadataEntryResponse"
+              "$ref": "#/definitions/catenagroupsGetMetadataEntryResponse"
             }
           },
           "default": {
@@ -497,7 +497,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/groupsDeleteMetadataEntryResponse"
+              "$ref": "#/definitions/catenagroupsDeleteMetadataEntryResponse"
             }
           },
           "default": {
@@ -735,38 +735,6 @@
         }
       }
     },
-    "catena_partiesAdminUpdateParty": {
-      "type": "object",
-      "properties": {
-        "leaderId": {
-          "type": "string"
-        },
-        "kick": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "join": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "joinDisplayNames": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-        "metadata": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/groupsEntityMetadata"
-          }
-        }
-      }
-    },
     "catena_partiesAdminUpdatePartyRequest": {
       "type": "object",
       "properties": {
@@ -775,7 +743,7 @@
           "title": "id of party to be updated"
         },
         "payload": {
-          "$ref": "#/definitions/catena_partiesAdminUpdateParty",
+          "$ref": "#/definitions/catenacatena_partiesAdminUpdateParty",
           "title": "includes option to update leader id, join / kick party members, party metadata"
         }
       }
@@ -793,7 +761,7 @@
       "type": "object",
       "properties": {
         "innerRequest": {
-          "$ref": "#/definitions/groupsCreateMetadataEntryRequest"
+          "$ref": "#/definitions/catenagroupsCreateMetadataEntryRequest"
         },
         "playerId": {
           "type": "string",
@@ -963,7 +931,7 @@
       "type": "object",
       "properties": {
         "innerRequest": {
-          "$ref": "#/definitions/groupsUpdateMetadataEntryRequest"
+          "$ref": "#/definitions/catenagroupsUpdateMetadataEntryRequest"
         },
         "playerId": {
           "type": "string",
@@ -991,6 +959,149 @@
           "title": "the updated party (that the updated player is a member of)"
         }
       }
+    },
+    "catenacatena_partiesAdminUpdateParty": {
+      "type": "object",
+      "properties": {
+        "leaderId": {
+          "type": "string"
+        },
+        "kick": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "join": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "joinDisplayNames": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catenagroupsCreateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string",
+          "title": "The key in the metadata to be added"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata",
+          "title": "The metadata entry value"
+        }
+      }
+    },
+    "catenagroupsCreateMetadataEntryResponse": {
+      "type": "object"
+    },
+    "catenagroupsDeleteMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string",
+          "title": "The key in the metadata whose entry needs to be deleted"
+        },
+        "jsonHandlingType": {
+          "$ref": "#/definitions/groupsDeleteJsonMetadataType"
+        },
+        "propertiesToRemovePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Use this to remove entire properties from a json. This value is a Path"
+        }
+      }
+    },
+    "catenagroupsDeleteMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryDeleted": {
+          "type": "boolean",
+          "title": "If the entry was found in the database and deleted"
+        }
+      }
+    },
+    "catenagroupsGetMetadataEntriesRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "catenagroupsGetMetadataEntriesResponse": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catenagroupsGetMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        }
+      }
+    },
+    "catenagroupsGetMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      }
+    },
+    "catenagroupsUpdateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string",
+          "title": "The key in the metadata whose entry needs to be changed"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata",
+          "title": "The metadata entry value"
+        },
+        "updateOperationType": {
+          "$ref": "#/definitions/groupsUpdateMetadataOperationType",
+          "title": "The update type"
+        }
+      }
+    },
+    "catenagroupsUpdateMetadataEntryResponse": {
+      "type": "object"
     },
     "coreComponentHealth": {
       "type": "object",
@@ -1021,25 +1132,6 @@
         }
       }
     },
-    "groupsCreateMetadataEntryRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "entryKey": {
-          "type": "string",
-          "title": "The key in the metadata to be added"
-        },
-        "entryValue": {
-          "$ref": "#/definitions/groupsEntityMetadata",
-          "title": "The metadata entry value"
-        }
-      }
-    },
-    "groupsCreateMetadataEntryResponse": {
-      "type": "object"
-    },
     "groupsDeleteJsonMetadataType": {
       "type": "string",
       "enum": [
@@ -1048,37 +1140,6 @@
       ],
       "default": "ENTIRE_ENTRY",
       "description": "If you are deleting a json, can choose whether to delete the entire entry or a partial part of an entry\nCurrently, only whole property removal is supported.\nRemoval of elements in a json array (e.g. trying to remove \"value\" from json {\"array\":[\"value\",\"value2\"]})\nis not currently supported by DeleteMetadataEntryRequest.\n\n - ENTIRE_ENTRY: Delete the entire json\n - PARTIAL_ENTRY: Delete a specific part of json"
-    },
-    "groupsDeleteMetadataEntryRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "entryKey": {
-          "type": "string",
-          "title": "The key in the metadata whose entry needs to be deleted"
-        },
-        "jsonHandlingType": {
-          "$ref": "#/definitions/groupsDeleteJsonMetadataType"
-        },
-        "propertiesToRemovePaths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Use this to remove entire properties from a json. This value is a Path"
-        }
-      }
-    },
-    "groupsDeleteMetadataEntryResponse": {
-      "type": "object",
-      "properties": {
-        "entryDeleted": {
-          "type": "boolean",
-          "title": "If the entry was found in the database and deleted"
-        }
-      }
     },
     "groupsEntityMetadata": {
       "type": "object",
@@ -1094,67 +1155,6 @@
           "type": "string"
         }
       }
-    },
-    "groupsGetMetadataEntriesRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        }
-      }
-    },
-    "groupsGetMetadataEntriesResponse": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/groupsEntityMetadata"
-          }
-        }
-      }
-    },
-    "groupsGetMetadataEntryRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "entryKey": {
-          "type": "string"
-        }
-      }
-    },
-    "groupsGetMetadataEntryResponse": {
-      "type": "object",
-      "properties": {
-        "entryValue": {
-          "$ref": "#/definitions/groupsEntityMetadata"
-        }
-      }
-    },
-    "groupsUpdateMetadataEntryRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "entryKey": {
-          "type": "string",
-          "title": "The key in the metadata whose entry needs to be changed"
-        },
-        "entryValue": {
-          "$ref": "#/definitions/groupsEntityMetadata",
-          "title": "The metadata entry value"
-        },
-        "updateOperationType": {
-          "$ref": "#/definitions/groupsUpdateMetadataOperationType",
-          "title": "The update type"
-        }
-      }
-    },
-    "groupsUpdateMetadataEntryResponse": {
-      "type": "object"
     },
     "groupsUpdateMetadataOperationType": {
       "type": "string",

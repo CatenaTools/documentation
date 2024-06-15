@@ -210,7 +210,7 @@
           "type": "boolean"
         },
         "metadataValue": {
-          "$ref": "#/definitions/groupsMetadataEntry"
+          "$ref": "#/definitions/catenagroupsMetadataEntry"
         },
         "stringValue": {
           "type": "string"
@@ -290,39 +290,7 @@
         }
       }
     },
-    "eventsEmitUpdateEventRequest": {
-      "type": "object",
-      "properties": {
-        "nestedEvent": {
-          "$ref": "#/definitions/eventsEvent"
-        },
-        "recipientIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "eventTags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "eventsEmitUpdateEventResponse": {
-      "type": "object",
-      "properties": {
-        "broadcastSuccess": {
-          "type": "boolean"
-        }
-      }
-    },
-    "eventsEmptyEvent": {
-      "type": "object",
-      "title": "EmptyEvent is used to send pings through the event service, eg to get around bugs where a stream is not opened until the first request comes through, or to do a heartbeat"
-    },
-    "eventsEvent": {
+    "catenaeventsEvent": {
       "type": "object",
       "properties": {
         "eventId": {
@@ -351,11 +319,55 @@
         }
       }
     },
+    "catenagroupsMetadataEntry": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      },
+      "title": "Simple message containing a metadata key-value pair so that a metadata entry can be sent in update events"
+    },
+    "eventsEmitUpdateEventRequest": {
+      "type": "object",
+      "properties": {
+        "nestedEvent": {
+          "$ref": "#/definitions/catenaeventsEvent"
+        },
+        "recipientIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "eventTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "eventsEmitUpdateEventResponse": {
+      "type": "object",
+      "properties": {
+        "broadcastSuccess": {
+          "type": "boolean"
+        }
+      }
+    },
+    "eventsEmptyEvent": {
+      "type": "object",
+      "title": "EmptyEvent is used to send pings through the event service, eg to get around bugs where a stream is not opened until the first request comes through, or to do a heartbeat"
+    },
     "eventsSubscribeToEventsByTagResponse": {
       "type": "object",
       "properties": {
         "event": {
-          "$ref": "#/definitions/eventsEvent"
+          "$ref": "#/definitions/catenaeventsEvent"
         },
         "eventTags": {
           "type": "array",
@@ -369,7 +381,7 @@
       "type": "object",
       "properties": {
         "event": {
-          "$ref": "#/definitions/eventsEvent"
+          "$ref": "#/definitions/catenaeventsEvent"
         }
       }
     },
@@ -387,18 +399,6 @@
           "type": "string"
         }
       }
-    },
-    "groupsMetadataEntry": {
-      "type": "object",
-      "properties": {
-        "key": {
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/groupsEntityMetadata"
-        }
-      },
-      "title": "Simple message containing a metadata key-value pair so that a metadata entry can be sent in update events"
     },
     "groupsMetadataMap": {
       "type": "object",

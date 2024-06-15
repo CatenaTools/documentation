@@ -152,7 +152,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsGetMetadataEntriesResponse"
+              "$ref": "#/definitions/catenacatena_accountsGetMetadataEntriesResponse"
             }
           },
           "default": {
@@ -181,7 +181,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsCreateMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsCreateMetadataEntryResponse"
             }
           },
           "default": {
@@ -197,7 +197,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_accountsCreateMetadataEntryRequest"
+              "$ref": "#/definitions/catenacatena_accountsCreateMetadataEntryRequest"
             }
           }
         ],
@@ -212,7 +212,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsUpdateMetadataEntryResponse"
             }
           },
           "default": {
@@ -228,7 +228,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryRequest"
+              "$ref": "#/definitions/catenacatena_accountsUpdateMetadataEntryRequest"
             }
           }
         ],
@@ -245,7 +245,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsGetMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsGetMetadataEntryResponse"
             }
           },
           "default": {
@@ -280,7 +280,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsDeleteMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsDeleteMetadataEntryResponse"
             }
           },
           "default": {
@@ -469,7 +469,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsGetMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsGetMetadataEntryResponse"
             }
           },
           "default": {
@@ -503,7 +503,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsDeleteMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsDeleteMetadataEntryResponse"
             }
           },
           "default": {
@@ -519,7 +519,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_accountsDeleteMetadataEntryRequest"
+              "$ref": "#/definitions/catenacatena_accountsDeleteMetadataEntryRequest"
             }
           }
         ],
@@ -533,7 +533,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsCreateMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsCreateMetadataEntryResponse"
             }
           },
           "default": {
@@ -549,7 +549,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_accountsCreateMetadataEntryRequest"
+              "$ref": "#/definitions/catenacatena_accountsCreateMetadataEntryRequest"
             }
           }
         ],
@@ -563,7 +563,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryResponse"
+              "$ref": "#/definitions/catenacatena_accountsUpdateMetadataEntryResponse"
             }
           },
           "default": {
@@ -579,7 +579,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_accountsUpdateMetadataEntryRequest"
+              "$ref": "#/definitions/catenacatena_accountsUpdateMetadataEntryRequest"
             }
           }
         ],
@@ -688,23 +688,6 @@
         }
       }
     },
-    "catena_accountsCreateMetadataEntryRequest": {
-      "type": "object",
-      "properties": {
-        "accountId": {
-          "type": "string"
-        },
-        "entryKey": {
-          "type": "string"
-        },
-        "entryValue": {
-          "$ref": "#/definitions/groupsEntityMetadata"
-        }
-      }
-    },
-    "catena_accountsCreateMetadataEntryResponse": {
-      "type": "object"
-    },
     "catena_accountsCreateOrGetAccountFromTokenRequest": {
       "type": "object"
     },
@@ -732,34 +715,6 @@
         }
       }
     },
-    "catena_accountsDeleteMetadataEntryRequest": {
-      "type": "object",
-      "properties": {
-        "accountId": {
-          "type": "string"
-        },
-        "entryKey": {
-          "type": "string"
-        },
-        "jsonHandlingType": {
-          "$ref": "#/definitions/groupsDeleteJsonMetadataType"
-        },
-        "propertiesToRemovePaths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "catena_accountsDeleteMetadataEntryResponse": {
-      "type": "object",
-      "properties": {
-        "entryDeleted": {
-          "type": "boolean"
-        }
-      }
-    },
     "catena_accountsGetAccountByIdResponse": {
       "type": "object",
       "properties": {
@@ -776,25 +731,6 @@
           "items": {
             "type": "string"
           }
-        }
-      }
-    },
-    "catena_accountsGetMetadataEntriesResponse": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/groupsEntityMetadata"
-          }
-        }
-      }
-    },
-    "catena_accountsGetMetadataEntryResponse": {
-      "type": "object",
-      "properties": {
-        "entryValue": {
-          "$ref": "#/definitions/groupsEntityMetadata"
         }
       }
     },
@@ -822,7 +758,71 @@
     "catena_accountsUpdateAccountResponse": {
       "type": "object"
     },
-    "catena_accountsUpdateMetadataEntryRequest": {
+    "catenacatena_accountsCreateMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        },
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      }
+    },
+    "catenacatena_accountsCreateMetadataEntryResponse": {
+      "type": "object"
+    },
+    "catenacatena_accountsDeleteMetadataEntryRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "entryKey": {
+          "type": "string"
+        },
+        "jsonHandlingType": {
+          "$ref": "#/definitions/groupsDeleteJsonMetadataType"
+        },
+        "propertiesToRemovePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "catenacatena_accountsDeleteMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catenacatena_accountsGetMetadataEntriesResponse": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/groupsEntityMetadata"
+          }
+        }
+      }
+    },
+    "catenacatena_accountsGetMetadataEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryValue": {
+          "$ref": "#/definitions/groupsEntityMetadata"
+        }
+      }
+    },
+    "catenacatena_accountsUpdateMetadataEntryRequest": {
       "type": "object",
       "properties": {
         "accountId": {
@@ -839,7 +839,7 @@
         }
       }
     },
-    "catena_accountsUpdateMetadataEntryResponse": {
+    "catenacatena_accountsUpdateMetadataEntryResponse": {
       "type": "object"
     },
     "coreComponentHealth": {
