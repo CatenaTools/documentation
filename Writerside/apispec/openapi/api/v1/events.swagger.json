@@ -132,21 +132,6 @@
     }
   },
   "definitions": {
-    "capacityServerConnectionInfo": {
-      "type": "object",
-      "properties": {
-        "ip": {
-          "type": "string"
-        },
-        "port": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "serverId": {
-          "type": "string"
-        }
-      }
-    },
     "catena_authenticationAuthenticationEvent": {
       "type": "object",
       "properties": {
@@ -177,8 +162,8 @@
         "ticketId": {
           "type": "string"
         },
-        "serverConnectionInfo": {
-          "$ref": "#/definitions/capacityServerConnectionInfo"
+        "additionalEventData": {
+          "type": "string"
         }
       }
     },

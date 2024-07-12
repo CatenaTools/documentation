@@ -72,6 +72,104 @@
         ]
       }
     },
+    "/api/v1/matchmaking/server/cancel": {
+      "post": {
+        "summary": "CancelMatchmaking",
+        "operationId": "CatenaMatchmaking_ServerCancelMatchmaking",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_matchmakingCancelMatchmakingResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_matchmakingCancelMatchmakingRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaMatchmaking"
+        ]
+      }
+    },
+    "/api/v1/matchmaking/server/start": {
+      "post": {
+        "summary": "StartMatchmaking",
+        "operationId": "CatenaMatchmaking_ServerStartMatchmaking",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_matchmakingStartMatchmakingResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_matchmakingStartMatchmakingRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaMatchmaking"
+        ]
+      }
+    },
+    "/api/v1/matchmaking/server/{ticketId}": {
+      "get": {
+        "summary": "GetMatchmakingStatus",
+        "operationId": "CatenaMatchmaking_ServerGetMatchmakingStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_matchmakingGetMatchmakingStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ticketId",
+            "description": "The ID of the ticket for which we are polling matchmaking status.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaMatchmaking"
+        ]
+      }
+    },
     "/api/v1/matchmaking/start": {
       "post": {
         "summary": "StartMatchmaking",
