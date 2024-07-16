@@ -70,21 +70,14 @@ The Catena `AccountsService` supports fetching an existing account by its ID via
 <api-endpoint openapi-path="../apispec/openapi/api/v1/catena_accounts.swagger.json" endpoint="/api/v1/accounts/{accountId}" method="GET">
 </chapter>
 
+
+### Updating an Account
+
 The `AccountsService` also supports updating an account - specifically its **display name** and **associated metadata** - via `UpdateAccount`.
 
-```protobuf
-// Updates a passed in account's display_name and metadata 
-rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountResponse) {
-    option (google.api.http) = {
-        patch: "/api/v1/accounts"
-        body: "*"
-    };
-};
-message UpdateAccountRequest {
-    Account account = 1; // The modified account whose values will overwrite those currently in the database
-	  google.protobuf.FieldMask account_mask = 2;
-}
-message UpdateAccountResponse {}
-```
+<chapter title="UpdateAccount" collapsible="true">
+    Requires a session with Admin permissions or higher
+    <api-endpoint openapi-path="../apispec/openapi/api/v1/catena_accounts.swagger.json" endpoint="/api/v1/accounts/{accountId}" method="patch" />
+</chapter>
 
 **Note: This RPC facilitates account updates via `google.protobuf.FieldMasks` meaning that only the data specified in the update request will be overwritten. The rest of the account’s data will remain unchanged.**
