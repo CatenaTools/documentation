@@ -18,7 +18,6 @@
         <toc-element topic="API.md"/>
     </toc-element>
     <toc-element topic="Accounts.md">
-        <toc-element topic="Creating-a-New-Account.md"/>
         <toc-element topic="Account-Linking.md"/>
         <toc-element topic="Accounts-API.md"/>
     </toc-element>

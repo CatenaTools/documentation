@@ -94,4 +94,8 @@
         <description>Created after removal of "Components" from Catena Tools</description>
         <accepts>Services.html</accepts>
     </rule>
+    <rule id="3af9d512">
+        <description>Created after removal of "Creating a New Account" from Catena Tools</description>
+        <accepts>Creating-a-New-Account.html</accepts>
+    </rule>
 </rules>
