@@ -1,10 +1,10 @@
 # Accounts
 
-Catena provides an accounts system that is designed for maximum flexiblity. The rest of Catena is designed to not depend on the Account implementation, as a result, you can bring your own account implementation and swap it out for Catena's.
+Catena provides an accounts system that is designed for maximum flexiblity. The rest of Catena is designed to not depend on catena's provided Account implementation, as a result, you can bring your own account implementation and swap it out for Catena's.
 
 ## How does Catena define an account?
 
-The fields on an account are shown below, Catena primarily cares about the `account_id` and `display_name`, with the `auth_role` being the tie in to the authentication system.
+The fields on an account are shown below, Catena primarily cares about the `account_id` and `display_name`, with the `auth_role` being the tie in to the authentication system when using Catena's provided accounts implementation. 
 
 | Field        | Type      | Description                                                                                                                         |
 |--------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------|
