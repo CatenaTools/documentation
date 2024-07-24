@@ -45,7 +45,8 @@
               "PROVIDER_DISCORD",
               "PROVIDER_GOOGLE",
               "PROVIDER_APPLE",
-              "PROVIDER_TWITCH"
+              "PROVIDER_TWITCH",
+              "PROVIDER_CUSTOM"
             ]
           }
         ],
@@ -82,7 +83,8 @@
               "PROVIDER_DISCORD",
               "PROVIDER_GOOGLE",
               "PROVIDER_APPLE",
-              "PROVIDER_TWITCH"
+              "PROVIDER_TWITCH",
+              "PROVIDER_CUSTOM"
             ]
           },
           {
@@ -129,7 +131,8 @@
               "PROVIDER_DISCORD",
               "PROVIDER_GOOGLE",
               "PROVIDER_APPLE",
-              "PROVIDER_TWITCH"
+              "PROVIDER_TWITCH",
+              "PROVIDER_CUSTOM"
             ]
           },
           {
@@ -411,7 +414,8 @@
         "PROVIDER_DISCORD",
         "PROVIDER_GOOGLE",
         "PROVIDER_APPLE",
-        "PROVIDER_TWITCH"
+        "PROVIDER_TWITCH",
+        "PROVIDER_CUSTOM"
       ],
       "default": "PROVIDER_UNSPECIFIED",
       "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)"

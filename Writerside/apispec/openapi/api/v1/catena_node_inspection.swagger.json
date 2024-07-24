@@ -38,6 +38,50 @@
         ]
       }
     },
+    "/api/v1/node_inspection/is_healthy": {
+      "get": {
+        "operationId": "CatenaNodeInspection_NodeIsHealthy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_node_inspectionNodeIsHealthyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaNodeInspection"
+        ]
+      }
+    },
+    "/api/v1/node_inspection/node_health": {
+      "get": {
+        "operationId": "CatenaNodeInspection_GetNodeHealth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_node_inspectionGetNodeHealthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaNodeInspection"
+        ]
+      }
+    },
     "/api/v1/node_inspection/services/discovered": {
       "get": {
         "operationId": "CatenaNodeInspection_ListDiscoveredServices",
@@ -84,6 +128,21 @@
     }
   },
   "definitions": {
+    "catena_node_inspectionGetNodeHealthResponse": {
+      "type": "object",
+      "properties": {
+        "healthy": {
+          "type": "boolean"
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_node_inspectionServiceHealth"
+          }
+        }
+      }
+    },
     "catena_node_inspectionListDiscoveredServicesResponse": {
       "type": "object",
       "properties": {
@@ -105,6 +164,42 @@
           }
         }
       }
+    },
+    "catena_node_inspectionNodeIsHealthyResponse": {
+      "type": "object",
+      "properties": {
+        "isHealthy": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_node_inspectionServiceHealth": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string"
+        },
+        "healthy": {
+          "$ref": "#/definitions/catena_node_inspectionServiceHealthStatus"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/coreComponentHealth"
+          }
+        }
+      }
+    },
+    "catena_node_inspectionServiceHealthStatus": {
+      "type": "string",
+      "enum": [
+        "SERVICE_HEALTH_STATUS_UNSPECIFIED",
+        "SERVICE_HEALTH_STATUS_HEALTHY",
+        "SERVICE_HEALTH_STATUS_UNHEALTHY",
+        "SERVICE_HEALTH_STATUS_PRESUMED_HEALTHY"
+      ],
+      "default": "SERVICE_HEALTH_STATUS_UNSPECIFIED"
     },
     "coreComponentHealth": {
       "type": "object",
