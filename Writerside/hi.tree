@@ -43,6 +43,7 @@
         </toc-element>
         <toc-element topic="Modules-Services.md" accepts-web-file-names-ref="627e8b25"/>
         <toc-element topic="Auth-Flow-Session-Management.md"/>
+        <toc-element topic="External-custom-or-token-based-sessions.md"/>
         <toc-element topic="Metadata.md"/>
         <toc-element topic="Entities.md"/>
     </toc-element>

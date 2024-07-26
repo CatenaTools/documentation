@@ -9,4 +9,6 @@
     <term name="game server">Usually hosted in a cloud environment using a client/server model, this is your game logic responsible for players, world simulation and gameplay.</term>
     <term name="backend platform">The non-game server portions of your game, usually supporting things like matchmaking, parties, accounts and inventory.</term>
     <term name="fleet manager">A service or tool responsible for allocating and managing a collection of game servers.</term>
+    <term name="session resolver">A session resolver is responsible to returning the current session ID, typically from a header or request metadata.</term>
+    <term name="session store accessor">An interface that provides consistent methods to create and (in)validate sessions and read/write session data.</term>
 </terms>
