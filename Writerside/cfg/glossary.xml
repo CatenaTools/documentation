@@ -11,4 +11,5 @@
     <term name="fleet manager">A service or tool responsible for allocating and managing a collection of game servers.</term>
     <term name="session resolver">A session resolver is responsible to returning the current session ID, typically from a header or request metadata.</term>
     <term name="session store accessor">An interface that provides consistent methods to create and (in)validate sessions and read/write session data.</term>
+    <term name="matchmaking strategy">The algorithm used to make matches which may apply rules related to game modes, team size, player properties, etc.</term>
 </terms>
