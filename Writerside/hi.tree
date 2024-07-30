@@ -7,6 +7,7 @@
                  start-page="Section-Starting-Page.topic">
 
     <toc-element topic="Section-Starting-Page.topic"/>
+    <toc-element topic="Infrastructure.md"/>
     <toc-element topic="overview.md"><![CDATA[>
         ]]>
         <toc-element topic="Quickstart-Up-And-Running.md">
