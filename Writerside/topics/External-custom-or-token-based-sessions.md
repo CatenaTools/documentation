@@ -4,10 +4,12 @@ The Catena [authentication service](Authentication.md) is typically responsible 
 
 However, it is possible use a completely separate service for accounts/sessions/authorization, even one external to Catena, without using the Catena authentication and accounts services and **still** use other Catena services that may rely on a session.
 
-There are several phases to accessing a session:
+There are several phases to accessing an existing session:
 * [Finding the session](#finding-the-session-isessionresolver) - A <tooltip term="session resolver">session resolver</tooltip> will report the current session ID, typically by reading a header value.
 * [Validating the session](#accessing-the-session-contents-isessionstoreaccessor) - The auth framework will always attempt to validate a session using a <tooltip term="session store accessor">session store accessor</tooltip>.
 * [Accessing the session data](#accessing-the-session-contents-isessionstoreaccessor) - With a valid session, services can use a <tooltip term="session store accessor">session store accessor</tooltip> to read/write session data. Additional information about how services use sessions in Catena is covered [here](Sessions.md).
+
+Additionally, a session can be created and/or the current session can be set by any service: [Creating and returning a session](#creating-and-returning-a-session)
 
 ## Finding the session (`ISessionResolver`)
 
@@ -57,6 +59,11 @@ Since existing services may expect certain keys/values to exist in the session, 
 
 > `TokenSessionStore` contains an example of this emulation.
 
+## Creating and returning a session
+
+A service, typically an authentication service, can create a new session by calling an `ISessionStoreAccessor.NewSession()` to create a session and then call `SendSessionId()` in the request handler method context to set the current session ID. `SendSessionId()` will trigger the auth framework to call `ISessionResolver.SetSessionId()` to actually write the necessary header.
+
+> Examples of this include the `CatenaAuthenticationService` and `TokenSessionStore` (although the latter does not _create_ sessions).
 
 ## Read-only, external tokens
 
@@ -81,6 +88,7 @@ When using a combined session resolver+store, be sure to configure it as both th
 
 ## Read-write custom sessions
 
-Read-write custom sessions are supported when a custom header contains only a session ID and all operations on the session are conducted by accessing a separate data store - either directly or via a 3rd-party service.
+Read-write custom sessions are supported in two common ways:
 
-Read-write custom sessions where the entire session/token with data is contained within a custom header is **not supported at this time**.
+1. Where a custom header contains only a session ID and all operations on the session are conducted by accessing a separate data store - either directly or via a 3rd-party service.
+2. Where the entire session/token with data is contained within a custom header and serialization is performed in `ISessionResolver.SetSessionId()`.
