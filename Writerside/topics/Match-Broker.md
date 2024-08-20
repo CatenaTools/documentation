@@ -92,3 +92,27 @@ This timer starts when a match is picked up by a game server. Its expiration ind
 ##### MatchMaxRunTimeMinutes
 
 This is the maximum amount of time a match can run before a server should call `EndMatch`. It should be slightly longer than the longest match should actually run and never trigger; it should only happen if a server fails or fails to communicate with the backend. The broker can treat the server as having failed and attempt to clean up/deallocate the server and will signal to clients that the match is over or has failed.
+
+#### Fast scheduling and backfill
+
+The Catena match broker supports server backfill where game servers request multiple players/matches. The match broker also supports tuning its allocation strategy, including some optimizations when backfill is not in use. These options are related and shown in the example below.
+
+```json
+"MatchBroker": {
+  "FastSchedule": 1,
+  "ScheduleFrequencySeconds": 30,
+  "DelayAllocationSeconds": 30
+}
+```
+
+When backfill is not necessary, `FastSchedule` may be set to `2` which will cause the match broker to allocate a new game server immediately for each new match that arrives. However, if game servers run matches serially without exiting, it's possible for this approach to overshoot the ideal number of game servers, starting some extras that are idle for periods of time. The combination of starting servers for each match and potentially having some servers idle gives the shortest queue time. 
+
+When backfill is necessary, servers should not be started for each new match as doing so would not give existing servers an opportunity to request and receive these new matches before a new game server. In such cases, `FastSchedule` should be set to either `1` (the default) or `0` (disabled).
+
+When `FastSchedule` is set to `1`, a new game server will be started immediately for a new match only if all existing servers are full. When set to `0`, a new game server will not be started immediately when a new match arrives.
+
+> FastScheduling `1` differs from `0` (disabled) only when [fullness hints](Server-Manager.md#hint-recommendations) are used. Otherwise, they are equivalent. The match broker does not discriminate when determining if all servers are full since it does not necessarily know what matches a server may request. Future changes may add more flexibility/granularity.
+
+A periodic queue check (`ScheduleFrequencySeconds`) is used to ensure servers are allocated in cases where fast scheduling is disabled or matches are not picked up due to delays/missing hints/failures/etc. Shorter durations for this timer will result in shorter delays for queued matches. However, an interval which is too small can reduce the overall capacity of the match broker and can even cause the match broker to deadlock if the timer is too short for the incoming match rate.
+
+When a match has been queued for the time `DelayAllocationSeconds`, the match broker will begin trying to allocate a new server for it during each periodic queue check, regardless of any attempt that has been made already.
