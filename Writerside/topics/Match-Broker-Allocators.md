@@ -15,15 +15,17 @@ If the game server takes longer than 30 seconds to start up and begin fetching m
 ```json
 "MatchBroker": {
   "Allocators": [
-    "Allocator":"CatenaLocalBareMetalAllocator",
-    "AllocatorDescription": "Local allocator",
-    "Configuration": {
-      "GameServerPath": "<the path to the game server>",
-      "GameServerArguments": "<the server command-line arguments>",
-      "ReadyDeadlineSeconds": 30,
-      "ReaperConfiguration": {
-        "AllocatorReaperPeriodSeconds": 10,
-        "MaxRunTimeMinutes": 125
+    {
+      "Allocator": "CatenaLocalBareMetalAllocator",
+      "AllocatorDescription": "Local allocator",
+      "Configuration": {
+        "GameServerPath": "<the path to the game server>",
+        "GameServerArguments": "<the server command-line arguments>",
+        "ReadyDeadlineSeconds": 30,
+        "ReaperConfiguration": {
+          "AllocatorReaperPeriodSeconds": 10,
+          "MaxRunTimeMinutes": 125
+        }
       }
     }
   ]
@@ -45,16 +47,18 @@ It is suggested that `ReadyDeadlineSeconds` be set to the time required for the 
 ```json
 "MatchBroker": {
   "Allocators": [
-    "Allocator":"CatenaLocalBareMetalAllocator",
-    "AllocatorDescription": "Local allocator",
-    "Configuration": {
-      "Profile": "<AWS credential profile>",
-      "Region": "us-east-1",
-      "ReadyDeadlineSeconds": 30,
-      "FleetArn": "<the ARN of the GameLift fleet>",
-      "AllowFleetGrowth": false,
-      "MaxFleetSize": 1,
-      "ProxyMatchesToGameLift": true
+    {
+      "Allocator": "CatenaLocalBareMetalAllocator",
+      "AllocatorDescription": "Local allocator",
+      "Configuration": {
+        "Profile": "<AWS credential profile>",
+        "Region": "us-east-1",
+        "ReadyDeadlineSeconds": 30,
+        "FleetArn": "<the ARN of the GameLift fleet>",
+        "AllowFleetGrowth": false,
+        "MaxFleetSize": 1,
+        "ProxyMatchesToGameLift": true
+      }
     }
   ]
 }
@@ -73,17 +77,19 @@ If the game server takes longer than 30 seconds to start up and begin fetching m
 ```json
 "MatchBroker": {
   "Allocators": [
-    "Allocator":"CatenaEc2DirectAllocator",
-    "AllocatorDescription": "EC2 direct allocator",
-    "Configuration": {
-      "Profile": "<AWS credential profile>",
-      "Region": "us-east-1",
-      "MaxInstanceCount": 1,
-      "LaunchTemplateId": "<AWS launch template ID>",
-      "ReadyDeadlineSeconds": 30,
-      "ReaperConfiguration": {
-        "AllocatorReaperPeriodSeconds": 10,
-        "MaxRunTimeMinutes": 125
+    {
+      "Allocator": "CatenaEc2DirectAllocator",
+      "AllocatorDescription": "EC2 direct allocator",
+      "Configuration": {
+        "Profile": "<AWS credential profile>",
+        "Region": "us-east-1",
+        "MaxInstanceCount": 1,
+        "LaunchTemplateId": "<AWS launch template ID>",
+        "ReadyDeadlineSeconds": 30,
+        "ReaperConfiguration": {
+          "AllocatorReaperPeriodSeconds": 10,
+          "MaxRunTimeMinutes": 125
+        }
       }
     }
   ]
