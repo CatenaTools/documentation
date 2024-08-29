@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/server/allocate": {
+      "post": {
+        "operationId": "CatenaServerManager_AdminAllocateServer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_server_managerAdminAllocateServerResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_server_managerAdminAllocateServerRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaServerManager"
+        ]
+      }
+    },
     "/api/v1/server/deallocate": {
       "post": {
         "operationId": "CatenaServerManager_AdminDeallocateServer",
@@ -178,6 +210,22 @@
     }
   },
   "definitions": {
+    "catena_server_managerAdminAllocateServerRequest": {
+      "type": "object",
+      "properties": {
+        "match": {
+          "$ref": "#/definitions/match_brokerMatch"
+        }
+      }
+    },
+    "catena_server_managerAdminAllocateServerResponse": {
+      "type": "object",
+      "properties": {
+        "serverId": {
+          "type": "string"
+        }
+      }
+    },
     "catena_server_managerAdminDeallocateServerRequest": {
       "type": "object",
       "properties": {
@@ -235,10 +283,12 @@
         "HINT_FLAG_NO_HINT_FLAGS",
         "HINT_FLAG_SHUTDOWN",
         "HINT_FLAG_WILLING_TO_WAIT",
-        "HINT_FLAG_WILLING_TO_SHUTDOWN"
+        "HINT_FLAG_WILLING_TO_SHUTDOWN",
+        "HINT_FLAG_FULL",
+        "HINT_FLAG_NOT_FULL"
       ],
       "default": "HINT_FLAG_NO_HINT_FLAGS",
-      "description": "- HINT_FLAG_NO_HINT_FLAGS: No flags - either unspecified or empty\n - HINT_FLAG_SHUTDOWN: Flag indicating a component will shutdown or should shut down if it can\n - HINT_FLAG_WILLING_TO_WAIT: Flag indicating a component is willing to wait a \"long time\" for a response to the request.\n - HINT_FLAG_WILLING_TO_SHUTDOWN: Flag indicating a component is willing to shutdown if a shutdown is requested",
+      "description": "- HINT_FLAG_NO_HINT_FLAGS: No flags - either unspecified or empty\n - HINT_FLAG_SHUTDOWN: Flag indicating a component will shutdown or should shut down if it can\n - HINT_FLAG_WILLING_TO_WAIT: Flag indicating a component is willing to wait a \"long time\" for a response to the request.\n - HINT_FLAG_WILLING_TO_SHUTDOWN: Flag indicating a component is willing to shutdown if a shutdown is requested\n - HINT_FLAG_FULL: Flag indicating a component will cease making requests for additional matches\n - HINT_FLAG_NOT_FULL: Flag indicating a component will begin making requests for additional matches",
       "title": "Optional flags hinting intention by requester/responder\nThese are bit flags - values must be powers of 2!"
     },
     "catena_server_managerListServersRequest": {
@@ -268,6 +318,9 @@
         "connectionDetails": {
           "type": "string",
           "title": "URI, IP+port, etc - not prescribed"
+        },
+        "hintFlags": {
+          "$ref": "#/definitions/catena_server_managerHintFlag"
         }
       }
     },
@@ -277,6 +330,9 @@
         "matchId": {
           "type": "string",
           "title": "TODO: anything the server needs to know from the backend - proceed with match? (what if a client can't get the ready event?)"
+        },
+        "hintFlags": {
+          "$ref": "#/definitions/catena_server_managerHintFlag"
         }
       }
     },
@@ -317,6 +373,9 @@
             "$ref": "#/definitions/catena_server_managerServerMatchInfo"
           },
           "title": "These are connection strings the server has returned"
+        },
+        "IsFull": {
+          "type": "boolean"
         }
       }
     },
@@ -336,7 +395,8 @@
       "enum": [
         "SERVER_STATE_UNSPECIFIED",
         "SERVER_STATE_PENDING",
-        "SERVER_STATE_AVAILABLE"
+        "SERVER_STATE_AVAILABLE",
+        "SERVER_STATE_FULL"
       ],
       "default": "SERVER_STATE_UNSPECIFIED",
       "title": "The server state as in its capability to request matches\nNote: This is intentionally a subset of the specific states that exist inside the Catena Match Broker"
