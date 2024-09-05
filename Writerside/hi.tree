@@ -36,6 +36,9 @@
         <toc-element topic="Match-Broker-Allocators.md"/>
         <toc-element topic="Server-Manager.md"/>
     </toc-element>
+    <toc-element topic="Entitlements2.md">
+        <toc-element topic="Steam-Payment.md"/>
+    </toc-element>
     <toc-element topic="Catena-Core.md">
         <toc-element topic="Auth-Framework.md">
             <toc-element topic="API-Keys.md"/>
