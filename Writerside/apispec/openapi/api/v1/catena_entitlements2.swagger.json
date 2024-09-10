@@ -4,14 +4,274 @@
     "title": "api/v1/catena_entitlements2.proto",
     "version": "version not set"
   },
+  "tags": [
+    {
+      "name": "CatenaEntitlements2"
+    }
+  ],
   "consumes": [
     "application/json"
   ],
   "produces": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/api/v1/admin/entitlements2": {
+      "get": {
+        "summary": "Retreives a list of all catalog items, optionally filtered by specified parameters",
+        "operationId": "CatenaEntitlements2_AdminGetCatalogItems",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminGetCatalogItemsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tag",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements2"
+        ]
+      },
+      "post": {
+        "summary": "Creates a new catalog item in our system with the specified information.",
+        "operationId": "CatenaEntitlements2_AdminCreateCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminCreateCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminCreateCatalogItemRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements2"
+        ]
+      },
+      "put": {
+        "summary": "Updates a new catalog item in our system with the specified information.",
+        "operationId": "CatenaEntitlements2_AdminUpdateCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminUpdateCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminUpdateCatalogItemRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements2"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements2/{catalogItemId}": {
+      "delete": {
+        "summary": "Deletes a new catalog item in our system with the specified id.",
+        "operationId": "CatenaEntitlements2_AdminDeleteCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminDeleteCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements2"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements2/{tag}": {
+      "get": {
+        "summary": "Retreives a list of all catalog items, optionally filtered by specified parameters",
+        "operationId": "CatenaEntitlements2_AdminGetCatalogItems2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlements2AdminGetCatalogItemsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tag",
+            "description": "optional",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements2"
+        ]
+      }
+    }
+  },
   "definitions": {
+    "catena_entitlements2AdminCreateCatalogItemRequest": {
+      "type": "object",
+      "properties": {
+        "catalogItemName": {
+          "type": "string"
+        },
+        "catalogItemDescription": {
+          "type": "string"
+        },
+        "catalogItemPublished": {
+          "type": "boolean"
+        },
+        "catalogItemTags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlements2CatalogItemTag"
+          }
+        }
+      },
+      "title": "admin functionality"
+    },
+    "catena_entitlements2AdminCreateCatalogItemResponse": {
+      "type": "object",
+      "properties": {
+        "catalogItemId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_entitlements2AdminDeleteCatalogItemResponse": {
+      "type": "object"
+    },
+    "catena_entitlements2AdminGetCatalogItemsResponse": {
+      "type": "object",
+      "properties": {
+        "catalogItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlements2CatalogItem"
+          }
+        }
+      }
+    },
+    "catena_entitlements2AdminUpdateCatalogItemRequest": {
+      "type": "object",
+      "properties": {
+        "catalogItemId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "published": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_entitlements2AdminUpdateCatalogItemResponse": {
+      "type": "object"
+    },
+    "catena_entitlements2CatalogItem": {
+      "type": "object",
+      "properties": {
+        "catalogItemId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlements2CatalogItemTag"
+          }
+        }
+      }
+    },
+    "catena_entitlements2CatalogItemTag": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {

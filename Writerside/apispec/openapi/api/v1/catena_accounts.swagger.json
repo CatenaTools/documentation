@@ -925,6 +925,7 @@
         "PROVIDER_GOOGLE",
         "PROVIDER_APPLE",
         "PROVIDER_TWITCH",
+        "PROVIDER_STEAM",
         "PROVIDER_CUSTOM"
       ],
       "default": "PROVIDER_UNSPECIFIED",
