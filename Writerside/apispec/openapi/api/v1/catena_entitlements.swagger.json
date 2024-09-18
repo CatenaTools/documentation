@@ -16,15 +16,15 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/entitlements": {
+    "/api/v1/admin/entitlements": {
       "get": {
-        "summary": "AdminGetAllEntitlements Fetches all existing entitlements in our system.",
-        "operationId": "CatenaEntitlements_AdminGetAllEntitlements",
+        "summary": "Retreives a list of all catalog items, optionally filtered by specified parameters",
+        "operationId": "CatenaEntitlements_AdminGetCatalogItems",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminGetEntitlementsResponse"
+              "$ref": "#/definitions/catena_entitlementsAdminGetCatalogItemsResponse"
             }
           },
           "default": {
@@ -34,18 +34,27 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "tag",
+            "description": "optional",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
         "tags": [
           "CatenaEntitlements"
         ]
       },
       "post": {
-        "summary": "AdminCreateEntitlement Creates a new entitlement in our system with the specified information.",
-        "operationId": "CatenaEntitlements_AdminCreateEntitlement",
+        "summary": "Creates a new catalog item in our system with the specified information.",
+        "operationId": "CatenaEntitlements_AdminCreateCatalogItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminCreateEntitlementResponse"
+              "$ref": "#/definitions/catena_entitlementsAdminCreateCatalogItemResponse"
             }
           },
           "default": {
@@ -61,7 +70,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminCreateEntitlementRequest"
+              "$ref": "#/definitions/catena_entitlementsAdminCreateCatalogItemRequest"
             }
           }
         ],
@@ -70,13 +79,13 @@
         ]
       },
       "put": {
-        "summary": "AdminUpdtateEntitlement Updates the name, description, and/or the entitlement granting purchases of an existing entitlement.",
-        "operationId": "CatenaEntitlements_AdminUpdateEntitlement",
+        "summary": "Updates a new catalog item in our system with the specified information.",
+        "operationId": "CatenaEntitlements_AdminUpdateCatalogItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminUpdateEntitlementResponse"
+              "$ref": "#/definitions/catena_entitlementsAdminUpdateCatalogItemResponse"
             }
           },
           "default": {
@@ -92,7 +101,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminUpdateEntitlementRequest"
+              "$ref": "#/definitions/catena_entitlementsAdminUpdateCatalogItemRequest"
             }
           }
         ],
@@ -101,79 +110,15 @@
         ]
       }
     },
-    "/api/v1/entitlements/purchase": {
-      "post": {
-        "summary": "Allows an account to purchase a product from a supported IAP store.\nThis purchase can either be a one-time purchase that the account is billed for once\nor a subscription purchase that the account is billed for on a recurring basis.",
-        "operationId": "CatenaEntitlements_CreateIAPStorePurchase",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/catena_entitlementsCreateIAPStorePurchaseResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/catena_entitlementsCreateIAPStorePurchaseRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CatenaEntitlements"
-        ]
-      }
-    },
-    "/api/v1/entitlements/{approxEntitlementName}": {
-      "get": {
-        "summary": "AdminGetEntitlementsByApproxName Fetches all entitlements whose name contains the specified keyword or a single entitlement if an exact name is provided. \nThis should only be called when an admin clicks a search button so we are not \nmaking a request with each character typed into a search bar.",
-        "operationId": "CatenaEntitlements_AdminGetEntitlementsByApproxName",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminGetEntitlementsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "approxEntitlementName",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "CatenaEntitlements"
-        ]
-      }
-    },
-    "/api/v1/entitlements/{entitlementId}": {
+    "/api/v1/admin/entitlements/{catalogItemId}": {
       "delete": {
-        "summary": "AdminDeleteEntitlement Deletes the specified entitlement from our system and revokes it from all users to whom it has previously been granted.",
-        "operationId": "CatenaEntitlements_AdminDeleteAndRevokeEntitlement",
+        "summary": "Deletes a new catalog item in our system with the specified id.",
+        "operationId": "CatenaEntitlements_AdminDeleteCatalogItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_entitlementsAdminDeleteAndRevokeEntitlementResponse"
+              "$ref": "#/definitions/catena_entitlementsAdminDeleteCatalogItemResponse"
             }
           },
           "default": {
@@ -185,10 +130,74 @@
         },
         "parameters": [
           {
-            "name": "entitlementId",
+            "name": "catalogItemId",
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/{tag}": {
+      "get": {
+        "summary": "Retreives a list of all catalog items, optionally filtered by specified parameters",
+        "operationId": "CatenaEntitlements_AdminGetCatalogItems2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminGetCatalogItemsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tag",
+            "description": "optional",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/entitlements/admin/order/place": {
+      "post": {
+        "operationId": "CatenaEntitlements_AdminPlaceOrderWithProvider",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminPlaceOrderWithProviderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminPlaceOrderWithProviderRequest"
+            }
           }
         ],
         "tags": [
@@ -198,140 +207,187 @@
     }
   },
   "definitions": {
-    "catena_entitlementsAdminCreateEntitlementRequest": {
+    "catena_entitlementsAdminCreateCatalogItemRequest": {
       "type": "object",
       "properties": {
-        "entitlementName": {
+        "catalogItemName": {
           "type": "string"
         },
-        "entitlementDescription": {
+        "catalogItemDescription": {
           "type": "string"
         },
-        "entitlementGrantingPurchases": {
+        "catalogItemPublished": {
+          "type": "boolean"
+        },
+        "catalogItemTags": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/catena_entitlementsEntitlementGrantingPurchase"
+            "$ref": "#/definitions/catena_entitlementsCatalogItemTag"
           }
         }
       },
       "title": "admin functionality"
     },
-    "catena_entitlementsAdminCreateEntitlementResponse": {
-      "type": "object"
-    },
-    "catena_entitlementsAdminDeleteAndRevokeEntitlementResponse": {
-      "type": "object"
-    },
-    "catena_entitlementsAdminGetEntitlementsResponse": {
+    "catena_entitlementsAdminCreateCatalogItemResponse": {
       "type": "object",
       "properties": {
-        "entitlements": {
+        "catalogItemId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_entitlementsAdminDeleteCatalogItemResponse": {
+      "type": "object"
+    },
+    "catena_entitlementsAdminGetCatalogItemsResponse": {
+      "type": "object",
+      "properties": {
+        "catalogItems": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/catena_entitlementsEntitlement"
+            "$ref": "#/definitions/catena_entitlementsCatalogItem"
           }
         }
-      },
-      "title": "shared between both GET RPCs"
+      }
     },
-    "catena_entitlementsAdminUpdateEntitlementRequest": {
+    "catena_entitlementsAdminPlaceOrderWithProviderRequest": {
       "type": "object",
       "properties": {
-        "entitlement": {
-          "$ref": "#/definitions/catena_entitlementsEntitlement",
-          "title": "need an entitlement_id unlike AdminCreateEntitlementRequest"
+        "provider": {
+          "$ref": "#/definitions/public_commonProvider"
+        },
+        "order": {
+          "$ref": "#/definitions/catena_entitlementsOrder"
+        },
+        "steam": {
+          "$ref": "#/definitions/catena_entitlementsSteamOrderProviderOrderMetadata"
         }
       }
     },
-    "catena_entitlementsAdminUpdateEntitlementResponse": {
+    "catena_entitlementsAdminPlaceOrderWithProviderResponse": {
+      "type": "object",
+      "properties": {
+        "createdSuccessfully": {
+          "type": "boolean"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "steam": {
+          "$ref": "#/definitions/catena_entitlementsSteamOrderProviderOrderResultDetails"
+        }
+      }
+    },
+    "catena_entitlementsAdminUpdateCatalogItemRequest": {
+      "type": "object",
+      "properties": {
+        "catalogItemId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "published": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_entitlementsAdminUpdateCatalogItemResponse": {
       "type": "object"
     },
-    "catena_entitlementsCreateIAPStorePurchaseRequest": {
+    "catena_entitlementsCatalogItem": {
       "type": "object",
       "properties": {
-        "iapStore": {
-          "$ref": "#/definitions/catena_entitlementsIAPStore"
-        },
-        "stripePurchaseRequestData": {
-          "$ref": "#/definitions/catena_entitlementsStripePurchaseRequestData"
-        }
-      }
-    },
-    "catena_entitlementsCreateIAPStorePurchaseResponse": {
-      "type": "object",
-      "properties": {
-        "iapStore": {
-          "$ref": "#/definitions/catena_entitlementsIAPStore"
-        },
-        "stripePurchaseResponseData": {
-          "$ref": "#/definitions/catena_entitlementsStripePurchaseResponseData"
-        }
-      }
-    },
-    "catena_entitlementsEntitlement": {
-      "type": "object",
-      "properties": {
-        "entitlementId": {
-          "type": "string",
-          "title": "GUID"
-        },
-        "entitlementName": {
+        "catalogItemId": {
           "type": "string"
         },
-        "entitlementDescription": {
+        "name": {
           "type": "string"
         },
-        "entitlementGrantingPurchases": {
+        "description": {
+          "type": "string"
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "tags": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/catena_entitlementsEntitlementGrantingPurchase"
-          },
-          "title": "references to IAP store purchases that grant this entitlement"
+            "$ref": "#/definitions/catena_entitlementsCatalogItemTag"
+          }
         }
       }
     },
-    "catena_entitlementsEntitlementGrantingPurchase": {
+    "catena_entitlementsCatalogItemTag": {
       "type": "object",
       "properties": {
-        "entitlementGrantingPurchaseId": {
+        "tag": {
           "type": "string"
-        },
-        "externalProductId": {
-          "type": "string"
-        },
-        "iapStore": {
-          "$ref": "#/definitions/catena_entitlementsIAPStore"
         }
       }
     },
-    "catena_entitlementsIAPStore": {
-      "type": "string",
-      "enum": [
-        "IAP_STORE_UNSPECIFIED",
-        "IAP_STORE_STRIPE"
-      ],
-      "default": "IAP_STORE_UNSPECIFIED",
-      "title": "supported In-App Purchase (IAP) stores"
-    },
-    "catena_entitlementsStripePurchaseRequestData": {
+    "catena_entitlementsOrder": {
       "type": "object",
       "properties": {
-        "priceId": {
-          "type": "string",
-          "title": "Stripe-generated unique ID of the pricing plan for the product being purchased"
+        "granteeId": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsOrderItem"
+          }
         }
-      },
-      "title": "user functionality"
+      }
     },
-    "catena_entitlementsStripePurchaseResponseData": {
+    "catena_entitlementsOrderItem": {
       "type": "object",
       "properties": {
-        "clientSecret": {
+        "itemId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "pricePerItem": {
           "type": "string",
-          "title": "used for browser checkout session"
+          "format": "int64"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_entitlementsSteamOrderProviderOrderMetadata": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "userSession": {
+          "type": "string"
+        },
+        "ipAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_entitlementsSteamOrderProviderOrderResultDetails": {
+      "type": "object",
+      "properties": {
+        "checkoutUrl": {
+          "type": "string"
         }
       }
     },
@@ -345,6 +401,21 @@
       },
       "additionalProperties": {},
       "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "public_commonProvider": {
+      "type": "string",
+      "enum": [
+        "PROVIDER_UNSPECIFIED",
+        "PROVIDER_UNSAFE",
+        "PROVIDER_DISCORD",
+        "PROVIDER_GOOGLE",
+        "PROVIDER_APPLE",
+        "PROVIDER_TWITCH",
+        "PROVIDER_STEAM",
+        "PROVIDER_CUSTOM"
+      ],
+      "default": "PROVIDER_UNSPECIFIED",
+      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)"
     },
     "rpcStatus": {
       "type": "object",
