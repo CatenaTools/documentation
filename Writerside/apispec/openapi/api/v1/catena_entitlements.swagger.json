@@ -110,6 +110,423 @@
         ]
       }
     },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/decrement/{count}": {
+      "patch": {
+        "operationId": "CatenaEntitlements_AdminDecrementAccountCountableCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminDecrementAccountCountableCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "allowNegativeTotal",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/history": {
+      "get": {
+        "operationId": "CatenaEntitlements_AdminGetOwnershipChangeHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminGetOwnershipChangeHistoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/history/recent": {
+      "get": {
+        "operationId": "CatenaEntitlements_AdminGetMostRecentOwnershipChange",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminGetMostRecentOwnershipChangeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/increment/{count}": {
+      "patch": {
+        "operationId": "CatenaEntitlements_AdminIncrementAccountCountableCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminIncrementAccountCountableCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/owned": {
+      "get": {
+        "operationId": "CatenaEntitlements_AdminGetAccountOwnsCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminGetAccountOwnsCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asap",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/revoke": {
+      "put": {
+        "operationId": "CatenaEntitlements_AdminRevokeAccountCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminRevokeAccountCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/item/{catalogItemId}/set/{count}": {
+      "put": {
+        "operationId": "CatenaEntitlements_AdminSetAccountCountableCatalogItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminSetAccountCountableCatalogItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/account/{accountId}/items": {
+      "get": {
+        "operationId": "CatenaEntitlements_AdminGetAccountCatalogItems",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminGetAccountCatalogItemsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "asap",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/price/add": {
+      "post": {
+        "operationId": "CatenaEntitlements_AdminAddCatalogItemPurchasePrice",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminAddCatalogItemPurchasePriceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminAddCatalogItemPurchasePriceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/price/delete": {
+      "delete": {
+        "operationId": "CatenaEntitlements_AdminDeleteCatalogItemPurchasePrice",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminDeleteCatalogItemPurchasePriceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminDeleteCatalogItemPurchasePriceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/price/update": {
+      "post": {
+        "operationId": "CatenaEntitlements_AdminUpdateCatalogItemPurchasePrice",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminUpdateCatalogItemPurchasePriceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminUpdateCatalogItemPurchasePriceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
     "/api/v1/admin/entitlements/{catalogItemId}": {
       "delete": {
         "summary": "Deletes a new catalog item in our system with the specified id.",
@@ -134,6 +551,126 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/{catalogItemId}/prices": {
+      "get": {
+        "operationId": "CatenaEntitlements_AdminGetCatalogItemPurchasePrices",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminGetCatalogItemPurchasePricesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/{catalogItemId}/provider_data/{provider}/modify": {
+      "post": {
+        "operationId": "CatenaEntitlements_AdminModifyProviderCatalogItemData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminModifyProviderCatalogItemDataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ENTITLEMENT_PROVIDER_UNSPECIFIED",
+              "ENTITLEMENT_PROVIDER_STEAM",
+              "ENTITLEMENT_PROVIDER_STEAM_APP"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatenaEntitlementsAdminModifyProviderCatalogItemDataBody"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/admin/entitlements/{catalogItemId}/provider_data/{provider}/remove": {
+      "delete": {
+        "operationId": "CatenaEntitlements_AdminRemoveProviderCatalogItemData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsAdminRemoveProviderCatalogItemDataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "catalogItemId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ENTITLEMENT_PROVIDER_UNSPECIFIED",
+              "ENTITLEMENT_PROVIDER_STEAM",
+              "ENTITLEMENT_PROVIDER_STEAM_APP"
+            ]
           }
         ],
         "tags": [
@@ -207,6 +744,32 @@
     }
   },
   "definitions": {
+    "CatenaEntitlementsAdminModifyProviderCatalogItemDataBody": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "$ref": "#/definitions/catena_entitlementsModifyProviderCatalogItemDataOperation"
+        },
+        "steamApp": {
+          "$ref": "#/definitions/catena_entitlementsSteamAppProviderCatalogItemData"
+        }
+      }
+    },
+    "catena_entitlementsAdminAddCatalogItemPurchasePriceRequest": {
+      "type": "object",
+      "properties": {
+        "priceKey": {
+          "$ref": "#/definitions/catena_entitlementsCatalogItemPriceKey"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "catena_entitlementsAdminAddCatalogItemPurchasePriceResponse": {
+      "type": "object"
+    },
     "catena_entitlementsAdminCreateCatalogItemRequest": {
       "type": "object",
       "properties": {
@@ -237,8 +800,86 @@
         }
       }
     },
+    "catena_entitlementsAdminDecrementAccountCountableCatalogItemResponse": {
+      "type": "object",
+      "properties": {
+        "newCount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "decrementSuccessful": {
+          "type": "boolean"
+        }
+      }
+    },
+    "catena_entitlementsAdminDeleteCatalogItemPurchasePriceRequest": {
+      "type": "object",
+      "properties": {
+        "priceKey": {
+          "$ref": "#/definitions/catena_entitlementsCatalogItemPriceKey"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "catena_entitlementsAdminDeleteCatalogItemPurchasePriceResponse": {
+      "type": "object"
+    },
     "catena_entitlementsAdminDeleteCatalogItemResponse": {
       "type": "object"
+    },
+    "catena_entitlementsAdminGetAccountCatalogItemsResponse": {
+      "type": "object",
+      "properties": {
+        "catalogItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsAdminGetAccountCatalogItemsResponseCatalogItem"
+          }
+        }
+      }
+    },
+    "catena_entitlementsAdminGetAccountCatalogItemsResponseCatalogItem": {
+      "type": "object",
+      "properties": {
+        "catalogItemId": {
+          "type": "string"
+        },
+        "isOwned": {
+          "type": "boolean"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_entitlementsAdminGetAccountOwnsCatalogItemResponse": {
+      "type": "object",
+      "properties": {
+        "isOwned": {
+          "type": "boolean"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_entitlementsAdminGetCatalogItemPurchasePricesResponse": {
+      "type": "object",
+      "properties": {
+        "prices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsCatalogItemPrice"
+          }
+        }
+      }
     },
     "catena_entitlementsAdminGetCatalogItemsResponse": {
       "type": "object",
@@ -252,11 +893,43 @@
         }
       }
     },
+    "catena_entitlementsAdminGetMostRecentOwnershipChangeResponse": {
+      "type": "object",
+      "properties": {
+        "record": {
+          "$ref": "#/definitions/catena_entitlementsOwnershipChangeRecord"
+        }
+      }
+    },
+    "catena_entitlementsAdminGetOwnershipChangeHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsOwnershipChangeRecord"
+          }
+        }
+      }
+    },
+    "catena_entitlementsAdminIncrementAccountCountableCatalogItemResponse": {
+      "type": "object",
+      "properties": {
+        "newCount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_entitlementsAdminModifyProviderCatalogItemDataResponse": {
+      "type": "object"
+    },
     "catena_entitlementsAdminPlaceOrderWithProviderRequest": {
       "type": "object",
       "properties": {
         "provider": {
-          "$ref": "#/definitions/public_commonProvider"
+          "$ref": "#/definitions/catena_entitlementsEntitlementProvider"
         },
         "order": {
           "$ref": "#/definitions/catena_entitlementsOrder"
@@ -280,6 +953,49 @@
         }
       }
     },
+    "catena_entitlementsAdminRemoveProviderCatalogItemDataResponse": {
+      "type": "object"
+    },
+    "catena_entitlementsAdminRevokeAccountCatalogItemResponse": {
+      "type": "object",
+      "properties": {
+        "wasOwned": {
+          "type": "boolean"
+        },
+        "previousCount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_entitlementsAdminSetAccountCountableCatalogItemResponse": {
+      "type": "object",
+      "properties": {
+        "previousCount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_entitlementsAdminUpdateCatalogItemPurchasePriceRequest": {
+      "type": "object",
+      "properties": {
+        "priceKey": {
+          "$ref": "#/definitions/catena_entitlementsCatalogItemPriceKey"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "existingAmount": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "catena_entitlementsAdminUpdateCatalogItemPurchasePriceResponse": {
+      "type": "object"
+    },
     "catena_entitlementsAdminUpdateCatalogItemRequest": {
       "type": "object",
       "properties": {
@@ -294,6 +1010,13 @@
         },
         "published": {
           "type": "boolean"
+        },
+        "tagUpdates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsTagUpdate"
+          }
         }
       }
     },
@@ -324,6 +1047,44 @@
         }
       }
     },
+    "catena_entitlementsCatalogItemPrice": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "catena_entitlementsCatalogItemPriceKey": {
+      "type": "object",
+      "properties": {
+        "catalogItemId": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string",
+          "title": "May be empty"
+        },
+        "quantity": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "currency": {
+          "type": "string"
+        }
+      }
+    },
     "catena_entitlementsCatalogItemTag": {
       "type": "object",
       "properties": {
@@ -331,6 +1092,25 @@
           "type": "string"
         }
       }
+    },
+    "catena_entitlementsEntitlementProvider": {
+      "type": "string",
+      "enum": [
+        "ENTITLEMENT_PROVIDER_UNSPECIFIED",
+        "ENTITLEMENT_PROVIDER_STEAM",
+        "ENTITLEMENT_PROVIDER_STEAM_APP"
+      ],
+      "default": "ENTITLEMENT_PROVIDER_UNSPECIFIED",
+      "title": "- ENTITLEMENT_PROVIDER_STEAM: SteamOrderProvider\n - ENTITLEMENT_PROVIDER_STEAM_APP: SteamExternalItemProvider"
+    },
+    "catena_entitlementsModifyProviderCatalogItemDataOperation": {
+      "type": "string",
+      "enum": [
+        "MODIFY_PROVIDER_CATALOG_ITEM_DATA_OPERATION_UNSPECIFIED",
+        "MODIFY_PROVIDER_CATALOG_ITEM_DATA_OPERATION_SET",
+        "MODIFY_PROVIDER_CATALOG_ITEM_DATA_OPERATION_UPDATE"
+      ],
+      "default": "MODIFY_PROVIDER_CATALOG_ITEM_DATA_OPERATION_UNSPECIFIED"
     },
     "catena_entitlementsOrder": {
       "type": "object",
@@ -369,6 +1149,48 @@
         }
       }
     },
+    "catena_entitlementsOwnershipChangeRecord": {
+      "type": "object",
+      "properties": {
+        "increment": {
+          "type": "string",
+          "format": "int64"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "changeType": {
+          "$ref": "#/definitions/catena_entitlementsOwnershipChangeType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "catena_entitlementsOwnershipChangeType": {
+      "type": "string",
+      "enum": [
+        "OWNERSHIP_CHANGE_TYPE_UNSPECIFIED",
+        "OWNERSHIP_CHANGE_TYPE_ORDER",
+        "OWNERSHIP_CHANGE_TYPE_REFUND",
+        "OWNERSHIP_CHANGE_TYPE_KNOWN",
+        "OWNERSHIP_CHANGE_TYPE_ADMIN"
+      ],
+      "default": "OWNERSHIP_CHANGE_TYPE_UNSPECIFIED"
+    },
+    "catena_entitlementsSteamAppProviderCatalogItemData": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
     "catena_entitlementsSteamOrderProviderOrderMetadata": {
       "type": "object",
       "properties": {
@@ -391,6 +1213,25 @@
         }
       }
     },
+    "catena_entitlementsTagUpdate": {
+      "type": "object",
+      "properties": {
+        "operation": {
+          "$ref": "#/definitions/catena_entitlementsTagUpdateOperation"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_entitlementsTagUpdateOperation": {
+      "type": "string",
+      "enum": [
+        "TAG_UPDATE_ADD",
+        "TAG_UPDATE_REMOVE"
+      ],
+      "default": "TAG_UPDATE_ADD"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -401,21 +1242,6 @@
       },
       "additionalProperties": {},
       "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
-    },
-    "public_commonProvider": {
-      "type": "string",
-      "enum": [
-        "PROVIDER_UNSPECIFIED",
-        "PROVIDER_UNSAFE",
-        "PROVIDER_DISCORD",
-        "PROVIDER_GOOGLE",
-        "PROVIDER_APPLE",
-        "PROVIDER_TWITCH",
-        "PROVIDER_STEAM",
-        "PROVIDER_CUSTOM"
-      ],
-      "default": "PROVIDER_UNSPECIFIED",
-      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)"
     },
     "rpcStatus": {
       "type": "object",
