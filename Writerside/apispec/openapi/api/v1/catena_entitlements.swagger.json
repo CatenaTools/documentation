@@ -741,6 +741,114 @@
           "CatenaEntitlements"
         ]
       }
+    },
+    "/api/v1/entitlements/offer/execute": {
+      "post": {
+        "summary": "A trusted service calls ExecutePreparedOrdersForProvider to execute a set of orders with a provider. The request may fail if the prepared orders are no longer valid, or data does not match",
+        "operationId": "CatenaEntitlements_ExecutePreparedOffers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsExecutePreparedOffersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "steam.language",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "steam.userSession",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "steam.ipAddress",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
+    },
+    "/api/v1/entitlements/offer/{provider}/prepare": {
+      "post": {
+        "summary": "A trusted service calls PrepareOrdersForProvider on behalf of a player in order to get a list of potential orders that the player may execute for a given provider",
+        "operationId": "CatenaEntitlements_PrepareOffersForProvider",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_entitlementsPrepareOrdersForProviderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ENTITLEMENT_PROVIDER_UNSPECIFIED",
+              "ENTITLEMENT_PROVIDER_STEAM",
+              "ENTITLEMENT_PROVIDER_STEAM_APP"
+            ]
+          },
+          {
+            "name": "accountId",
+            "description": "since we are making this request on behalf of a player rather than initiated by a player, we must pass an account id in the request",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tagFilter",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "CatenaEntitlements"
+        ]
+      }
     }
   },
   "definitions": {
@@ -789,8 +897,7 @@
             "$ref": "#/definitions/catena_entitlementsCatalogItemTag"
           }
         }
-      },
-      "title": "admin functionality"
+      }
     },
     "catena_entitlementsAdminCreateCatalogItemResponse": {
       "type": "object",
@@ -1103,6 +1210,20 @@
       "default": "ENTITLEMENT_PROVIDER_UNSPECIFIED",
       "title": "- ENTITLEMENT_PROVIDER_STEAM: SteamOrderProvider\n - ENTITLEMENT_PROVIDER_STEAM_APP: SteamExternalItemProvider"
     },
+    "catena_entitlementsExecutePreparedOffersResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "steam": {
+          "$ref": "#/definitions/catena_entitlementsSteamOrderProviderOrderResultDetails"
+        }
+      }
+    },
     "catena_entitlementsModifyProviderCatalogItemDataOperation": {
       "type": "string",
       "enum": [
@@ -1181,6 +1302,69 @@
         "OWNERSHIP_CHANGE_TYPE_ADMIN"
       ],
       "default": "OWNERSHIP_CHANGE_TYPE_UNSPECIFIED"
+    },
+    "catena_entitlementsPlayerFacingPreparedOffer": {
+      "type": "object",
+      "properties": {
+        "offerId": {
+          "type": "string"
+        },
+        "itemId": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "priceDetails": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsPlayerFacingPreparedOfferPrice"
+          }
+        }
+      }
+    },
+    "catena_entitlementsPlayerFacingPreparedOfferPrice": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The number of items this order would purchase"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The price in the specified currency"
+        }
+      }
+    },
+    "catena_entitlementsPrepareOrdersForProviderResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_entitlementsPlayerFacingPreparedOffer"
+          }
+        }
+      }
+    },
+    "catena_entitlementsPreparedOrderWithQuantity": {
+      "type": "object",
+      "properties": {
+        "preparedOrder": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
     },
     "catena_entitlementsSteamAppProviderCatalogItemData": {
       "type": "object",
