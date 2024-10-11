@@ -1,9 +1,10 @@
 # Offers
 
-During purchasing of items online, prices can change. Sales and promotions can end, pricing can be modified, or a third party may change pricing. In any case, these changes present a condition in which
-the price that a user sees when they start a purchase is not the one that is actually in the backend, meaning the price they see at checkout is different from the one in game.
+During purchasing of items online, prices can change for many reasons: Sales and promotions can end, pricing can be modified, or a third party may change pricing. 
 
-Left unchecked this could result in a user being mildly frustrated in the mild case, or angry in the worst case.
+In any case, these changes present a condition in which the price that a user sees when they start a purchase is not the one that is actually in the Catena Backend or third party store. 
+
+This means the price that a user sees on the checkout  page could be different from the one in game. Left unchecked this could result in a user being mildly frustrated in the mild case, or angry in the worst case.
 
 _Offers_ are Catena's solution to this problem, they guarantee that a user's transaction will always occur with the price they expect and that there are no surprises through a two-step order flow. When a user
 goes ot purchase an item, a trusted service _prepares_ a list of prices, the service then decides on behalf of the user what offers to _execute_. The backend will validate for you that none of the information
@@ -16,21 +17,21 @@ The offer and execute flow is a two-step process which generally involves Catena
 ```mermaid
 sequenceDiagram
     participant Client
-    participant Backend
+    participant Catena
     participant Merchant
 
-    Client->>Backend: Prepare Offers
-    Backend->>Merchant: GetPricesForItems (optional)
-    Merchant-->>Backend: Prices
+    Client->>Catena: Prepare Offers
+    Catena->>Merchant: GetPricesForItems (optional)
+    Merchant-->>Catena: Prices
     
-    Backend-->>Client: Offer Response
+    Catena-->>Client: Offer Response
 
-    Client->>Backend: Execute Offer
+    Client->>Catena: Execute Offer
     
-    Backend->>Merchant: Purchase items at price
-    Merchant-->>Backend: Purchase complete    
+    Catena->>Merchant: Purchase items at price
+    Merchant-->>Catena: Purchase complete    
     
-    Backend-->>Client: Execute Response
+    Catena-->>Client: Execute Response
 
 ```
 
@@ -149,3 +150,7 @@ If all is successful, the backend replies with something resembling the followin
     }
 }
 ```
+
+In the case of the steam order provider, a user then needs to follow that checkout link and authorize the transaction, however the price shown on that Checkout page is now guarenteed to be the same as the one they were displayed in store.
+
+If the prices have changed, the execute request will throw an InvalidPrecondition rpc exception with a message "Pricing data changed between preparing and executing the order."
