@@ -135,6 +135,9 @@ list</tooltip> by using the group name prefixed with `@`, ex: `--services @all,-
 >
 > **The <tooltip term="services list">services list</tooltip> is not processed in order. Modules are first included,
 then modules are excluded at the end.**
+>
+> To force include a specific service from a group which has been excluded, prefix the service with a `+`, ex:
+`--services @all,-@CatenaExamples,+ExampleTransientService`
 
 ## External module libraries
 
