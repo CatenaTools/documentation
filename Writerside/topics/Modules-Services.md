@@ -110,6 +110,8 @@ In the rare case where a service requires a specific implementation of an interf
 both depend on the interface but require that specific implementation. An example of this is provided
 in `ApiKeysExampleService`.
 
+More information about configuring the interfaces used at runtime is available in [](Configuring-interface-dependencies.md).
+
 ### Database dependencies
 
 When a module or service depends on a class that inherits from `IDatabaseAccessor`, the database will automatically be
@@ -133,6 +135,9 @@ list</tooltip> by using the group name prefixed with `@`, ex: `--services @all,-
 >
 > **The <tooltip term="services list">services list</tooltip> is not processed in order. Modules are first included,
 then modules are excluded at the end.**
+>
+> To force include a specific service from a group which has been excluded, prefix the service with a `+`, ex:
+`--services @all,-@CatenaExamples,+ExampleTransientService`
 
 ## External module libraries
 
