@@ -51,6 +51,7 @@
         <toc-element topic="Entities.md"/>
     </toc-element>
     <toc-element topic="Tutorials.md">
+        <toc-element topic="Configuring-interface-dependencies.md"/>
         <toc-element topic="Writing-a-new-service.md"/>
     </toc-element>
     <toc-element hidden="true" topic="Unity-SDK.md"/>

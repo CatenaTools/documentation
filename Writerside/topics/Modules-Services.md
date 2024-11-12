@@ -110,6 +110,8 @@ In the rare case where a service requires a specific implementation of an interf
 both depend on the interface but require that specific implementation. An example of this is provided
 in `ApiKeysExampleService`.
 
+More information about configuring the interfaces used at runtime is available in [](Configuring-interface-dependencies.md).
+
 ### Database dependencies
 
 When a module or service depends on a class that inherits from `IDatabaseAccessor`, the database will automatically be
