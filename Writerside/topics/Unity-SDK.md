@@ -15,6 +15,109 @@ For Unity versions **older** than 2020.1 you will need to **remove** `UnitySDK/P
 2. Make any required changes to the service clients.
 3. Copy the entire `UnitySDK/` directory from `catena-tools-core` into `Assets/Scripts/` directory of the Unity project.
 
+## Using the Catena Unity SDK
+
+As a companion to the Unity SDK, there is a [Catena Networking Demo](https://github.com/CatenaTools/catena-networking-demo) that shows how to integrate Catena into a Unity project. The base of the demo is Unity's Galactic Kittens demo, with changes to add Authentication & Login, Matchmaking, and dedicated server support through Catena.
+The following sections are guides on how to integrate the Catena SDK with your unity project, giving examples from the Catena Networking Demo.
+
+### Authentication & Login
+
+Before being able to use the matchmaking system, your players must be able to log in first.
+
+#### Setup Steps
+
+1. Add the components `CatenaEntrypoint` and `CatenaPlayer` to the scene you want to perform the login on.
+    1. `CatenaEntrypoint` is a singleton class that is used by other Catena components to communicate with the Catena backend, such as `CatenaPlayer`. You can define what the endpoint URL is in the component, which defaults to `http://localhost:5000` - which is the default for the Catena backend as well. 
+       
+       Note: This component will make the game object it’s on persist between scenes, so it is best to either put it on its own game object, or on another game object you already plan to have persist between scenes. Also, if a Catena component requires an instance of `CatenaEntrypoint` , one will be created - but keep in mind that it will use the default endpoint URL if instantiated this way.
+    2. `CatenaPlayer` is a component that interfaces with `CatenaEntrypoint` - you can call its functions for Logging in and out of accounts, and for entering matchmaking. It communicates to the entrypoint, and receives events in response. It also has events that are emitted when various Catena events happen. 
+   
+   {type="alpha-lower"}
+2. Add a call to `CatenaPlayer.CompleteLogin`
+    1. This function asks for a username and a password, and will attempt to log the player into the Catena backend.
+       * Note: The password is currently unused, and the function just attempts an unsafe login with the username.
+       * Note: Any username starting with the prefix ‘test’ will work as a dev solution, and will allow you to log in.
+    
+    {type="alpha-lower"}
+3. Add a call to `CatenaPlayer.Logout`
+    1. This function will log out of the current session.
+
+   {type="alpha-lower"}
+4. Subscribe to events from `CatenaPlayer`
+    1. `OnAccountLoginComplete`  - This event is called when the call to `CompleteLogin` has returned successfully.
+    2. `OnSessionInvalid` - This event is called on start by `CatenaPlayer`  if there is not already a session, as well as after logging out, failing to get an account, or failing to log in.
+
+   {type="alpha-lower"}
+
+#### Demo Example
+
+TODO
+
+### Matchmaking
+
+Once the player is logged in, they are able to use the matchmaking system to enter a game through `CatenaPlayer`.
+
+#### Setup Steps
+
+1. Once the player is logged in with an account, add a call to `CatenaPlayer.EnterMatchmaking`
+    1. This function asks for two arguments - a both of which are Dictionaries mapping a string to `EntityMetaData`. `EntityMetaData`  is a class to contain a payload that will be sent to the Catena backend - which can be of type `string`, `int`, or `Json` . (The Json payload type is also defined as a string in Unity, but will be interpreted as Json data by the Catena backend)
+    2. The second dictionary is for the match metadata - made for defining what type of match the player is searching for.
+
+
+        | ID field | Metadata example | Description |
+        | --- | --- | --- |
+        | queue_name | “team_of_2” | This is defining which matchmaking queue you want the player to search in - defined in the Catena config. |
+        | TODO |  |  |
+    3. The first dictionary is for the player’s metadata - which will provide information about the player to the matchmaker.
+        
+        
+        | ID field | Metadata example | Description |
+        | --- | --- | --- |
+        | address | The player’s local address, and local host port. |  |
+        | TODO |  |  |
+
+    {type="alpha-lower"}
+2. Subscribe to the event `OnFindingServer` from `CatenaPlayer`
+    * This event is invoked with a string included. The event is invoked when one of the following happens, after trying to find a match:
+        1. The client failed to find a match. *(The string provided will be null)*
+        2. The client found a match while matchmaking, and is now waiting for a dedicated server. *(The string provided will be empty)*
+        3. The client found a match that is hosted by another player. *(The string provided will have the connection info of the host)*
+
+#### Demo Example
+
+TODO
+
+### Dedicated Server
+
+This guide assumes that you have a dedicated server build of your game already working, and instead describes how to have your build register itself with Catena, and become available as a matchmaking option for players.
+
+#### Setup Steps
+
+First, we will make the necessary changes to the client so that it can connect to a dedicated server instead of another host player. The only client-specific change needed is to subscribe to the event `OnFoundServer` from `CatenaPlayer`
+
+This event is called when a client had already found a match while matchmaking, and has now found a dedicated server. It is invoked with a string, which contains the IP and port of the dedicated server, separated by a ‘:’ character.
+
+Next, these are the steps needed to have your dedicated server work with Catena:
+
+1. To the scene where your server is ready to accept connections, add the component `CatenaSingleMatchGameServer`
+    1. `CatenaSingleMatchGameServer` is a singleton component, and that interfaces with the `CatenaEntrypoint`  instance to communicate with the Catena Backend for your dedicated server.
+    2. Note: This component will make the game object it’s on persist between scenes, so it is best to either put it on it’s own game object, or on another game object you already plan to have persist between scenes. Also, if a Catena component requires an instance of `CatenaEntrypoint` , one will be created - but keep in mind that it will use the default endpoint URL if instantiated this way.
+
+   {type="alpha-lower"}
+2. Add a call that is only executed on your dedicated server to `CatenaSingleMatchGameServer.GetMatch();`  whenever your dedicated server is ready to start a match.
+   * You can get the current instance of the component with `CatenaSingleMatchGameServer.Instance`
+3. Add a call to the dedicated server to `CatenaSingleMatchGameServer.EndMatch();` . This should be called either when the match is finished, or there is no clients connected to the game.
+
+Your dedicated server should now be set up to accept connections through Catena. When the Catena matchmaking broker creates a match, it will find an available server, and send that server the match and player information - and send the players the address of the dedicated server.
+
+#### Demo Example
+
+TODO
+
+### Frequently Asked Questions
+
+TODO
+
 ## Design & Structure
 
 ### Generated Types
