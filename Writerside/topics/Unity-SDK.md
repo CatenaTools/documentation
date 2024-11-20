@@ -18,13 +18,13 @@ For Unity versions **older** than 2020.1 you will need to **remove** `UnitySDK/P
 ## Using the Catena Unity SDK
 
 As a companion to the Unity SDK, there is a [Catena Networking Demo](https://github.com/CatenaTools/catena-networking-demo) that shows how to integrate Catena into a Unity project. The base of the demo is Unity's Galactic Kittens demo, with changes to add Authentication & Login, Matchmaking, and dedicated server support through Catena.
-The following sections are guides on how to integrate the Catena SDK with your unity project, giving examples from the Catena Networking Demo.
+The following sections are guides on how to integrate the Catena SDK with your unity project, using the Catena Networking Demo as an example..
 
 ### Authentication & Login
 
 Before being able to use the matchmaking system, your players must be able to log in first.
 
-#### Setup Steps
+#### Authentication & Login: Setup Steps
 
 1. Add the components `CatenaEntrypoint` and `CatenaPlayer` to the scene you want to perform the login on.
     1. `CatenaEntrypoint` is a singleton class that is used by other Catena components to communicate with the Catena backend, such as `CatenaPlayer`. You can define what the endpoint URL is in the component, which defaults to `http://localhost:5000` - which is the default for the Catena backend as well. 
@@ -49,31 +49,85 @@ Before being able to use the matchmaking system, your players must be able to lo
 
    {type="alpha-lower"}
 
-#### Demo Example
+#### Authentication & Login: Demo Example
 
-TODO
+In the Catena Galactic Kittens demo, navigate to the scene `Assets//Scenes//Menu.unity`. In this scene, you will see the gameobjects CatenaEntrypoint and CatenaPlayer, which have their respective components added.
+
+On the MenuController gameobject, you will see the Menu Manager component, which has a few changes made for logging in/out.
+
+For logging in, clicking on the login button calls this coroutine:
+```csharp
+// Parse the color from the player's json value
+private IEnumerator Login()
+{
+    if (UsernameField == null)
+    {
+        print("Missing username; cannot login");
+        yield break;
+    }
+
+    // capture input field values
+    var username = UsernameField.text;
+    var password = PasswordField.text;
+
+    if (string.IsNullOrEmpty(username))
+    {
+        print("Empty username; cannot login");
+        yield break;
+    }
+
+    var catenaPlayer = FindObjectOfType<CatenaPlayer>();
+    catenaPlayer.CompleteLogin(username, password);
+}
+```
+
+For logging out, an example Coroutine:
+```csharp
+private IEnumerator Logout()
+{
+var catenaPlayer = FindObjectOfType<CatenaPlayer>();
+catenaPlayer.Logout();
+yield break;
+}
+```
+
+The Menu Manager also subscribes to Login/Logout events, as shown here:
+```csharp
+var catenaPlayer = FindObjectOfType<CatenaPlayer>();
+print($"Setup Catena UI events using CatenaPlayer {catenaPlayer.GetHashCode()}");
+
+catenaPlayer.OnAccountLoginComplete += (_, _) =>
+{
+    print("Online (showing online controls)");
+    showOnlineControls = true;
+};
+
+catenaPlayer.OnSessionInvalid += (_, _) =>
+{
+    print("Offline (showing login controls)");
+    showLoginControls = true;
+};
+```
 
 ### Matchmaking
 
 Once the player is logged in, they are able to use the matchmaking system to enter a game through `CatenaPlayer`.
 
-#### Setup Steps
+#### Matchmaking: Setup Steps
 
 1. Once the player is logged in with an account, add a call to `CatenaPlayer.EnterMatchmaking`
     1. This function asks for two arguments - a both of which are Dictionaries mapping a string to `EntityMetaData`. `EntityMetaData`  is a class to contain a payload that will be sent to the Catena backend - which can be of type `string`, `int`, or `Json` . (The Json payload type is also defined as a string in Unity, but will be interpreted as Json data by the Catena backend)
-    2. The second dictionary is for the match metadata - made for defining what type of match the player is searching for.
+    2. The first dictionary is for the player’s metadata - which will provide information about the player to the matchmaker.
 
+        | ID field | Metadata example | Description |
+        | --- | --- | --- |
+        | address | The player’s local address, and local host port. |  |
+        | TODO |  |  |
+    3. The second dictionary is for the match metadata - made for defining what type of match the player is searching for.
 
         | ID field | Metadata example | Description |
         | --- | --- | --- |
         | queue_name | “team_of_2” | This is defining which matchmaking queue you want the player to search in - defined in the Catena config. |
-        | TODO |  |  |
-    3. The first dictionary is for the player’s metadata - which will provide information about the player to the matchmaker.
-        
-        
-        | ID field | Metadata example | Description |
-        | --- | --- | --- |
-        | address | The player’s local address, and local host port. |  |
         | TODO |  |  |
 
     {type="alpha-lower"}
@@ -83,15 +137,82 @@ Once the player is logged in, they are able to use the matchmaking system to ent
         2. The client found a match while matchmaking, and is now waiting for a dedicated server. *(The string provided will be empty)*
         3. The client found a match that is hosted by another player. *(The string provided will have the connection info of the host)*
 
-#### Demo Example
+#### Matchmaking: Demo Example
 
-TODO
+Similar to account login/logout, the MenuController gameobject in `Assets//Scenes//Menu.unity` has changes to enable matchmaking.
+
+Once logged in, the player can click the Find button, which will call this coroutine:
+```csharp
+private IEnumerator Find()
+{
+    var local = NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData;
+    var address = $"{local.Address}:{GetLocalHostPort()}";
+    // TODO: make match size selectable
+    var matchMetadata = new Dictionary<string, EntityMetadata> { {"queue_name", new EntityMetadata{ StringPayload = "team_of_2"} } };
+    var playerMetadata = new Dictionary<string, EntityMetadata> { { "address", new EntityMetadata{ StringPayload = address} } };
+
+    var catenaPlayer = FindObjectOfType<CatenaPlayer>();
+    catenaPlayer.EnterMatchmaking(playerMetadata, matchMetadata);
+
+    yield break;
+}
+```
+
+To be informed when a match is found, Menu Manager also subscribes to the event `OnFindingServer`:
+```csharp
+catenaPlayer.OnFindingServer += (_, success) =>
+{
+    // This event is driven off a separate thread; can't update UI directly
+
+    if (success == null)
+    {
+        print("Failed to find a match");
+        return;
+    }
+
+    if (success == "")
+    {
+        print("Found a match; waiting for a server");
+        SetMatchmakingStatus("Found match; waiting for a server...");
+        return;
+    }
+
+    print($"Found a match - data: {success}");
+
+    ConnectionInfo connectionInfo;
+    try
+    {
+        connectionInfo = JsonConvert.DeserializeObject<ConnectionInfo>(success);
+    }
+    catch (Exception e)
+    {
+        print($"Failed to deserialize connection info: {e}");
+        return;
+    }
+
+    print($"Connection info: {connectionInfo}");
+
+    if (connectionInfo.ServerId == catenaPlayer.Account.Id)
+    {
+        print("This client is hosting");
+        SetMatchmakingStatus("Starting match...");
+        transitionHost = true;
+    }
+    else
+    {
+        print($"This client is connecting to {connectionInfo.Ip}:{connectionInfo.Port}");
+        SetMatchmakingStatus("Found match, connecting...");
+        transport.SetConnectionData(connectionInfo.Ip, connectionInfo.Port);
+        transitionClient = true;
+    }
+};
+```
 
 ### Dedicated Server
 
-This guide assumes that you have a dedicated server build of your game already working, and instead describes how to have your build register itself with Catena, and become available as a matchmaking option for players.
+This guide assumes that you have a dedicated server build of your game already working, and describes how to have your build register itself with Catena, and become available as a matchmaking option for players.
 
-#### Setup Steps
+#### Dedicated Server: Setup Steps
 
 First, we will make the necessary changes to the client so that it can connect to a dedicated server instead of another host player. The only client-specific change needed is to subscribe to the event `OnFoundServer` from `CatenaPlayer`
 
@@ -110,13 +231,82 @@ Next, these are the steps needed to have your dedicated server work with Catena:
 
 Your dedicated server should now be set up to accept connections through Catena. When the Catena matchmaking broker creates a match, it will find an available server, and send that server the match and player information - and send the players the address of the dedicated server.
 
-#### Demo Example
+#### Dedicated Server: Demo Example
 
-TODO
+In the Catena Galactic Kittens demo, there are a few changes made to allow dedicated server support. When running as a dedicated server, the game immediately goes to the Character Selection scene, where it waits for other players to join. So, as the Character Selection scene is the default menu, that's where most of the Catena changes are located.
 
-### Frequently Asked Questions
+If you navigate to the scene `Assets//Scenes//CharacterSelection.unity`, you will see the added gameobject/component for `CatenaSingleMatchGameServer`.
 
-TODO
+The call to GetMatch can be seen in `CharacterSelectionManager.cs`, in the Start function:
+```csharp
+void Start()
+{
+    if (IsServer && !IsClient)
+    {
+        print("Dedicated server starting");
+        // Removed non-Catena startup logic from this code snippet...
+        print("Using Catena to obtain match");
+        m_catenaGameServer = CatenaSingleMatchGameServer.Instance;
+        m_catenaGameServer.GetMatch();
+    }
+}
+```
+
+For ending the match, there is a prefab located at `Assets//Prefabs//EndGameManager.prefab`, which handles the end of the match in both the Victory and Defeat scenes. For the dedicated server, it waits until the clients disconnect before shutting down, seen in `EndGameManager.cs`. In this example, the function is called from the Unity Network Manager's `OnClientDisconnectCallback` event, and `m_connectedClients` containing the list of connected client Id's:
+```csharp
+private void OnClientDisconnect(ulong clientId)
+{
+    // Event only fired on dedicated server
+
+    m_connectedClients.Remove(clientId);
+
+    if (m_connectedClients.Count == 0)
+    {
+        m_catenaGameServer.EndMatch();
+    }
+}
+```
+
+### Catena Events
+
+For knowing when various steps of the Catena flow are complete, there are events that can be subscribed to that provide information about accounts, metadata, etc.
+
+Here's a list of events that are available to subscribe to from `CatenaPlayer`:
+
+| Event name | When Invoked                                                                                                                                   | Payload Provided                                                                                                   |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| OnAccountLoginComplete | When the player is logged in                                                                                                                   | `Catena.CatenaAccounts.Account` - The player's account information                                                 |
+| OnSessionInvalid | When CatenaPlayer is started if there is not already a Catena session running, when failing to log in, or when logging out.                    | None                                                                                                               |
+| OnFindingServer | When a match is found and the player is waiting for a server, or when a match is found from a non-dedicated server, or when matchmaking fails. | `string` - null if failed to find a match, empty if waiting for a server, otherwise has the IP, Port and Server ID |
+| OnFoundServer | When a dedicated server has been found                                                                                                         | `string` - The IP, Port, and Server ID                                                                             | 
+
+CatenaEntrypoint also has many events available to be subscribed to:
+
+| Event name | When Invoked   | Payload Provided  |
+|------------|----------------|-------------------|
+| OnGetAccountByIdCompleted | TODO | `AccountEventArgs` - TODO  |
+| OnCreateOrGetAccountByTokenCompleted | TODO | `AccountEventArgs` - TODO  |
+| OnLinkAccountToProviderCompleted | TODO | `AccountEventArgs` - TODO  |
+| OnAccountCreateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnAccountUpdateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnAccountDeleteMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnAccountGetMetadataEntryCompleted | TODO | `MetadataEntryArgs` - TODO  |
+| OnAccountGetMetadataEntriesCompleted | TODO | `MetadataEntriesArgs` - TODO  |
+| OnLoginWithProviderCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnLogoutCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnCreatePartyCompleted | TODO | `PartyEventArgs` - TODO  |
+| OnUpdatePartyPlayerCompleted | TODO | `PartyEventArgs` - TODO  |
+| OnJoinPartyWithInviteCodeCompleted | TODO | `PartyEventArgs` - TODO  |
+| OnGetPartyInfoCompleted | TODO | `PartyEventArgs` - TODO  |
+| OnGetPartyInfoByPartyIdCompleted | TODO | `PartyEventArgs` - TODO  |
+| OnSetPartyLeaderCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnLeavePartyCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnKickFromPartyCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnPartyCreateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnPartyUpdateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnPartyDeleteMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
+| OnPartyGetMetadataEntryCompleted | TODO | `MetadataEntryArgs` - TODO  |
+| OnPartyGetMetadataEntriesCompleted | TODO | `MetadataEntriesArgs` - TODO  |
 
 ## Design & Structure
 
