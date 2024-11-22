@@ -17,7 +17,7 @@ For Unity versions **older** than 2020.1 you will need to **remove** `UnitySDK/P
 
 ## Using the Catena Unity SDK
 
-As a companion to the Unity SDK, there is a [Catena Networking Demo](https://github.com/CatenaTools/catena-networking-demo) that shows how to integrate Catena into a Unity project. The base of the demo is Unity's Galactic Kittens demo, with changes to add Authentication & Login, Matchmaking, and dedicated server support through Catena.
+As a companion to the Unity SDK, there is a [Catena Networking Demo](https://github.com/CatenaTools/catena-GalacticKittens-demo) that shows how to integrate Catena into a Unity project. The base of the demo is Unity's Galactic Kittens demo, with changes to add Authentication & Login, Matchmaking, and dedicated server support through Catena.
 The following sections are guides on how to integrate the Catena SDK with your unity project, using the Catena Networking Demo as an example.
 
 ### Authentication & Login
@@ -28,15 +28,16 @@ Before being able to use the matchmaking system, your players must be able to lo
 
 1. Add the components `CatenaEntrypoint` and `CatenaPlayer` to the scene you want to perform the login on.
     1. `CatenaEntrypoint` is a singleton class that is used by other Catena components to communicate with the Catena backend, such as `CatenaPlayer`. You can define what the endpoint URL is in the component, which defaults to `http://localhost:5000` - which is the default for the Catena backend as well. 
-       
-       Note: This component will make the game object it’s on persist between scenes, so it is best to either put it on its own game object, or on another game object you already plan to have persist between scenes. Also, if a Catena component requires an instance of `CatenaEntrypoint` , one will be created - but keep in mind that it will use the default endpoint URL if instantiated this way.
+
+       > Note: This component will make the game object it’s on persist between scenes, so it is best to either put it on its own game object, or on another game object you already plan to have persist between scenes. Also, if a Catena component requires an instance of `CatenaEntrypoint` , one will be created - but keep in mind that it will use the default endpoint URL if instantiated this way.
     2. `CatenaPlayer` is a component that interfaces with `CatenaEntrypoint` - you can call its functions for Logging in and out of accounts, and for entering matchmaking. It communicates to the entrypoint, and receives events in response. It also has events that are emitted when various Catena events happen. 
    
    {type="alpha-lower"}
 2. Add a call to `CatenaPlayer.CompleteLogin`
     1. This function asks for a username and a password, and will attempt to log the player into the Catena backend.
-       * Note: The password is currently unused, and the function just attempts an unsafe login with the username.
-       * Note: Any username starting with the prefix ‘test’ will work as a dev solution, and will allow you to log in.
+       > Note: The password is currently unused, and the function just attempts an unsafe login with the username.
+
+       > Note: Any username starting with the prefix ‘test’ will work as a dev solution, and will allow you to log in.
     
     {type="alpha-lower"}
 3. Add a call to `CatenaPlayer.Logout`
@@ -51,12 +52,12 @@ Before being able to use the matchmaking system, your players must be able to lo
 
 #### Authentication & Login: Demo Example
 
-In the Catena Galactic Kittens demo, navigate to the scene `Assets//Scenes//Menu.unity`. In this scene, you will see the gameobjects CatenaEntrypoint and CatenaPlayer, which have their respective components added.
+In the Catena Galactic Kittens demo, navigate to the scene `Assets/Scenes/Menu.unity`. In this scene, you will see the gameobjects CatenaEntrypoint and CatenaPlayer, which have their respective components added.
 
 On the MenuController gameobject, you will see the Menu Manager component, which has a few changes made for logging in/out.
 
 For logging in, clicking on the login button calls this coroutine in `MenuManager`:
-```csharp
+```c#
 // Parse the color from the player's json value
 private IEnumerator Login()
 {
@@ -82,7 +83,7 @@ private IEnumerator Login()
 ```
 
 For logging out, clicking on the logout button after logging in calls this coroutine in `MenuManager`:
-```csharp
+```c#
 private IEnumerator Logout()
 {
 var catenaPlayer = FindObjectOfType<CatenaPlayer>();
@@ -92,7 +93,7 @@ yield break;
 ```
 
 The Menu Manager also subscribes to Login/Logout events, as shown here:
-```csharp
+```c#
 var catenaPlayer = FindObjectOfType<CatenaPlayer>();
 print($"Setup Catena UI events using CatenaPlayer {catenaPlayer.GetHashCode()}");
 
@@ -115,18 +116,22 @@ Once the player is logged in, they are able to use the matchmaking system to ent
 
 #### Matchmaking: Setup Steps
 
+Before being able to start matchmaking, you must ensure that the backend is configured to have the queues and hooks that you require. This config file can be found in the `Appsettings.Development.json` file in catena-tools-core. Instructions for how to set up your matchmaking queues/hooks can be found in the [Matchmaking](Matchmaking.md) section.
+
+> Note: In order to set up peer-to-peer matchmaking, the matchmaking queue you wish to use must use the custom hook `SimpleP2PMatchmakingHooks` which is a custom hook added for this demo. By adding this hook to your matchmaking queue, this will allow the matchmaker to choose one of the players to be the host. In this case, the host player's connection info will be provided to all the players in the `OnFindingServer` event, which is described below.
+
 1. Once the player is logged in with an account, add a call to `CatenaPlayer.EnterMatchmaking`
     1. This function asks for two arguments - a both of which are Dictionaries mapping a string to `EntityMetaData`. `EntityMetaData`  is a class to contain a payload that will be sent to the Catena backend - which can be of type `string`, `int`, or `Json` . (The Json payload type is also defined as a string in Unity, but will be interpreted as Json data by the Catena backend)
     2. The first dictionary is for the player’s metadata - which will provide information about the player to the matchmaker.
 
-        | ID field | Metadata example | Description |
-        | --- |------------------| --- |
-        | address | "192.0.2.1:5000" | The player’s local address, and local host port. |
+        | ID field | Metadata example | Description                                      |
+        |----------|------------------|--------------------------------------------------|
+        | address  | "192.0.2.1:5000" | The player’s local address, and local host port. |
     3. The second dictionary is for the match metadata - made for defining what type of match the player is searching for.
 
-        | ID field | Metadata example | Description |
-        | --- | --- | --- |
-        | queue_name | “team_of_2” | This is defining which matchmaking queue you want the player to search in - defined in the Catena config. |
+        | ID field   | Metadata example | Description                                                                                               |
+        |------------|------------------|-----------------------------------------------------------------------------------------------------------|
+        | queue_name | “team_of_2”      | This is defining which matchmaking queue you want the player to search in - defined in the Catena config. |
 
     {type="alpha-lower"}
 2. Subscribe to the event `OnFindingServer` from `CatenaPlayer`
@@ -137,10 +142,10 @@ Once the player is logged in, they are able to use the matchmaking system to ent
 
 #### Matchmaking: Demo Example
 
-Similar to account login/logout, the MenuController gameobject in `Assets//Scenes//Menu.unity` has changes to enable matchmaking.
+In the Galactic Kittens sample, the default mode for matches is peer-to-peer, with one of the clients hosting the game, and another client joining. Double check that your matchmaking queue uses the `SimpleP2PMatchmakingHooks` hook.
 
-Once logged in, the player can click the Find button, which will call this coroutine:
-```csharp
+Similar to account login/logout, the MenuController gameobject in `Assets/Scenes/Menu.unity` has changes to enable matchmaking through Catena. Once logged in, the player can click the Find button, which will call this coroutine. In this example, the match and player metadata are specific to the Galactic Kittens demo, and so other games may use different data:
+```c#
 private IEnumerator Find()
 {
     var local = NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData;
@@ -157,7 +162,7 @@ private IEnumerator Find()
 ```
 
 To be informed when a match is found, Menu Manager also subscribes to the event `OnFindingServer`:
-```csharp
+```c#
 catenaPlayer.OnFindingServer += (_, success) =>
 {
     // This event is driven off a separate thread; can't update UI directly
@@ -220,11 +225,11 @@ Next, these are the steps needed to have your dedicated server work with Catena:
 
 1. To the scene where your server is ready to accept connections, add the component `CatenaSingleMatchGameServer`
     1. `CatenaSingleMatchGameServer` is a singleton component, and that interfaces with the `CatenaEntrypoint`  instance to communicate with the Catena Backend for your dedicated server.
-    2. Note: This component will make the game object it’s on persist between scenes, so it is best to either put it on it’s own game object, or on another game object you already plan to have persist between scenes. Also, if a Catena component requires an instance of `CatenaEntrypoint` , one will be created - but keep in mind that it will use the default endpoint URL if instantiated this way.
+   > Note: This component will make the game object it’s on persist between scenes, so it is best to either put it on it’s own game object, or on another game object you already plan to have persist between scenes. Also, if a Catena component requires an instance of `CatenaEntrypoint` , one will be created - but keep in mind that it will use the default endpoint URL if instantiated this way.
 
    {type="alpha-lower"}
 2. Add a call that is only executed on your dedicated server to `CatenaSingleMatchGameServer.GetMatch();`  whenever your dedicated server is ready to start a match.
-   * You can get the current instance of the component with `CatenaSingleMatchGameServer.Instance`
+   > You can get the current instance of the component with `CatenaSingleMatchGameServer.Instance`
 3. Add a call to the dedicated server to `CatenaSingleMatchGameServer.EndMatch();` . This should be called either when the match is finished, or there is no clients connected to the game.
 
 Your dedicated server should now be set up to accept connections through Catena. When the Catena matchmaking broker creates a match, it will find an available server, and send that server the match and player information - and send the players the address of the dedicated server.
@@ -234,7 +239,7 @@ Your dedicated server should now be set up to accept connections through Catena.
 In the Catena Galactic Kittens demo, there are a few changes made to allow dedicated server support. When running as a dedicated server, the server immediately goes to the Character Selection scene, where it waits for other players to join. So, as the Character Selection scene is the default menu, that's where most of the Catena changes are located.
 
 First, for setting up the clients to connect to the dedicated server, code was added to the `MenuManager` component to subscribe to the `OnFoundServer` event. The process is similar to joining a player-hosted server:
-```csharp
+```c#
 catenaPlayer.OnFoundServer += (_, success) =>
 {
     // This event is driven off a separate thread; can't update UI directly
@@ -249,10 +254,10 @@ catenaPlayer.OnFoundServer += (_, success) =>
 };
 ```
 
-There are also changes made for the dedicates server build to register itself with Catena, making it open to have players connect for matches. If you navigate to the scene `Assets//Scenes//CharacterSelection.unity`, you will see the added gameobject/component for `CatenaSingleMatchGameServer`.
+There are also changes made for the dedicated server build to register itself with Catena, making it open to have players connect for matches. If you navigate to the scene `Assets/Scenes/CharacterSelection.unity`, you will see the added gameobject/component for `CatenaSingleMatchGameServer`.
 
 The call to GetMatch can be seen in `CharacterSelectionManager.cs`, in the Start function:
-```csharp
+```c#
 void Start()
 {
     if (IsServer && !IsClient)
@@ -267,7 +272,7 @@ void Start()
 ```
 
 For ending the match, there is a prefab located at `Assets//Prefabs//EndGameManager.prefab`, which handles the end of the match in both the Victory and Defeat scenes. For the dedicated server, it waits until the clients disconnect before shutting down, seen in `EndGameManager.cs`. In this example, the function is called from the Unity Network Manager's `OnClientDisconnectCallback` event, and `m_connectedClients` containing the list of connected client Id's:
-```csharp
+```c#
 private void OnClientDisconnect(ulong clientId)
 {
     // Event only fired on dedicated server
@@ -287,39 +292,39 @@ For knowing when various steps of the Catena flow are complete, there are events
 
 Here's a list of events that are available to subscribe to from `CatenaPlayer`:
 
-| Event name | When Invoked                                                                                                                                   | Payload Provided                                                                                                   |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Event name             | When Invoked                                                                                                                                   | Payload Provided                                                                                                   |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 | OnAccountLoginComplete | When the player is logged in                                                                                                                   | `Catena.CatenaAccounts.Account` - The player's account information                                                 |
-| OnSessionInvalid | When CatenaPlayer is started if there is not already a Catena session running, when failing to log in, or when logging out.                    | None                                                                                                               |
-| OnFindingServer | When a match is found and the player is waiting for a server, or when a match is found from a non-dedicated server, or when matchmaking fails. | `string` - null if failed to find a match, empty if waiting for a server, otherwise has the IP, Port and Server ID |
-| OnFoundServer | When a dedicated server has been found                                                                                                         | `string` - The IP, Port, and Server ID                                                                             | 
+| OnSessionInvalid       | When CatenaPlayer is started if there is not already a Catena session running, when failing to log in, or when logging out.                    | None                                                                                                               |
+| OnFindingServer        | When a match is found and the player is waiting for a server, or when a match is found from a non-dedicated server, or when matchmaking fails. | `string` - null if failed to find a match, empty if waiting for a server, otherwise has the IP, Port and Server ID |
+| OnFoundServer          | When a dedicated server has been found                                                                                                         | `string` - The IP, Port, and Server ID                                                                             | 
 
 CatenaEntrypoint also has many events available to be subscribed to:
 
-| Event name | When Invoked                                                                         | Payload Provided                                                                                  |
-|------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| OnCreateOrGetAccountByTokenCompleted | When a new Catena account is created, or when getting an existing one.               | `AccountEventArgs` - Result of the request, and the account info.                                 |
-| OnGetAccountByIdCompleted | When an existing Catena account is recieved.                                         | `AccountEventArgs` - Result of the request, and the account info.                                 |
+| Event name                            | When Invoked                                                                         | Payload Provided                                                                                  |
+|---------------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| OnCreateOrGetAccountByTokenCompleted  | When a new Catena account is created, or when getting an existing one.               | `AccountEventArgs` - Result of the request, and the account info.                                 |
+| OnGetAccountByIdCompleted             | When an existing Catena account is recieved.                                         | `AccountEventArgs` - Result of the request, and the account info.                                 |
 | OnAccountCreateMetadataEntryCompleted | When new metadata has been added for an account.                                     | `CatenaEventStatus` - Result of the request.                                                      |
 | OnAccountUpdateMetadataEntryCompleted | When an entry of an account's metadata has been updated.                             | `CatenaEventStatus` - Result of the request.                                                      |
 | OnAccountDeleteMetadataEntryCompleted | When an entry of an account's metadata has been deleted.                             | `CatenaEventStatus` - Result of the request.                                                      |
-| OnAccountGetMetadataEntryCompleted | When a request for the metadata of an entry has completed.                           | `MetadataEntryArgs` - Result of the request, and the account metadata of the requested entry.     |
-| OnAccountGetMetadataEntriesCompleted | When a request for all the metadata of an account has completed.                     | `MetadataEntriesArgs` - Result of the request, and the account metadata of the requested entries. |
-| OnLoginWithProviderCompleted | When the request to log in with a provider has been completed.                       | `CatenaEventStatus` - Result of the request.                                                      |
-| OnLogoutCompleted | When the request to log from Catena has been completed.                              | `CatenaEventStatus` - Result of the request.                                                      |
-| OnCreatePartyCompleted | When a request to create a new Catena party has been completed.                      | `PartyEventArgs` - Result of the request, and the party info.                                     |
-| OnUpdatePartyPlayerCompleted | When a request to update a player in the party has been completed.                   | `PartyEventArgs` - Result of the request, and the party info.                                     |
-| OnJoinPartyWithInviteCodeCompleted | When a request to join a Catena party using an invite code has been completed.       | `PartyEventArgs` - Result of the request, and the party info.                                     |
-| OnGetPartyInfoCompleted | When a request to get the info of the current Catena party has been completed.       | `PartyEventArgs` - Result of the request, and the party info.                                     |
-| OnGetPartyInfoByPartyIdCompleted | When a request to get the info of a Catena party with a given Id has been completed. | `PartyEventArgs` - Result of the request, and the party info.                                     |
-| OnSetPartyLeaderCompleted | When a request to set a new party leader has been completed.                         | `CatenaEventStatus` - Result of the request.                                                      |
-| OnLeavePartyCompleted | When a request to leave the current Catena party has been completed.                 | `CatenaEventStatus` - Result of the request.                                                      |
-| OnKickFromPartyCompleted | When a request to kick a member of the current Catena party has been completed.      | `CatenaEventStatus` - Result of the request.                                                      |
-| OnPartyCreateMetadataEntryCompleted | When a request to create new metadata for the party has been completed.              | `CatenaEventStatus` - Result of the request.                                                      |
-| OnPartyUpdateMetadataEntryCompleted | When a request to update a metadata entry for the party has been completed.          | `CatenaEventStatus` - Result of the request.                                                      |
-| OnPartyDeleteMetadataEntryCompleted | When a request to delete a metadata entry for the party has been completed.          | `CatenaEventStatus` - Result of the request.                                                      |
-| OnPartyGetMetadataEntryCompleted | When a request to get a metadata entry from the party has been completed.            | `MetadataEntryArgs` - Result of the request, and the party metadata of the requested entry.       |
-| OnPartyGetMetadataEntriesCompleted | When a request to get all the metadata entries from the party has been completed.    | `MetadataEntriesArgs` - Result of the request, and the party metadata of all it's entries.        |
+| OnAccountGetMetadataEntryCompleted    | When a request for the metadata of an entry has completed.                           | `MetadataEntryArgs` - Result of the request, and the account metadata of the requested entry.     |
+| OnAccountGetMetadataEntriesCompleted  | When a request for all the metadata of an account has completed.                     | `MetadataEntriesArgs` - Result of the request, and the account metadata of the requested entries. |
+| OnLoginWithProviderCompleted          | When the request to log in with a provider has been completed.                       | `CatenaEventStatus` - Result of the request.                                                      |
+| OnLogoutCompleted                     | When the request to log from Catena has been completed.                              | `CatenaEventStatus` - Result of the request.                                                      |
+| OnCreatePartyCompleted                | When a request to create a new Catena party has been completed.                      | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnUpdatePartyPlayerCompleted          | When a request to update a player in the party has been completed.                   | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnJoinPartyWithInviteCodeCompleted    | When a request to join a Catena party using an invite code has been completed.       | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnGetPartyInfoCompleted               | When a request to get the info of the current Catena party has been completed.       | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnGetPartyInfoByPartyIdCompleted      | When a request to get the info of a Catena party with a given Id has been completed. | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnSetPartyLeaderCompleted             | When a request to set a new party leader has been completed.                         | `CatenaEventStatus` - Result of the request.                                                      |
+| OnLeavePartyCompleted                 | When a request to leave the current Catena party has been completed.                 | `CatenaEventStatus` - Result of the request.                                                      |
+| OnKickFromPartyCompleted              | When a request to kick a member of the current Catena party has been completed.      | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyCreateMetadataEntryCompleted   | When a request to create new metadata for the party has been completed.              | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyUpdateMetadataEntryCompleted   | When a request to update a metadata entry for the party has been completed.          | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyDeleteMetadataEntryCompleted   | When a request to delete a metadata entry for the party has been completed.          | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyGetMetadataEntryCompleted      | When a request to get a metadata entry from the party has been completed.            | `MetadataEntryArgs` - Result of the request, and the party metadata of the requested entry.       |
+| OnPartyGetMetadataEntriesCompleted    | When a request to get all the metadata entries from the party has been completed.    | `MetadataEntriesArgs` - Result of the request, and the party metadata of all it's entries.        |
 
 ## Design & Structure
 
@@ -382,11 +387,11 @@ Catena offers an external launcher built in Flask to handle logins in an engine-
 
 The Catena Launcher can be found in the `catena-tools-core` repository under the `Launcher/` directory. A configuration file can be found under `Launcher/Data/config.yaml`. The modifiable fields in there are:
 
-| Field | Description |
-| --- | --- |
-| login_endpoint | The Catena endpoint the launcher will attempt to send login requests to. By default this is configured to target a local Catena node (https://localhost:5001/). |
-| app_file_path | The application to open following a successful authentication attempt. This application is what will receive the session_id as a command line argument upon a user completing the login process. |
-| providers | A customizable list of providers that developers can add or remove from. Providers are required to have a display_name and a provider_type. display_name will be the name shown to the user when opening the launcher. provider_type is a value that is used to differentiate which provider should be used and how the payload that is sent to Catena should be constructed. |
+| Field          | Description                                                                                                                                                                                                                                                                                                                                                                   |
+|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| login_endpoint | The Catena endpoint the launcher will attempt to send login requests to. By default this is configured to target a local Catena node (https://localhost:5001/).                                                                                                                                                                                                               |
+| app_file_path  | The application to open following a successful authentication attempt. This application is what will receive the session_id as a command line argument upon a user completing the login process.                                                                                                                                                                              |
+| providers      | A customizable list of providers that developers can add or remove from. Providers are required to have a display_name and a provider_type. display_name will be the name shown to the user when opening the launcher. provider_type is a value that is used to differentiate which provider should be used and how the payload that is sent to Catena should be constructed. |
 
 Upon a successful login through the launcher, the application specified in the config will be opened with the `session_id` received from Catena passed in as a command line argument.
 
@@ -402,7 +407,7 @@ Q: What if a client is using a newer version of Unity that supports gRPC?
 
 A: In this case, to take advantage of the performance benefit this would give us, we may choose to modify the Buf module to also generate **client stubs**. These would function similarly to the service clients we have now and the model would become `sending a gRPC request --> receiving a Protobuf response message`.
 
-```csharp
+```c#
 // Parse the color from the player's json value
 JObject test = player.Value.Value<JObject>();
 if (test != null && test.TryGetValue("player-color", out JToken value))
