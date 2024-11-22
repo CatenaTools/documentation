@@ -18,7 +18,7 @@ For Unity versions **older** than 2020.1 you will need to **remove** `UnitySDK/P
 ## Using the Catena Unity SDK
 
 As a companion to the Unity SDK, there is a [Catena Networking Demo](https://github.com/CatenaTools/catena-networking-demo) that shows how to integrate Catena into a Unity project. The base of the demo is Unity's Galactic Kittens demo, with changes to add Authentication & Login, Matchmaking, and dedicated server support through Catena.
-The following sections are guides on how to integrate the Catena SDK with your unity project, using the Catena Networking Demo as an example..
+The following sections are guides on how to integrate the Catena SDK with your unity project, using the Catena Networking Demo as an example.
 
 ### Authentication & Login
 
@@ -55,7 +55,7 @@ In the Catena Galactic Kittens demo, navigate to the scene `Assets//Scenes//Menu
 
 On the MenuController gameobject, you will see the Menu Manager component, which has a few changes made for logging in/out.
 
-For logging in, clicking on the login button calls this coroutine:
+For logging in, clicking on the login button calls this coroutine in `MenuManager`:
 ```csharp
 // Parse the color from the player's json value
 private IEnumerator Login()
@@ -81,7 +81,7 @@ private IEnumerator Login()
 }
 ```
 
-For logging out, an example Coroutine:
+For logging out, clicking on the logout button after logging in calls this coroutine in `MenuManager`:
 ```csharp
 private IEnumerator Logout()
 {
@@ -120,15 +120,13 @@ Once the player is logged in, they are able to use the matchmaking system to ent
     2. The first dictionary is for the player’s metadata - which will provide information about the player to the matchmaker.
 
         | ID field | Metadata example | Description |
-        | --- | --- | --- |
-        | address | The player’s local address, and local host port. |  |
-        | TODO |  |  |
+        | --- |------------------| --- |
+        | address | "192.0.2.1:5000" | The player’s local address, and local host port. |
     3. The second dictionary is for the match metadata - made for defining what type of match the player is searching for.
 
         | ID field | Metadata example | Description |
         | --- | --- | --- |
         | queue_name | “team_of_2” | This is defining which matchmaking queue you want the player to search in - defined in the Catena config. |
-        | TODO |  |  |
 
     {type="alpha-lower"}
 2. Subscribe to the event `OnFindingServer` from `CatenaPlayer`
@@ -210,7 +208,7 @@ catenaPlayer.OnFindingServer += (_, success) =>
 
 ### Dedicated Server
 
-This guide assumes that you have a dedicated server build of your game already working, and describes how to have your build register itself with Catena, and become available as a matchmaking option for players.
+This guide assumes that you have a dedicated server build of your game already working, and describes how to have your build register itself with Catena, and become available as a matchmaking option for players. The Catena Unity Demo has already made the necessary modifications for the Galactic Kittens game to be built as a dedicated server.
 
 #### Dedicated Server: Setup Steps
 
@@ -233,9 +231,25 @@ Your dedicated server should now be set up to accept connections through Catena.
 
 #### Dedicated Server: Demo Example
 
-In the Catena Galactic Kittens demo, there are a few changes made to allow dedicated server support. When running as a dedicated server, the game immediately goes to the Character Selection scene, where it waits for other players to join. So, as the Character Selection scene is the default menu, that's where most of the Catena changes are located.
+In the Catena Galactic Kittens demo, there are a few changes made to allow dedicated server support. When running as a dedicated server, the server immediately goes to the Character Selection scene, where it waits for other players to join. So, as the Character Selection scene is the default menu, that's where most of the Catena changes are located.
 
-If you navigate to the scene `Assets//Scenes//CharacterSelection.unity`, you will see the added gameobject/component for `CatenaSingleMatchGameServer`.
+First, for setting up the clients to connect to the dedicated server, code was added to the `MenuManager` component to subscribe to the `OnFoundServer` event. The process is similar to joining a player-hosted server:
+```csharp
+catenaPlayer.OnFoundServer += (_, success) =>
+{
+    // This event is driven off a separate thread; can't update UI directly
+
+    var parts = success.Split(":");
+    var ip = parts[0];
+    var port = ushort.Parse(parts[1]);
+    print($"This client is connecting to server at {ip}:{port}");
+    SetMatchmakingStatus("Found server, connecting...");
+    transport.SetConnectionData(ip, port);
+    transitionClient = true;
+};
+```
+
+There are also changes made for the dedicates server build to register itself with Catena, making it open to have players connect for matches. If you navigate to the scene `Assets//Scenes//CharacterSelection.unity`, you will see the added gameobject/component for `CatenaSingleMatchGameServer`.
 
 The call to GetMatch can be seen in `CharacterSelectionManager.cs`, in the Start function:
 ```csharp
@@ -282,31 +296,30 @@ Here's a list of events that are available to subscribe to from `CatenaPlayer`:
 
 CatenaEntrypoint also has many events available to be subscribed to:
 
-| Event name | When Invoked   | Payload Provided  |
-|------------|----------------|-------------------|
-| OnGetAccountByIdCompleted | TODO | `AccountEventArgs` - TODO  |
-| OnCreateOrGetAccountByTokenCompleted | TODO | `AccountEventArgs` - TODO  |
-| OnLinkAccountToProviderCompleted | TODO | `AccountEventArgs` - TODO  |
-| OnAccountCreateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnAccountUpdateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnAccountDeleteMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnAccountGetMetadataEntryCompleted | TODO | `MetadataEntryArgs` - TODO  |
-| OnAccountGetMetadataEntriesCompleted | TODO | `MetadataEntriesArgs` - TODO  |
-| OnLoginWithProviderCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnLogoutCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnCreatePartyCompleted | TODO | `PartyEventArgs` - TODO  |
-| OnUpdatePartyPlayerCompleted | TODO | `PartyEventArgs` - TODO  |
-| OnJoinPartyWithInviteCodeCompleted | TODO | `PartyEventArgs` - TODO  |
-| OnGetPartyInfoCompleted | TODO | `PartyEventArgs` - TODO  |
-| OnGetPartyInfoByPartyIdCompleted | TODO | `PartyEventArgs` - TODO  |
-| OnSetPartyLeaderCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnLeavePartyCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnKickFromPartyCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnPartyCreateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnPartyUpdateMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnPartyDeleteMetadataEntryCompleted | TODO | `CatenaEventStatus` - TODO  |
-| OnPartyGetMetadataEntryCompleted | TODO | `MetadataEntryArgs` - TODO  |
-| OnPartyGetMetadataEntriesCompleted | TODO | `MetadataEntriesArgs` - TODO  |
+| Event name | When Invoked                                                                         | Payload Provided                                                                                  |
+|------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| OnCreateOrGetAccountByTokenCompleted | When a new Catena account is created, or when getting an existing one.               | `AccountEventArgs` - Result of the request, and the account info.                                 |
+| OnGetAccountByIdCompleted | When an existing Catena account is recieved.                                         | `AccountEventArgs` - Result of the request, and the account info.                                 |
+| OnAccountCreateMetadataEntryCompleted | When new metadata has been added for an account.                                     | `CatenaEventStatus` - Result of the request.                                                      |
+| OnAccountUpdateMetadataEntryCompleted | When an entry of an account's metadata has been updated.                             | `CatenaEventStatus` - Result of the request.                                                      |
+| OnAccountDeleteMetadataEntryCompleted | When an entry of an account's metadata has been deleted.                             | `CatenaEventStatus` - Result of the request.                                                      |
+| OnAccountGetMetadataEntryCompleted | When a request for the metadata of an entry has completed.                           | `MetadataEntryArgs` - Result of the request, and the account metadata of the requested entry.     |
+| OnAccountGetMetadataEntriesCompleted | When a request for all the metadata of an account has completed.                     | `MetadataEntriesArgs` - Result of the request, and the account metadata of the requested entries. |
+| OnLoginWithProviderCompleted | When the request to log in with a provider has been completed.                       | `CatenaEventStatus` - Result of the request.                                                      |
+| OnLogoutCompleted | When the request to log from Catena has been completed.                              | `CatenaEventStatus` - Result of the request.                                                      |
+| OnCreatePartyCompleted | When a request to create a new Catena party has been completed.                      | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnUpdatePartyPlayerCompleted | When a request to update a player in the party has been completed.                   | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnJoinPartyWithInviteCodeCompleted | When a request to join a Catena party using an invite code has been completed.       | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnGetPartyInfoCompleted | When a request to get the info of the current Catena party has been completed.       | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnGetPartyInfoByPartyIdCompleted | When a request to get the info of a Catena party with a given Id has been completed. | `PartyEventArgs` - Result of the request, and the party info.                                     |
+| OnSetPartyLeaderCompleted | When a request to set a new party leader has been completed.                         | `CatenaEventStatus` - Result of the request.                                                      |
+| OnLeavePartyCompleted | When a request to leave the current Catena party has been completed.                 | `CatenaEventStatus` - Result of the request.                                                      |
+| OnKickFromPartyCompleted | When a request to kick a member of the current Catena party has been completed.      | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyCreateMetadataEntryCompleted | When a request to create new metadata for the party has been completed.              | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyUpdateMetadataEntryCompleted | When a request to update a metadata entry for the party has been completed.          | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyDeleteMetadataEntryCompleted | When a request to delete a metadata entry for the party has been completed.          | `CatenaEventStatus` - Result of the request.                                                      |
+| OnPartyGetMetadataEntryCompleted | When a request to get a metadata entry from the party has been completed.            | `MetadataEntryArgs` - Result of the request, and the party metadata of the requested entry.       |
+| OnPartyGetMetadataEntriesCompleted | When a request to get all the metadata entries from the party has been completed.    | `MetadataEntriesArgs` - Result of the request, and the party metadata of all it's entries.        |
 
 ## Design & Structure
 
