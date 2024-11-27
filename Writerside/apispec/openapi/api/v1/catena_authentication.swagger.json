@@ -47,6 +47,9 @@
               "PROVIDER_APPLE",
               "PROVIDER_TWITCH",
               "PROVIDER_STEAM",
+              "PROVIDER_ITCH",
+              "PROVIDER_AMAZON",
+              "PROVIDER_EPIC",
               "PROVIDER_CUSTOM"
             ]
           }
@@ -86,6 +89,9 @@
               "PROVIDER_APPLE",
               "PROVIDER_TWITCH",
               "PROVIDER_STEAM",
+              "PROVIDER_ITCH",
+              "PROVIDER_AMAZON",
+              "PROVIDER_EPIC",
               "PROVIDER_CUSTOM"
             ]
           },
@@ -135,6 +141,9 @@
               "PROVIDER_APPLE",
               "PROVIDER_TWITCH",
               "PROVIDER_STEAM",
+              "PROVIDER_ITCH",
+              "PROVIDER_AMAZON",
+              "PROVIDER_EPIC",
               "PROVIDER_CUSTOM"
             ]
           },
@@ -419,10 +428,13 @@
         "PROVIDER_APPLE",
         "PROVIDER_TWITCH",
         "PROVIDER_STEAM",
+        "PROVIDER_ITCH",
+        "PROVIDER_AMAZON",
+        "PROVIDER_EPIC",
         "PROVIDER_CUSTOM"
       ],
       "default": "PROVIDER_UNSPECIFIED",
-      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)"
+      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)\n - PROVIDER_STEAM: steam is not an OAuth provider, it uses OpenID"
     },
     "public_commonProviderConfig": {
       "type": "object",
