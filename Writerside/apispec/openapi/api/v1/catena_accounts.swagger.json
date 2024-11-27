@@ -618,6 +618,100 @@
           "CatenaAccounts"
         ]
       }
+    },
+    "/api/v1/server/accounts": {
+      "delete": {
+        "operationId": "CatenaAccounts_ServerDeleteAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsServerDeleteAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsServerDeleteAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      },
+      "post": {
+        "operationId": "CatenaAccounts_ServerCreateAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsServerCreateAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsServerCreateAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
+    },
+    "/api/v1/server/accounts/link": {
+      "post": {
+        "operationId": "CatenaAccounts_ServerLinkAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_accountsServerLinkAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_accountsServerLinkAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaAccounts"
+        ]
+      }
     }
   },
   "definitions": {
@@ -754,6 +848,68 @@
           "title": "indicator of success of linking existing account to new auth provider"
         }
       }
+    },
+    "catena_accountsProviderAccountId": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/public_commonProvider"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_accountsServerCreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "providerAccountIds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_accountsProviderAccountId"
+          }
+        }
+      }
+    },
+    "catena_accountsServerCreateAccountResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/catena_accountsAccount"
+        }
+      }
+    },
+    "catena_accountsServerDeleteAccountRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_accountsServerDeleteAccountResponse": {
+      "type": "object"
+    },
+    "catena_accountsServerLinkAccountRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "providerAccountId": {
+          "$ref": "#/definitions/catena_accountsProviderAccountId"
+        }
+      }
+    },
+    "catena_accountsServerLinkAccountResponse": {
+      "type": "object"
     },
     "catena_accountsUpdateAccountResponse": {
       "type": "object"
@@ -926,10 +1082,13 @@
         "PROVIDER_APPLE",
         "PROVIDER_TWITCH",
         "PROVIDER_STEAM",
+        "PROVIDER_ITCH",
+        "PROVIDER_AMAZON",
+        "PROVIDER_EPIC",
         "PROVIDER_CUSTOM"
       ],
       "default": "PROVIDER_UNSPECIFIED",
-      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)"
+      "description": "Accepted auth providers.\n\n - PROVIDER_UNSPECIFIED: unauthenticated\n - PROVIDER_UNSAFE: test accounts (development only)\n - PROVIDER_STEAM: steam is not an OAuth provider, it uses OpenID"
     },
     "rpcStatus": {
       "type": "object",
