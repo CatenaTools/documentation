@@ -348,12 +348,12 @@ For knowing when various steps of the Catena flow are complete, there are events
 
 Here's a list of events that are available to subscribe to from `CatenaPlayer`:
 
-| Event name             | When Invoked                                                                                                                | Payload Provided                                                                                                   |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| OnAccountLoginComplete | When the player is logged in                                                                                                | `Catena.CatenaAccounts.Account` - The player's account information                                                 |
-| OnSessionInvalid       | When CatenaPlayer is started if there is not already a Catena session running, when failing to log in, or when logging out. | None                                                                                                               |
-| OnFindingServer        | When a test  test test                                                                                                      | `string` - null if failed to find a match, empty if waiting for a server, otherwise has the IP, Port and Server ID |
-| OnFoundServer          | When a dedicated server has been found                                                                                      | `string` - The IP, Port, and Server ID                                                                             | 
+| Event name             | When Invoked                                                                                                                                   | Payload Provided                                                                                                   |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| OnAccountLoginComplete | When the player is logged in                                                                                                                   | `Catena.CatenaAccounts.Account` - The player's account information                                                 |
+| OnSessionInvalid       | When CatenaPlayer is started if there is not already a Catena session running, when failing to log in, or when logging out.                    | None                                                                                                               |
+| OnFindingServer        | When a match is found and the player is waiting for a server, or when a match is found from a non-dedicated server, or when matchmaking fails. | `string` - null if failed to find a match, empty if waiting for a server, otherwise has the IP, Port and Server ID |
+| OnFoundServer          | When a dedicated server has been found                                                                                                         | `string` - The IP, Port, and Server ID                                                                             | 
 
 CatenaEntrypoint also has many events available to be subscribed to. These events include the results from calls to get/update account data, as well as various party functions:
 
