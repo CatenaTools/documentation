@@ -286,6 +286,62 @@ private void OnClientDisconnect(ulong clientId)
 }
 ```
 
+### Entitlements
+
+With the Unity SDK, you have the ability to both query what items a player has, and prepare & execute offers to have the player earn new items. The items and offers must be configured with the Catena backend.
+
+#### Player Entitlements
+
+Before a player can get information about their items, they must first be logged in. Once a player is logged in, their session information will be used to get the items from their catalog.
+
+To be able to get a player's account information, you will need an instance of the component `CatenaClientEntitlementsManager` in your scene. The Client Entitlements Manager is the main method for having a user interact with their catalog. Like `CatenaPlayer`, the Clients Entitlements Manager requires an instance of `CatenaEntrypoint` to function.
+
+The public methods provided by `CatenaClientEntitlementsManager` allow you to get either the entire catalog of items for the player, or query for a specific item with a given item ID. The public methods available are as follows:
+
+- `GetPlayerOwnsCatalogItem`: Requires an argument of a catalog item ID. Will call to the Catena backend to get whether the player owns the given item or not, and the quantity of that item.
+- `UpdateCatalog`: Will call to the Catena backend to get the player's full list of items, caching the results to be grabbed again later.
+- `GetCatalogItem`: Requires an argument of a catalog item ID. Searches the cached results from both `GetPlayerOwnsCatalogItem` and `GetCatalogItem` for the requested item, returning its information.
+- `GetCatalog`: Returns the cached results from both `GetPlayerOwnsCatalogItem` and `GetCatalogItem`, providing a list of all the items.
+
+There are also events that can be subscribed to, which are called when the results of a call to the backend have been received:
+
+| Event Name      | When Invoked                                                          | Payload Provided                                                          |
+|-----------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------|
+| OnGetItem       | When the results of a call to `GetPlayerOwnsCatalogItem` are received | `PlayerCatalogItem` - the item that was requested                         |
+| OnGetCatalog    | When the results of a call to `UpdateCatalog` are received            | `List<PlayerCatalogItem>` - the list of all items in the player's catalog |
+
+
+`CatenaClientEntitlementsManager` has the ability to automatically refresh the player's catalog of items at a defined cadence. In the inspector, setting the variable AutoRefreshCacheCadence to anything greater than 0 will have the manager automatically call to `UpdateCatalog`, waiting the amount of time specified before calling it again. Setting the variable to 0 or less will disable this functionality, in which case `UpdateCatalog` must be called manually when required.
+
+#### Server Entitlements
+
+Before a server can call entitlements endpoints for Catena, it requires an API Key. How you get this API key to your servers is up to you, but there is a debug inspector field in `CatenaEntrypoint` to paste an API key for testing.
+
+For dedicated servers, the main way to interact with Entitlements is through `CatenaServerEntitlementsManager`. Similar to client entitlements, this will require an instance of `CatenaEntrypoint` to function.
+
+The public methods provided by `CatenaServerEntitlementsManager` allow you to get whether a player owns an item, or their entire catalog. There are also methods for preparing & executing an offer on behalf of an account.
+
+- `GetAccountCatalog`: Requires an argument of an account ID. Will call to the Catena backend and return a list of all the items the player owns.
+- `GetAccountOwnsCatalogItem`: Requires an argument of an account ID and a catalog item ID. Will call to the Catena backend to get whether the player owns the specific item or not
+- `GetCachedAccountCatalog`: Requires an argument of an account ID. Searches the cached results from both `GetAccountCatalog` and `GetAccountOwnsCatalogItem` for the requested account, returning the cached catalog of the given player.
+- `GetCachedAccountCatalogItem`: Requires an argument of an account ID and a catalog item ID. Searches the cached results from both `GetAccountCatalog` and `GetAccountOwnsCatalogItem` for the requested account, returning the item's info, if that item is cached.
+- `ClearCachedAccountCatalogs`: Clears all cached account information accumulated from both `GetAccountCatalog` and `GetAccountOwnsCatalogItem`.
+- `PrepareOffersForProvider`: Requires an argument of an account ID, an entitlement provider, a string to indicate which currency the offers should be in, and an optional list of tag filters. Calls to the Catena backend to get a list of available offers for the given player from the given provider, and with the given currency type.
+- `ExecutePreparedOffers`: Requires an argument of an account ID, a list of orders (with each order having the ID of that order and a quantity), and optionally the provider order metadata (if required by the provider). Will execute the selected offers with the Catena backend, and returns with information about the results of the offer execution.
+
+There are also events that can be subscribed to, which are called when the results of a call to the backend have been received:
+
+| Event Name          | When Invoked                                                            | Payload Provided                                                                     |
+|---------------------|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| OnGetAccountItem    | When the results of a call to `GetAccountOwnsCatalogItem` are received. | `CatalogItemEventArgs` - data for both the account ID and requested item.            |
+| OnGetAccountCatalog | When the results of a call to `GetAccountCatalog` are received.         | `CatalogItemsEventArgs` - data for both the account ID and their catalog.            |
+| OnOffersPrepared    | When the results of a call to `PrepareOffersForProvider` are received.  | `PreparedOffersEventArgs` - data for all the available offers for the given account. |
+| OnOfferExecuted     | When the results of a call to `ExecutePreparedOffers` are received.     | `CatalogItemEventArgs` - data for the results of offers executed for an account.     |
+
+`CatenaServerEntitlementsManager` has the ability to cache the results of getting an item or catalog for a given account ID. By setting the option in the inspector, the server entitlements manager will automatically cache results, which can be fetched via `GetCachedAccountCatalog` and `GetCachedAccountCatalogItem`. WARNING: This cache is not automatically cleared, and will need to be manually cleared if your server operates in a way that will accumulate account catalogs.
+
+`CatenaServerEntitlementsManager` also has the option to automatically call to `GetAccountCatalog` when a match has been found via the matchmaking service. It will iterate through all the accounts connected to the match and fetch each of their catalogs.
+
 ### Catena Events
 
 For knowing when various steps of the Catena flow are complete, there are events that can be subscribed to that provide information about accounts, metadata, etc.
@@ -299,12 +355,12 @@ Here's a list of events that are available to subscribe to from `CatenaPlayer`:
 | OnFindingServer        | When a match is found and the player is waiting for a server, or when a match is found from a non-dedicated server, or when matchmaking fails. | `string` - null if failed to find a match, empty if waiting for a server, otherwise has the IP, Port and Server ID |
 | OnFoundServer          | When a dedicated server has been found                                                                                                         | `string` - The IP, Port, and Server ID                                                                             | 
 
-CatenaEntrypoint also has many events available to be subscribed to:
+CatenaEntrypoint also has many events available to be subscribed to. These events include the results from calls to get/update account data, as well as various party functions:
 
 | Event name                            | When Invoked                                                                         | Payload Provided                                                                                  |
 |---------------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
 | OnCreateOrGetAccountByTokenCompleted  | When a new Catena account is created, or when getting an existing one.               | `AccountEventArgs` - Result of the request, and the account info.                                 |
-| OnGetAccountByIdCompleted             | When an existing Catena account is recieved.                                         | `AccountEventArgs` - Result of the request, and the account info.                                 |
+| OnGetAccountByIdCompleted             | When an existing Catena account is received.                                         | `AccountEventArgs` - Result of the request, and the account info.                                 |
 | OnAccountCreateMetadataEntryCompleted | When new metadata has been added for an account.                                     | `CatenaEventStatus` - Result of the request.                                                      |
 | OnAccountUpdateMetadataEntryCompleted | When an entry of an account's metadata has been updated.                             | `CatenaEventStatus` - Result of the request.                                                      |
 | OnAccountDeleteMetadataEntryCompleted | When an entry of an account's metadata has been deleted.                             | `CatenaEventStatus` - Result of the request.                                                      |
