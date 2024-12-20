@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/v1/catena_steam_diag.proto",
+    "title": "api/v1/catena_friends.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "CatenaSteamDiag"
+      "name": "CatenaFriends"
     }
   ],
   "consumes": [
@@ -16,51 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/steam_diag/app_ownership/{accountId}/{appId}": {
+    "/api/v1/friends/get": {
       "get": {
-        "operationId": "CatenaSteamDiag_AdminAccountCheckAppOwnership",
+        "operationId": "CatenaFriends_GetFriendList",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminAccountCheckAppOwnershipResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "appId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "CatenaSteamDiag"
-        ]
-      }
-    },
-    "/api/v1/steam_diag/direct/inventory/item_defs/get": {
-      "get": {
-        "operationId": "CatenaSteamDiag_AdminDirectInventoryGetItemDefs",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminDirectInventoryGetItemDefsResponse"
+              "$ref": "#/definitions/catena_friendsGetFriendListResponse"
             }
           },
           "default": {
@@ -71,18 +34,18 @@
           }
         },
         "tags": [
-          "CatenaSteamDiag"
+          "CatenaFriends"
         ]
       }
     },
-    "/api/v1/steam_diag/direct/transaction/report/get": {
+    "/api/v1/friends/remove": {
       "post": {
-        "operationId": "CatenaSteamDiag_AdminDirectTransactionGetReport",
+        "operationId": "CatenaFriends_RemoveFriend",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminDirectTransactionGetReportResponse"
+              "$ref": "#/definitions/catena_friendsRemoveFriendResponse"
             }
           },
           "default": {
@@ -98,61 +61,24 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminDirectTransactionGetReportRequest"
+              "$ref": "#/definitions/catena_friendsRemoveFriendRequest"
             }
           }
         ],
         "tags": [
-          "CatenaSteamDiag"
+          "CatenaFriends"
         ]
       }
     },
-    "/api/v1/steam_diag/direct/user/app_ownership/{steamId}/{appId}": {
-      "get": {
-        "operationId": "CatenaSteamDiag_AdminDirectUserCheckAppOwnership",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminDirectUserCheckAppOwnershipResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "steamId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "appId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "CatenaSteamDiag"
-        ]
-      }
-    },
-    "/api/v1/steam_diag/direct/user/player_summaries": {
+    "/api/v1/friends/request/accept": {
       "post": {
-        "operationId": "CatenaSteamDiag_AdminDirectUserGetPlayerSummaries",
+        "summary": "Links two players together as friends",
+        "operationId": "CatenaFriends_AcceptFriendRequest",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminDirectUserGetPlayerSummariesResponse"
+              "$ref": "#/definitions/catena_friendsAcceptFriendRequestResponse"
             }
           },
           "default": {
@@ -168,126 +94,228 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/catena_steam_diagAdminDirectUserGetPlayerSummariesRequest"
+              "$ref": "#/definitions/catena_friendsAcceptFriendRequestRequest"
             }
           }
         ],
         "tags": [
-          "CatenaSteamDiag"
+          "CatenaFriends"
+        ]
+      }
+    },
+    "/api/v1/friends/request/decline": {
+      "post": {
+        "operationId": "CatenaFriends_DeclineFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_friendsDeclineFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_friendsDeclineFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaFriends"
+        ]
+      }
+    },
+    "/api/v1/friends/request/incoming": {
+      "get": {
+        "operationId": "CatenaFriends_GetIncomingPendingRequests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_friendsGetIncomingPendingRequestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaFriends"
+        ]
+      }
+    },
+    "/api/v1/friends/request/outgoing": {
+      "get": {
+        "operationId": "CatenaFriends_GetOutgoingPendingRequests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_friendsGetOutgoingPendingRequestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "CatenaFriends"
+        ]
+      }
+    },
+    "/api/v1/friends/request/send": {
+      "post": {
+        "operationId": "CatenaFriends_SendFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/catena_friendsSendFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/catena_friendsSendFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CatenaFriends"
         ]
       }
     }
   },
   "definitions": {
-    "catena_steam_diagAdminAccountCheckAppOwnershipResponse": {
+    "catena_friendsAcceptFriendRequestRequest": {
       "type": "object",
       "properties": {
-        "ownsApp": {
-          "type": "boolean"
-        }
-      }
-    },
-    "catena_steam_diagAdminDirectInventoryGetItemDefsResponse": {
-      "type": "object",
-      "properties": {
-        "itemdefJson": {
+        "senderAccountId": {
           "type": "string"
         }
       }
     },
-    "catena_steam_diagAdminDirectTransactionGetReportRequest": {
+    "catena_friendsAcceptFriendRequestResponse": {
+      "type": "object"
+    },
+    "catena_friendsDeclineFriendRequestRequest": {
       "type": "object",
       "properties": {
-        "maxResults": {
-          "type": "integer",
+        "senderAccountId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_friendsDeclineFriendRequestResponse": {
+      "type": "object"
+    },
+    "catena_friendsFriend": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "becameFriendsTimestamp": {
+          "type": "string",
           "format": "int64"
-        },
-        "timestamp": {
-          "type": "string",
-          "format": "uint64"
         }
       }
     },
-    "catena_steam_diagAdminDirectTransactionGetReportResponse": {
+    "catena_friendsFriendRequest": {
       "type": "object",
       "properties": {
-        "orders": {
+        "accountId": {
+          "type": "string"
+        },
+        "requestSentTimestamp": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "catena_friendsGetFriendListResponse": {
+      "type": "object",
+      "properties": {
+        "friends": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/catena_steam_diagAdminDirectTransactionGetReportResponseOrder"
+            "$ref": "#/definitions/catena_friendsFriend"
           }
         }
       }
     },
-    "catena_steam_diagAdminDirectTransactionGetReportResponseOrder": {
+    "catena_friendsGetIncomingPendingRequestsResponse": {
       "type": "object",
       "properties": {
-        "orderId": {
-          "type": "string",
-          "format": "uint64",
-          "title": "Not all information is reported back here"
-        },
-        "transId": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "steamId": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "status": {
-          "type": "string"
-        },
-        "time": {
-          "type": "string"
-        }
-      }
-    },
-    "catena_steam_diagAdminDirectUserCheckAppOwnershipResponse": {
-      "type": "object",
-      "properties": {
-        "ownsApp": {
-          "type": "boolean"
-        }
-      }
-    },
-    "catena_steam_diagAdminDirectUserGetPlayerSummariesRequest": {
-      "type": "object",
-      "properties": {
-        "steamId": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "uint64"
-          }
-        }
-      }
-    },
-    "catena_steam_diagAdminDirectUserGetPlayerSummariesResponse": {
-      "type": "object",
-      "properties": {
-        "players": {
+        "incomingFriends": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/catena_steam_diagPlayerSummary"
+            "$ref": "#/definitions/catena_friendsFriendRequest"
           }
         }
       }
     },
-    "catena_steam_diagPlayerSummary": {
+    "catena_friendsGetOutgoingPendingRequestsResponse": {
       "type": "object",
       "properties": {
-        "steamId": {
-          "type": "string",
-          "format": "uint64",
-          "title": "Not all information is reported back here"
-        },
-        "personaName": {
+        "outgoingFriends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/catena_friendsFriendRequest"
+          }
+        }
+      }
+    },
+    "catena_friendsRemoveFriendRequest": {
+      "type": "object",
+      "properties": {
+        "removingAccountId": {
           "type": "string"
         }
       }
+    },
+    "catena_friendsRemoveFriendResponse": {
+      "type": "object"
+    },
+    "catena_friendsSendFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "receiverAccountId": {
+          "type": "string"
+        }
+      }
+    },
+    "catena_friendsSendFriendRequestResponse": {
+      "type": "object"
     },
     "protobufAny": {
       "type": "object",
