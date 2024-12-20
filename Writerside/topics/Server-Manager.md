@@ -124,3 +124,38 @@ Shutdown
 : This flag indicates to the backend that the game server will shut down after it receives a response to `EndMatch`.
 : This flag indicates to the game server that the backend would like it to shut down after it receives a response
 to `EndMatch`.
+
+Full
+: This flag indicates to the backend that the game server is full and will not be making additional requests for
+matches.
+: This flag indicates to the game server that the backend has acknowledged and registered the game server as full.
+
+Not Full
+: This flag indicates to the backend that the game server has capacity and will be making requests for matches.
+: This flag indicates to the game server that the backend has acknowledged and registered the game server as having
+capacity.
+
+> Since hints are optional, even when a server has indicated it is full, it is not prohibited from requesting matches.
+> However, this will log warnings as it would typically indicate a problem in game server logic. Similarly, a server
+> that has indicated it is shutting down is not prohibited from requesting a match, but it will be logged as if it is a
+> new game server making the request.
+
+### Hint recommendations
+
+Game servers running single matches serially should utilize `HintFlag.Full` when calling `MatchReady` and subsequently
+utilize either `HintFlag.Shutdown` or `HintFlag.NotFull` when calling `EndMatch`. This improves the timing of capacity
+matching in the match broker.
+
+Game servers running multiple matches in parallel may request any number of matches before sending `HintFlag.Full`. This
+would be typical for a server that backfills players like a lobby or world server or for efficiency, running many of the
+same game type within a single game server process. The game server will need to determine when to
+send `HintFlag.NotFull` again, typically with the next `RequestMatch`, if at all.
+
+A game server not previously hinting full may send `HintFlag.Full` with `EndMatch` if it should be considered
+temporarily unavailable. Similarly, a game server not previously hinting full is not obligated to
+send `HintFlag.NotFull` with `EndMatch`. Either may be desirable if the game server needs to unload resources before
+beginning another match and the match broker starting a new server may be a faster way to start the next match.
+
+In certain scenarios with parallel matches, capacity matching in the match broker can be improved by
+sending `HintFlag.Full` early, continuing to request matches after sending it. However, this will cause warnings to be
+logged when a "full" server continues to request matches.
